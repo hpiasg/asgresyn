@@ -1,0 +1,6 @@
+(nodes)
+(gates
+)
+(connections
+	(connect (combine (data "LSInp") (data "MSInp")) (data "out"))
+)

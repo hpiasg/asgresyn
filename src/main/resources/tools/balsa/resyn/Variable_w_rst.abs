@@ -1,0 +1,33 @@
+(defines
+	(latch (style-option "latch" "latch"))
+)
+(nodes
+	("data" (param "width") 0 1)
+	("i_write_d" (param "width") 0 1)
+	("i_write_c" 1 0 1)
+	("initialise" 1 0 1)
+	("n_initialise" 1 0 1)
+    ("nWriteReq" 1 0 1)
+	("bWriteReq" 1 0 1)
+	("nbWriteReq" 1 0 1)
+)
+(gates
+	(inv (node "n_initialise") (node "initialise"))
+	(and
+	   (combine (node (each "i_write_d")))
+	   (combine (data (each "write")))
+	   (combine (dup-each (param "width") (smash (node "n_initialise"))))
+	)	   
+	(or (node "i_write_c") (node "bWriteReq") (node "initialise"))
+    
+    (inv (node "nWriteReq") (req "write"))
+	(inv (node "bWriteReq") (node "nWriteReq"))
+	(inv (node "nbWriteReq") (node "bWriteReq"))
+	(inv (ack "write") (node "nbWriteReq"))
+	(cell latch
+		(combine (dup (param "width") (node "i_write_c")))
+		(combine (node (each "i_write_d")))
+		(node "data")
+	)
+	(macro single-rail-connect-read-ports (param "width") (param "readPortCount") (param "specification") "data")
+)

@@ -1,0 +1,35 @@
+(nodes
+	("t" (param "indexWidth") 0 1)
+	("c" (param "indexWidth") 0 1)
+	("latchedIndex" (param "indexWidth") 0 1)
+	("muxOut" (param "width") 0 (param "inputCount"))
+	("elseAck" 1 0 1)
+)
+(gates
+	(latch
+		(combine (dup (param "indexWidth") (req "out")))
+		(data "index")
+		(node "latchedIndex")
+	)
+	(demux2 (combine (dup (param "indexWidth") (req "out"))) (node "c") (node "t") (node "latchedIndex"))
+	(if (complete-encoding? (param "specification") (param "indexWidth"))
+		(gates
+			(decode and-or (param "specification") (node "c") (node "t") (req (each "inp")))
+			(or (ack "out") (ack (each "inp")))
+		)
+		(gates
+			(decode and-or (param "specification") (node "c") (node "t") (req (each "inp")) (node "elseAck"))
+			(or (ack "out") (ack (each "inp")) (node "elseAck"))
+		)
+	)
+	(nand
+		(combine (node (each "muxOut")))
+		(combine (dup-each (param "width") (ack (each "inp"))))
+		(combine (data (each "inp")))
+	)
+	(nand
+		(data "out")
+		(node (each "muxOut"))
+	)
+	(connect (ack "index") (req "index"))
+)

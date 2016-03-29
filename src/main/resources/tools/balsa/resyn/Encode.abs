@@ -1,0 +1,10 @@
+(nodes
+	("c" (param "inputCount") 0 1)
+	("t" (param "inputCount") 0 1)
+)
+(gates
+	(nor (node "c") (combine (req (each "inp"))) (combine (ack (each "inp"))))
+	(inv (node "t") (node "c"))
+	(encode and-or (param "specification") (node "c") (node "t") (data "out"))
+	(or (req "out") (req (each "inp")))
+)

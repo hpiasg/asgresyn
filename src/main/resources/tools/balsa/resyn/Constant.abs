@@ -1,0 +1,5 @@
+(nodes)
+(gates)
+(connections
+	(constant (param "value") (data "out"))
+)

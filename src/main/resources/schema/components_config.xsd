@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="components" type="componentsResyn"/>
+
+  <xs:complexType name="componentsResyn">
+    <xs:sequence>
+      <xs:element name="component" type="componentResyn" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="componentResyn">
+    <xs:complexContent>
+      <xs:extension base="component">
+        <xs:sequence>
+          <xs:element name="resetNode" type="xs:string" minOccurs="0"/>
+          <xs:element name="removesignals" type="removeSignals" minOccurs="0"/>
+          <xs:element name="interfacesignals" type="interfaceSignals" minOccurs="0"/>
+          <xs:element name="datapathmissing" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="component">
+    <xs:sequence>
+      <xs:element name="parameters" type="parameters" minOccurs="0"/>
+      <xs:element name="channels" type="channels" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="breezename" type="xs:string" use="required"/>
+    <xs:attribute name="symbol" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="removeSignals">
+    <xs:sequence>
+      <xs:element name="rsignal" type="rSignal" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="rSignal">
+    <xs:sequence/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="type" type="rSignalType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="interfaceSignals">
+    <xs:sequence>
+      <xs:element name="isignal" type="iSignal" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="igroup" type="iGroup" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="iSignal">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="reftype" type="refType" use="required"/>
+    <xs:attribute name="ref" type="xs:int" use="required"/>
+    <xs:attribute name="direction" type="direction"/>
+  </xs:complexType>
+
+  <xs:complexType name="iGroup">
+    <xs:sequence>
+      <xs:element name="isignal" type="iSignal" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="parameters">
+    <xs:sequence>
+      <xs:element name="parameter" type="parameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="parameter">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+    <xs:attribute name="type" type="parameterType" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="channels">
+    <xs:sequence>
+      <xs:element name="channel" type="channel" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="channel">
+    <xs:sequence/>
+    <xs:attribute name="id" type="xs:int" use="required"/>
+    <xs:attribute name="type" type="channelType" use="required"/>
+    <xs:attribute name="porttype" type="portType" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="rSignalType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ack"/>
+      <xs:enumeration value="req"/>
+      <xs:enumeration value="node"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="refType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="channel"/>
+      <xs:enumeration value="parameter"/>
+      <xs:enumeration value="component"/>
+      <xs:enumeration value="reset"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="direction">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="in"/>
+      <xs:enumeration value="out"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="parameterType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="name"/>
+      <xs:enumeration value="width"/>
+      <xs:enumeration value="operator"/>
+      <xs:enumeration value="value"/>
+      <xs:enumeration value="port_count"/>
+      <xs:enumeration value="index_width"/>
+      <xs:enumeration value="low_index"/>
+      <xs:enumeration value="input_count"/>
+      <xs:enumeration value="input_width"/>
+      <xs:enumeration value="input_signed"/>
+      <xs:enumeration value="inputA_width"/>
+      <xs:enumeration value="inputA_signed"/>
+      <xs:enumeration value="inputB_width"/>
+      <xs:enumeration value="inputB_signed"/>
+      <xs:enumeration value="inputB_value"/>
+      <xs:enumeration value="outputA_width"/>
+      <xs:enumeration value="outputB_width"/>
+      <xs:enumeration value="output_width"/>
+      <xs:enumeration value="output_signed"/>
+      <xs:enumeration value="output_count"/>
+      <xs:enumeration value="var_spec"/>
+      <xs:enumeration value="fetch_spec"/>
+      <xs:enumeration value="case_spec"/>
+      <xs:enumeration value="encode_spec"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="channelType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="data_in"/>
+      <xs:enumeration value="data_out"/>
+      <xs:enumeration value="control_in"/>
+      <xs:enumeration value="control_out"/>
+      <xs:enumeration value="dataA_in"/>
+      <xs:enumeration value="dataA_out"/>
+      <xs:enumeration value="dataB_in"/>
+      <xs:enumeration value="dataB_out"/>
+      <xs:enumeration value="decision_in"/>
+      <xs:enumeration value="decision_out"/>
+      <xs:enumeration value="index_in"/>
+      <xs:enumeration value="extension_out"/>
+      <xs:enumeration value="arbA_in"/>
+      <xs:enumeration value="arbB_in"/>
+      <xs:enumeration value="arbA_out"/>
+      <xs:enumeration value="arbB_out"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="portType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="passive"/>
+      <xs:enumeration value="active"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

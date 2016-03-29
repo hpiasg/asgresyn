@@ -1,0 +1,9 @@
+(defines
+	(PPstyle (style-option "PP" "ovlp"))
+	(Fstyle (if (= PPstyle "conv") (if (= "true" (param "broad")) "broad" "conv") "conv"))
+)
+(nodes)
+(gates)
+(connections
+	(connect (data "inp") (data "out"))
+)

@@ -1,0 +1,4 @@
+(nodes)
+(gates
+	(demux2 (ack "guard") (ack "activate") (req "activateOut") (data "guard"))
+)

@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright 2012-2015 Norman Kluge
+ 
+This file is part of ASGresyn.
+ 
+ASGresyn is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+ASGresyn is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<components>
+	<component breezename="BrzVariable">
+		<resetNode>initialise</resetNode>
+		<parameters>
+			<parameter id="0" type="input_width" />
+			<parameter id="1" type="output_count" />
+			<parameter id="2" type="name" />
+			<parameter id="3" type="var_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_in" porttype="passive" />
+			<channel id="1" type="data_out" porttype="passive" />
+		</channels>
+		<removesignals>
+			<rsignal name="read" type="ack" />
+			<rsignal name="read" type="req" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rD_$" direction="in" reftype="component" />
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="d$" reftype="channel" ref="1" />
+			<isignal id="4" name="" reftype="reset" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzCallMux" symbol=">-->">
+		<parameters>
+			<parameter id="0" type="width" />
+			<parameter id="1" type="input_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_in" porttype="passive" />
+			<channel id="1" type="data_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="out" type="ack" />
+			<rsignal name="inp" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<igroup id="0">
+				<isignal id="0" name="rS#_$" direction="in" reftype="parameter" ref="1" />
+				<isignal id="1" name="d$" reftype="channel" ref="0" />
+			</igroup>
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="1" />
+			<!-- <isignal id="3" name="" reftype="reset" /> -->
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzSequence" symbol=";">
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+	</component>
+	
+	<component breezename="BrzFetch" symbol="->">
+		<parameters>
+			<parameter id="0" type="width" /> 
+			<parameter id="1" type="fetch_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="data_in" porttype="active" />
+			<channel id="2" type="data_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="activate" type="req" />
+			<rsignal name="activate" type="ack" />
+			<rsignal name="inp" type="req" />
+			<rsignal name="inp" type="ack" />
+			<rsignal name="out" type="req" />
+			<rsignal name="out" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="1" />
+			<isignal id="1" name="d$" reftype="channel" ref="2" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzCase" symbol="@">
+		<parameters>
+			<parameter id="0" type="input_width" />
+			<parameter id="1" type="output_count" />
+			<parameter id="2" type="case_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="internal" type="node" />
+			<rsignal name="inp" type="ack" />
+			<rsignal name="activateOut" type="ack" />
+			<rsignal name="elseAck" type="node" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rC_$" direction="in" reftype="component" />
+			<isignal id="1" name="d$" reftype="channel" ref="0" />
+			<isignal id="2" name="aD#_$" direction="out" reftype="parameter" ref="1" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzWhile" symbol="do">
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="data_in" porttype="active" />
+			<channel id="2" type="control_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="activate" type="req" />
+			<rsignal name="guard" type="req" />
+			<rsignal name="activateOut" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="aF_$" direction="out" reftype="component" />
+			<isignal id="1" name="rR_$" direction="in" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="1" />
+			<isignal id="3" name="aT_$" direction="out" reftype="component" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzBinaryFunc">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="inputA_width" />
+			<parameter id="2" type="inputB_width" />
+			<parameter id="3" type="operator" />
+			<parameter id="4" type="output_signed" />
+			<parameter id="5" type="inputA_signed" />
+			<parameter id="6" type="inputB_signed" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="dataA_in" porttype="active" />
+			<channel id="2" type="dataB_in" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="inpA" type="req" />
+			<rsignal name="inpA" type="ack" />
+			<rsignal name="inpB" type="req" />
+			<rsignal name="inpB" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rD_$" direction="in" reftype="component" />
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="d$" reftype="channel" ref="1" />
+			<isignal id="4" name="d$" reftype="channel" ref="2" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzBinaryFuncConstR">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="inputA_width" />
+			<parameter id="2" type="inputB_width" />
+			<parameter id="3" type="operator" />
+			<parameter id="4" type="output_signed" />
+			<parameter id="5" type="inputA_signed" />
+			<parameter id="6" type="inputB_signed" />
+			<parameter id="7" type="inputB_value" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="dataA_in" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="inpA" type="req" />
+			<rsignal name="inpA" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rD_$" direction="in" reftype="component" />
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="d$" reftype="channel" ref="1" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzConcur" symbol="||">
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+	</component>	
+	
+	<component breezename="BrzConstant">
+		<parameters>
+			<parameter id="0" type="width" />
+			<parameter id="1" type="value" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+		</channels>
+		<removesignals>
+			<rsignal name="out" type="req" />
+			<rsignal name="out" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="0" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzCombine" symbol="&lt;&lt; &gt;&gt;">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="inputA_width" />
+			<parameter id="2" type="inputB_width" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="dataA_in" porttype="active" />
+			<channel id="2" type="dataB_in" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="LSInp" type="req" />
+			<rsignal name="LSInp" type="ack" />
+			<rsignal name="MSInp" type="req" />
+			<rsignal name="MSInp" type="ack" />
+			<rsignal name="out" type="req" />
+			<rsignal name="out" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="0" />
+			<isignal id="1" name="d$" reftype="channel" ref="1" />
+			<isignal id="2" name="d$" reftype="channel" ref="2" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzFalseVariable" symbol="FV">
+		<parameters>
+			<parameter id="0" type="input_width" />
+			<parameter id="1" type="output_count" />
+			<parameter id="2" type="var_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+			<channel id="2" type="data_out" porttype="passive" />
+		</channels>
+		<removesignals>
+			<rsignal name="read" type="req" />
+			<rsignal name="read" type="ack" />
+			<rsignal name="write" type="req" />
+			<rsignal name="write" type="ack" />
+			<rsignal name="signal" type="req" />
+			<rsignal name="signal" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="0" />
+			<isignal id="1" name="d$" reftype="channel" ref="2" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzAdapt" symbol="A">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="input_width" />
+			<parameter id="2" type="output_signed" />
+			<parameter id="3" type="input_signed" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="data_in" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="inp" type="req" />
+			<rsignal name="inp" type="ack" />
+			<rsignal name="out" type="req" />
+			<rsignal name="out" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="0" />
+			<isignal id="1" name="d$" reftype="channel" ref="1" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzLoop" symbol="#">
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+	</component>
+	
+	<component breezename="BrzDecisionWait" symbol="DW">
+		<parameters>
+			<parameter id="0" type="port_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="decision_in" porttype="passive" />
+			<channel id="2" type="decision_out" porttype="active" />
+		</channels>
+	</component>
+	
+	<component breezename="BrzCaseFetch" symbol="@->">
+		<parameters>
+			<parameter id="0" type="width" />
+			<parameter id="1" type="index_width" />
+			<parameter id="2" type="input_count" />
+			<parameter id="3" type="fetch_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="index_in" porttype="active" />
+			<channel id="2" type="data_in" porttype="active" />
+		</channels>
+		<removesignals />
+		<interfacesignals>
+			<isignal id="0" name="rE_$" reftype="component" direction="in" />
+			<isignal id="1" name="aH_$" reftype="component" direction="out" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="rD_$" reftype="component" direction="in" />
+			<isignal id="4" name="aD_$" reftype="component" direction="out" />
+			<isignal id="5" name="d$" reftype="channel" ref="1" />
+			<igroup id="6">
+				<isignal id="0" name="aF#_$" direction="out" reftype="parameter" ref="2" />
+				<isignal id="1" name="rG#_$" direction="in" reftype="parameter" ref="2" />
+				<isignal id="2" name="d$" reftype="channel" ref="2" />
+			</igroup>
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzArbiter" symbol="Arb">
+		<channels>
+			<channel id="0" type="arbA_in" porttype="passive" />
+			<channel id="1" type="arbB_in" porttype="passive" />
+			<channel id="2" type="arbA_out" porttype="active" />
+			<channel id="3" type="arbB_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="inpA" type="ack" />
+			<rsignal name="inpB" type="ack" />
+			<rsignal name="outA" type="ack" />
+			<rsignal name="outB" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rE_$" direction="in" reftype="component" />
+			<isignal id="1" name="rF_$" direction="in" reftype="component" />
+			<isignal id="2" name="aE_$" direction="out" reftype="component" />
+			<isignal id="3" name="aF_$" direction="out" reftype="component" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzCombineEqual" symbol="&lt;&lt; &gt;&gt;">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="input_width" />
+			<parameter id="2" type="input_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="data_in" porttype="active" />	
+		</channels>
+		<removesignals>
+			<rsignal name="out" type="req" />
+			<rsignal name="out" type="ack" />
+			<rsignal name="inp" type="req" />
+			<rsignal name="inp" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="d$" reftype="channel" ref="0" />
+			<isignal id="1" name="d$" reftype="channel" ref="1" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzEncode" symbol="@">
+		<parameters>
+			<parameter id="0" type="output_width" />
+			<parameter id="1" type="input_count" />
+			<parameter id="2" type="encode_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="data_out" porttype="active" />
+		</channels>
+		<removesignals>
+			<rsignal name="inp" type="ack" />
+			<rsignal name="out" type="ack" />
+		</removesignals>
+		<interfacesignals>
+			<isignal id="0" name="rC#_$" direction="in" reftype="parameter" ref="1" />
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="1" />
+		</interfacesignals>
+	</component>
+	
+	<component breezename="BrzWireFork" symbol="W^">
+		<parameters>
+			<parameter id="0" type="output_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+	</component>
+	
+	<component breezename="BrzPassivatorPush">
+		<parameters>
+			<parameter id="0" type="width" />
+			<parameter id="1" type="output_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="data_out" porttype="passive" />
+			<channel id="1" type="data_in" porttype="passive" />
+		</channels>
+		<datapathmissing>true</datapathmissing>
+	</component>
+
+	<component breezename="BrzSynch" symbol="&#x00B7;(s)">
+		<parameters>
+			<parameter id="0" type="input_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+		<datapathmissing>true</datapathmissing>
+	</component>
+	
+	<component breezename="BrzFork" symbol="^">
+		<parameters>
+			<parameter id="0" type="output_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+		<datapathmissing>true</datapathmissing>
+	</component>
+	
+	<component breezename="BrzActiveEagerFalseVariable" symbol="aeFV">
+		<parameters>
+			<parameter id="0" type="input_width" />
+			<parameter id="1" type="output_count" />
+			<parameter id="2" type="var_spec" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="data_in" porttype="active" />
+			<channel id="2" type="control_out" porttype="active" />
+			<channel id="3" type="data_out" porttype="passive" />
+		</channels>
+		<datapathmissing>true</datapathmissing>
+	</component>
+	
+	<component breezename="BrzCall" symbol="&gt;-">
+		<parameters>
+			<parameter id="0" type="input_count" />
+		</parameters>
+		<channels>
+			<channel id="0" type="control_in" porttype="passive" />
+			<channel id="1" type="control_out" porttype="active" />
+		</channels>
+		<datapathmissing>true</datapathmissing>
+	</component>
+
+</components>
