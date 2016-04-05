@@ -20,7 +20,7 @@ package de.uni_potsdam.hpi.asg.resyntool.components.xml;
  */
 
 import java.io.File;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -51,11 +51,17 @@ public class ComponentsResyn {
             JAXBContext jaxbContext = JAXBContext.newInstance(ComponentsResyn.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             if(filename == null || filename.equals("")) {
-                URL url = ComponentsResyn.class.getResource(injarfilename);
-                return (ComponentsResyn)jaxbUnmarshaller.unmarshal(url);
+                logger.debug("Using in-jar components config");
+//                try {
+//                    logger.debug("Jar file: " + ComponentsResyn.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+//                } catch(URISyntaxException e) {
+//                }
+                InputStream inputStream = ComponentsResyn.class.getResourceAsStream(injarfilename);
+                return (ComponentsResyn)jaxbUnmarshaller.unmarshal(inputStream);
             } else {
                 File file = new File(filename);
                 if(file.exists()) {
+                    logger.debug("Using external components config: " + file.getAbsolutePath());
                     return (ComponentsResyn)jaxbUnmarshaller.unmarshal(file);
                 } else {
                     logger.error("File " + filename + " not found");
