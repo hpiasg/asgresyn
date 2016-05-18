@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.io;
 
 /*
- * Copyright (C) 2012 - 2016 Norman Kluge
+ * Copyright (C) 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -24,23 +24,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class ToolConfig {
+public class RemoteInvocation {
     @XmlElement(required = true)
-    public String           desijcmd;
+    public String hostname;
     @XmlElement(required = true)
-    public String           balsaccmd;
+    public String username;
     @XmlElement(required = true)
-    public String           balsanetlistcmd;
-    @XmlElement(required = true)
-    public String           petrifycmd;
+    public String password;
     @XmlElement(required = false)
-    public String           petresetcmd;
-    @XmlElement(required = false)
-    public String           mpsatcmd;
-    @XmlElement(required = false)
-    public String           punfcmd;
-    @XmlElement(required = false)
-    public String           asglogiccmd;
-    @XmlElement(required = false)
-    public RemoteInvocation designCompilerCmd;
+    public String workingdir;
 }

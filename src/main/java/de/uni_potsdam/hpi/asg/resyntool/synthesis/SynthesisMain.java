@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -140,7 +140,12 @@ public class SynthesisMain {
             }
             files.add(wiringfiles.get(netlist));
         }
-        return mergeAll(files);
+        if(!mergeAll(files)) {
+            logger.error("Could not merge files");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean mergeAll(List<String> files) {

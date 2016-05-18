@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Copyright 2014-2015 Norman Kluge
+Copyright 2014 - 2016 Norman Kluge
  
 This file is part of ASGresyn.
  
@@ -17,8 +17,7 @@ You should have received a copy of the GNU General Public License
 along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni_potsdam.hpi.asg</groupId>
@@ -46,7 +45,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<desij.version>3.0.0</desij.version>
 		<logic.version>0.1.0</logic.version>
-		<common.version>1.0.0</common.version>
+		<common.version>1.1.0-SNAPSHOT</common.version>
 	</properties>
 	<build>
 		<resources>
@@ -197,25 +196,34 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 						<configuration>
 							<target>
 								<!-- DesiJ -->
-								<exec executable="mv"> 
-									<arg line="${project.build.directory}/desij-${desij.version} ${project.build.directory}/desij" /> 
-								</exec> 
-								<move file="${project.build.directory}/desij/LICENSE.txt" tofile="${project.build.directory}/desij/bin/DesiJ_LICENSE.txt"/> 
-								<move file="${project.build.directory}/desij/NOTICE.txt" tofile="${project.build.directory}/desij/bin/DesiJ_NOTICE.txt"/> 
-								<move file="${project.build.directory}/desij/README.md" tofile="${project.build.directory}/desij/bin/DesiJ_README.md"/>
+								<exec executable="mv">
+									<arg
+										line="${project.build.directory}/desij-${desij.version} ${project.build.directory}/desij" />
+								</exec>
+								<move file="${project.build.directory}/desij/LICENSE.txt"
+									tofile="${project.build.directory}/desij/bin/DesiJ_LICENSE.txt" />
+								<move file="${project.build.directory}/desij/NOTICE.txt"
+									tofile="${project.build.directory}/desij/bin/DesiJ_NOTICE.txt" />
+								<move file="${project.build.directory}/desij/README.md"
+									tofile="${project.build.directory}/desij/bin/DesiJ_README.md" />
 								<!-- Logic -->
-								<exec executable="mv"> 
-									<arg line="${project.build.directory}/asglogic-${logic.version} ${project.build.directory}/asglogic" /> 
-								</exec> 
-								<move file="${project.build.directory}/asglogic/LICENSE.txt" tofile="${project.build.directory}/asglogic/bin/ASGLogic_LICENSE.txt"/> 
-								<move file="${project.build.directory}/asglogic/NOTICE.txt" tofile="${project.build.directory}/asglogic/bin/ASGLogic_NOTICE.txt"/> 
-								<move file="${project.build.directory}/asglogic/README.md" tofile="${project.build.directory}/asglogic/bin/ASGLogic_README.md"/>
+								<exec executable="mv">
+									<arg
+										line="${project.build.directory}/asglogic-${logic.version} ${project.build.directory}/asglogic" />
+								</exec>
+								<move file="${project.build.directory}/asglogic/LICENSE.txt"
+									tofile="${project.build.directory}/asglogic/bin/ASGlogic_LICENSE.txt" />
+								<move file="${project.build.directory}/asglogic/NOTICE.txt"
+									tofile="${project.build.directory}/asglogic/bin/ASGlogic_NOTICE.txt" />
+								<move file="${project.build.directory}/asglogic/README.md"
+									tofile="${project.build.directory}/asglogic/bin/ASGlogic_README.md" />
 								<!-- Balsa -->
 								<exec executable="tar">
-									<arg line="-xj -f src/main/resources/tools/balsa/balsa-4.0-base-linux-i686.tar.bz2 -C ${project.build.directory}" />
+									<arg
+										line="-xj -f src/main/resources/tools/balsa/balsa-4.0-base-linux-i686.tar.bz2 -C ${project.build.directory}" />
 								</exec>
 								<copy todir="${project.build.directory}/balsa/share/style/resyn">
-									<fileset dir="src/main/resources/tools/balsa/resyn"/>
+									<fileset dir="src/main/resources/tools/balsa/resyn" />
 								</copy>
 							</target>
 						</configuration>
@@ -309,6 +317,11 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<classifier>unix</classifier>
 			<type>tar.gz</type>
 			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.jcraft</groupId>
+			<artifactId>jsch</artifactId>
+			<version>0.1.53</version>
 		</dependency>
 	</dependencies>
 </project>
