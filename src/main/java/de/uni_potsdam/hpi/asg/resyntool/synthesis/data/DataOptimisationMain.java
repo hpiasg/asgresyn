@@ -22,6 +22,7 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +34,6 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.resyntool.io.RunSHScript;
 import de.uni_potsdam.hpi.asg.resyntool.io.SFTP;
@@ -42,31 +42,30 @@ public class DataOptimisationMain {
     private static final Logger logger = LogManager.getLogger();
 
     private String              remoteFolder;
-    private Set<String>         files;
 
     private String              host;
     private String              username;
     private String              password;
 
-    public DataOptimisationMain(String host, String username, String password, Set<String> files, String remotefolder) {
+    public DataOptimisationMain(String host, String username, String password, String remotefolder) {
         this.username = username;
         this.password = password;
         this.host = host;
-        this.files = files;
         this.remoteFolder = remotefolder;
     }
 
-    public boolean execute() {
+    public boolean execute(Set<String> files) {
 
+        Set<DataOptimisationPlan> plans = new HashSet<>();
         for(String filename : files) {
-            FileHelper.getInstance().copyfile(filename, filename + ".bak");
+            ScriptGenerator gen = new ScriptGenerator(filename);
+            plans.add(gen.generate());
         }
 
-        //TODO: generate scripts
-        return run();
+        return run(plans);
     }
 
-    private boolean run() {
+    private boolean run(Set<DataOptimisationPlan> plans) {
         Session session = null;
         try {
             try {
@@ -86,27 +85,34 @@ public class DataOptimisationMain {
             session = jsch.getSession(username, host, 22);
             session.setPassword(password);
             session.setUserInfo(new MyUserInfo());
-            session.setConfig("StrictHostKeyChecking", "yes");
+            session.setConfig("StrictHostKeyChecking", "no");
             session.connect(30000);
 
+            SFTP sftpcon = new SFTP(session);
+
             logger.info("Uploading files");
-            if(!SFTP.uploadFiles(session, files, remoteFolder)) {
+            Set<String> uploadfiles = new HashSet<>();
+            for(DataOptimisationPlan p : plans) {
+                uploadfiles.addAll(p.getAllUploadFiles());
+            }
+
+            if(!sftpcon.uploadFiles(uploadfiles, remoteFolder)) {
                 logger.error("Upload failed");
                 return false;
             }
 
             logger.info("Running scripts");
             int code = -1;
-            for(String filename : files) {
-                code = RunSHScript.run(session, filename + "_dataopt.sh", remoteFolder);
+            for(DataOptimisationPlan p : plans) {
+                code = RunSHScript.run(session, p.getRemoteShScriptName(), sftpcon.getDirectory());
                 if(code != 0) {
-                    logger.warn("Optimisation of " + filename + " failed");
+                    logger.warn("Optimisation of " + p.getLocalfilename() + " failed");
                     continue;
                 }
             }
 
             logger.info("Downloading files");
-            if(!SFTP.downloadFiles(session, remoteFolder, WorkingdirGenerator.getInstance().getWorkingdir())) {
+            if(!sftpcon.downloadFiles(session, WorkingdirGenerator.getInstance().getWorkingdir())) {
                 return false;
             }
 

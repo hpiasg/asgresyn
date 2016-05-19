@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -20,15 +20,18 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
  */
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.ResynType;
+import de.uni_potsdam.hpi.asg.resyntool.io.RemoteInvocation;
 
 public class DataSynthesisMain {
     private static final Logger logger    = LogManager.getLogger();
@@ -47,13 +50,17 @@ public class DataSynthesisMain {
     public boolean generate() {
         String opwfilename = opwending + FileHelper.getFileEx(Filetype.verilog);
 
-        List<String> filelist = new ArrayList<String>();
+        Set<String> filelist = new HashSet<String>();
         for(ResynType type : proj.getAllResynTypes()) {
             logger.info("Generating " + type.getDef());
             filelist.add(type.generate(technology));
         }
 
-        String text = FileHelper.getInstance().mergeFileContents(filelist);
+        RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
+        DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
+        opt.execute(filelist);
+
+        String text = FileHelper.getInstance().mergeFileContents(new ArrayList<>(filelist));
         if(text != null) {
             if(FileHelper.getInstance().writeFile(opwfilename, text)) {
                 file = opwfilename;

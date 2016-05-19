@@ -39,20 +39,44 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
 
-import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-
 public class SFTP {
     private static final Logger logger = LogManager.getLogger();
 
-    public static boolean uploadFiles(Session session, Set<String> sourcefiles, String target) {
+    private Session             session;
+    private String              directory;
+
+    public SFTP(Session session) {
+        this.session = session;
+    }
+
+    public boolean uploadFiles(Set<String> sourcefiles, String target) {
         try {
+
+            String newTargetBase = target;
+            if(!target.endsWith("/")) {
+                newTargetBase += "/";
+            }
+            newTargetBase += "dataopt";
+            int tmpnum = 0;
+
             ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
             channel.connect();
-            channel.mkdir(target);
-            channel.cd(target);
+
+            String newTarget = newTargetBase + Integer.toString(tmpnum++);
+            boolean mkdirsuccess = false;
+            while(!mkdirsuccess) {
+                try {
+                    channel.mkdir(newTarget);
+                    mkdirsuccess = true;
+                } catch(SftpException e) {
+                    newTarget = newTargetBase + Integer.toString(tmpnum++);
+                }
+            }
+            directory = newTarget;
+            channel.cd(newTarget);
 
             for(String filename : sourcefiles) {
-                File file = new File(WorkingdirGenerator.getInstance().getWorkingdir(), filename);
+                File file = new File(filename);
                 if(file.exists() && file.isFile()) {
                     if(file.getName().startsWith("__")) {
                         continue;
@@ -76,11 +100,11 @@ public class SFTP {
         }
     }
 
-    public static boolean downloadFiles(Session session, String source, String target) {
+    public boolean downloadFiles(Session session, String target) {
         try {
             ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
             channel.connect();
-            channel.cd(source);
+            channel.cd(directory);
 
             byte[] buffer = new byte[1024];
             BufferedInputStream bis = null;
@@ -122,5 +146,9 @@ public class SFTP {
             logger.error(e.getLocalizedMessage());
             return false;
         }
+    }
+
+    public String getDirectory() {
+        return directory;
     }
 }
