@@ -114,6 +114,7 @@ public class DataOptimisationMain {
                 logger.error("Upload failed");
                 return false;
             }
+            logger.debug("Using directory " + sftpcon.getDirectory());
 
             logger.info("Running scripts");
             int code = -1;
@@ -127,7 +128,7 @@ public class DataOptimisationMain {
             }
 
             logger.info("Downloading files");
-            if(!sftpcon.downloadFiles(session, WorkingdirGenerator.getInstance().getWorkingdir())) {
+            if(!sftpcon.downloadFiles(session, WorkingdirGenerator.getInstance().getWorkingdir(), true)) {
                 return false;
             }
 

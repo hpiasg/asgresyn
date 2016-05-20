@@ -100,7 +100,7 @@ public class SFTP {
         }
     }
 
-    public boolean downloadFiles(Session session, String target) {
+    public boolean downloadFiles(Session session, String target, boolean remove) {
         try {
             ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
             channel.connect();
@@ -131,6 +131,12 @@ public class SFTP {
                     bos.close();
                 }
             }
+
+            if(remove) {
+                logger.debug("Removing temp dir");
+                deleteFileRec(channel, directory);
+            }
+
             channel.disconnect();
             return true;
         } catch(SftpException e) {
@@ -145,6 +151,24 @@ public class SFTP {
         } catch(IOException e) {
             logger.error(e.getLocalizedMessage());
             return false;
+        }
+    }
+
+    public void deleteFileRec(ChannelSftp channel, String filename) throws SftpException {
+        if(channel.stat(filename).isDir()) {
+            channel.cd(filename);
+            @SuppressWarnings("unchecked")
+            Vector<LsEntry> entries = (Vector<LsEntry>)channel.ls(".");
+            for(LsEntry entry : entries) {
+                if(entry.getFilename().equals(".") || entry.getFilename().equals("..")) {
+                    continue;
+                }
+                deleteFileRec(channel, entry.getFilename());
+            }
+            channel.cd("..");
+            channel.rmdir(filename);
+        } else {
+            channel.rm(filename);
         }
     }
 
