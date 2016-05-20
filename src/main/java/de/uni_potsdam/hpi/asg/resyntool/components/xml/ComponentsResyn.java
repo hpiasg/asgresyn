@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ComponentsResyn {
     protected static final Logger logger        = LogManager.getLogger();
-    protected static final String injarfilename = "/components.xml";
+    protected static final String injarfilename = "/resyncomponents.xml";
 
     @XmlElement(name = "component")
     private List<ComponentResyn>  components;
