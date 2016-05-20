@@ -57,8 +57,15 @@ public class DataSynthesisMain {
         }
 
         RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
-        DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
-        opt.execute(filelist);
+        if(dc != null) {
+            logger.info("Running data path optimsation");
+            DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
+            Set<String> optfilelist = opt.execute(filelist);
+            if(optfilelist != null) {
+                filelist.clear();
+                filelist = optfilelist;
+            }
+        }
 
         String text = FileHelper.getInstance().mergeFileContents(new ArrayList<>(filelist));
         if(text != null) {

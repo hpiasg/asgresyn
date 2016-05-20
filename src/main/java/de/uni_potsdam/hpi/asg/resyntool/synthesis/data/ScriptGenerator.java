@@ -70,10 +70,11 @@ public class ScriptGenerator {
         FileHelper.getInstance().copyfile(dc_tcl_templatefile, new File(dctclfile));
         replaceAll(localfolder + name + dc_tcl_file);
 
-        DataOptimisationPlan retVal = new DataOptimisationPlan(localfile.getAbsolutePath());
+        DataOptimisationPlan retVal = new DataOptimisationPlan(localfile.getAbsolutePath(), localfile.getName());
         retVal.setLocalshfilename(dcshfile);
         retVal.setRemoteshfilename(rmdcshfile);
         retVal.setLocaltclfilename(dctclfile);
+        retVal.setOptimisedfilename(name + dc_v_file);
         return retVal;
     }
 

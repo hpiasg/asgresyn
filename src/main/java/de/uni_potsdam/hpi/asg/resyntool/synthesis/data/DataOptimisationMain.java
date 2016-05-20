@@ -54,7 +54,7 @@ public class DataOptimisationMain {
         this.remoteFolder = remotefolder;
     }
 
-    public boolean execute(Set<String> files) {
+    public Set<String> execute(Set<String> files) {
 
         Set<DataOptimisationPlan> plans = new HashSet<>();
         for(String filename : files) {
@@ -62,7 +62,21 @@ public class DataOptimisationMain {
             plans.add(gen.generate());
         }
 
-        return run(plans);
+        if(!run(plans)) {
+            logger.warn("Data optimisation failed");
+            return null;
+        }
+
+        Set<String> retVal = new HashSet<>();
+        for(DataOptimisationPlan p : plans) {
+            if(p.wasOptmisationSuccessfil()) {
+                retVal.add(p.getOptimisedfilename());
+            } else {
+                retVal.add(p.getUnoptimisedfilename());
+            }
+        }
+
+        return retVal;
     }
 
     private boolean run(Set<DataOptimisationPlan> plans) {
@@ -109,6 +123,7 @@ public class DataOptimisationMain {
                     logger.warn("Optimisation of " + p.getLocalfilename() + " failed");
                     continue;
                 }
+                p.setOptmisationSuccessfil(true);
             }
 
             logger.info("Downloading files");

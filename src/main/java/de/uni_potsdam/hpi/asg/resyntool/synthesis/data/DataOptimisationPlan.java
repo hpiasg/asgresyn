@@ -24,13 +24,19 @@ import java.util.Set;
 
 public class DataOptimisationPlan {
 
-    private String localfilename;
-    private String localshfilename;
-    private String remoteshfilename;
-    private String localtclfilename;
+    private String  localfilename;
+    private String  localshfilename;
+    private String  remoteshfilename;
+    private String  localtclfilename;
 
-    public DataOptimisationPlan(String filename) {
+    private boolean optmisationSuccessfil;
+    private String  optimisedfilename;
+    private String  unoptimisedfilename;
+
+    public DataOptimisationPlan(String filename, String orgfile) {
+        this.unoptimisedfilename = orgfile;
         this.localfilename = filename;
+        this.optmisationSuccessfil = false;
     }
 
     public void setLocalshfilename(String localshfilename) {
@@ -43,6 +49,14 @@ public class DataOptimisationPlan {
 
     public void setRemoteshfilename(String remoteshfilename) {
         this.remoteshfilename = remoteshfilename;
+    }
+
+    public void setOptimisedfilename(String optimisedfilename) {
+        this.optimisedfilename = optimisedfilename;
+    }
+
+    public void setOptmisationSuccessfil(boolean optmisationSuccessfil) {
+        this.optmisationSuccessfil = optmisationSuccessfil;
     }
 
     public Set<String> getAllUploadFiles() {
@@ -59,6 +73,18 @@ public class DataOptimisationPlan {
 
     public String getLocalfilename() {
         return localfilename;
+    }
+
+    public String getOptimisedfilename() {
+        return optimisedfilename;
+    }
+
+    public boolean wasOptmisationSuccessfil() {
+        return optmisationSuccessfil;
+    }
+
+    public String getUnoptimisedfilename() {
+        return unoptimisedfilename;
     }
 
 }
