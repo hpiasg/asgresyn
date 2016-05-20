@@ -79,6 +79,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     private boolean debug = false;
     @Option(name = "-sdp")
     private boolean skipdatapath = false;
+    @Option(name = "-odp", usage = "Optimise data path (Default: false)")
+    private boolean optimisedatapath = false;
 
 //    public String getClustering() {
 //        return clustering;
@@ -142,5 +144,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     
     public File getWorkingdir() {
         return workingdir;
+    }
+    public boolean isOptimisedatapath() {
+        return optimisedatapath;
     }
 }

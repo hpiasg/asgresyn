@@ -42,8 +42,9 @@ public class SynthesisParameter {
     private Technology                technology;
     private Set<TackleComplexityType> tackleComplexityOrder;
     private boolean                   skipdatapath;
+    private boolean                   optimisedatapath;
 
-    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath) {
+    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, boolean optimisedatapath) {
 
         SynthesisParameter retVal = new SynthesisParameter();
         retVal.decoStrategy = decoStrategy;
@@ -64,6 +65,7 @@ public class SynthesisParameter {
             return null;
         }
         retVal.skipdatapath = skipdatapath;
+        retVal.optimisedatapath = optimisedatapath;
         return retVal;
     }
 
@@ -136,5 +138,9 @@ public class SynthesisParameter {
 
     public boolean isSkipdatapath() {
         return skipdatapath;
+    }
+
+    public boolean isOptimisedatapath() {
+        return optimisedatapath;
     }
 }

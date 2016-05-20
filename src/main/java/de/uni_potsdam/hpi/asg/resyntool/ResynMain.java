@@ -129,7 +129,7 @@ public class ResynMain {
      */
     private static int doSynthesis(BreezeProjectResyn proj) {
 
-        SynthesisParameter sparams = SynthesisParameter.create(options.getTechnology(), options.getTackleComplexityOrder(), options.getLogicSynthesisParameter(), options.getDecoStrategy(), options.getPartitionHeuristic(), options.isSkipdatapath());
+        SynthesisParameter sparams = SynthesisParameter.create(options.getTechnology(), options.getTackleComplexityOrder(), options.getLogicSynthesisParameter(), options.getDecoStrategy(), options.getPartitionHeuristic(), options.isSkipdatapath(), options.isOptimisedatapath());
         if(sparams == null) {
             logger.error("SynthesisParameter incomplete");
             return 1;

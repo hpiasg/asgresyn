@@ -41,10 +41,12 @@ public class DataSynthesisMain {
     private String              technology;
     private String              file;
     private BreezeProjectResyn  proj;
+    private boolean             optimise;
 
-    public DataSynthesisMain(BreezeProjectResyn proj, String technology) {
+    public DataSynthesisMain(BreezeProjectResyn proj, String technology, boolean optimise) {
         this.technology = technology;
         this.proj = proj;
+        this.optimise = optimise;
     }
 
     public boolean generate() {
@@ -56,14 +58,18 @@ public class DataSynthesisMain {
             filelist.add(type.generate(technology));
         }
 
-        RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
-        if(dc != null) {
-            logger.info("Running data path optimsation");
-            DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
-            Set<String> optfilelist = opt.execute(filelist);
-            if(optfilelist != null) {
-                filelist.clear();
-                filelist = optfilelist;
+        if(optimise) {
+            RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
+            if(dc != null) {
+                logger.info("Running data path optimsation");
+                DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
+                Set<String> optfilelist = opt.execute(filelist);
+                if(optfilelist != null) {
+                    filelist.clear();
+                    filelist = optfilelist;
+                }
+            } else {
+                logger.warn("No data path optimisation tool found. Omitting optimisation");
             }
         }
 
