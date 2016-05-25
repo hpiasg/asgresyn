@@ -258,4 +258,8 @@ public class ResynType {
     public String getDef() {
         return def;
     }
+
+    public HSComponentType getType() {
+        return type;
+    }
 }

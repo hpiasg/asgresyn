@@ -30,7 +30,9 @@ import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
+import de.uni_potsdam.hpi.asg.resyntool.components.HSComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.ResynType;
+import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.RemoteInvocation;
 
 public class DataSynthesisMain {
@@ -52,10 +54,23 @@ public class DataSynthesisMain {
     public boolean generate() {
         String opwfilename = opwending + FileHelper.getFileEx(Filetype.verilog);
 
-        Set<String> filelist = new HashSet<String>();
+        Set<String> filelist = new HashSet<>();
+        Set<String> filelist_opt = new HashSet<>();
+
         for(ResynType type : proj.getAllResynTypes()) {
             logger.info("Generating " + type.getDef());
-            filelist.add(type.generate(technology));
+            switch(((ComponentResyn)((HSComponentResyn)type.getType().getComp()).getComp()).getDatapathType()) {
+                case DataPath:
+                    filelist_opt.add(type.generate(technology));
+                    break;
+                case DataPathDoNotOptimise:
+                    filelist.add(type.generate(technology));
+                    break;
+                case DataPathNotYetImplemented:
+                    break;
+                case NoDataPath:
+                    break;
+            }
         }
 
         if(optimise) {
@@ -63,15 +78,17 @@ public class DataSynthesisMain {
             if(dc != null) {
                 logger.info("Running data path optimsation");
                 DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
-                Set<String> optfilelist = opt.execute(filelist);
+                Set<String> optfilelist = opt.execute(filelist_opt);
                 if(optfilelist != null) {
-                    filelist.clear();
-                    filelist = optfilelist;
+                    filelist_opt.clear();
+                    filelist_opt = optfilelist;
                 }
             } else {
                 logger.warn("No data path optimisation tool found. Omitting optimisation");
             }
         }
+
+        filelist.addAll(filelist_opt);
 
         String text = FileHelper.getInstance().mergeFileContents(new ArrayList<>(filelist));
         if(text != null) {

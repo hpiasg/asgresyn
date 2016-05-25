@@ -41,9 +41,9 @@ public class ISignal {
     private String name;
     @XmlAttribute(name = "reftype", required = true)
     private RefType reftype;
-    @XmlAttribute(name = "ref")
-    private int ref;
-    @XmlAttribute(name = "direction")
+    @XmlAttribute(name = "ref", required = false)
+    private Integer ref;
+    @XmlAttribute(name = "direction", required = false)
     private Direction direction;
 
     //@formatter:on

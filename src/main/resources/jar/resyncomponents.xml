@@ -19,7 +19,6 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 
 <components>
 	<component breezename="BrzVariable">
-		<resetNode>initialise</resetNode>
 		<parameters>
 			<parameter id="0" type="input_width" />
 			<parameter id="1" type="output_count" />
@@ -30,6 +29,8 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_in" porttype="passive" />
 			<channel id="1" type="data_out" porttype="passive" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
+		<resetNode>initialise</resetNode>
 		<removesignals>
 			<rsignal name="read" type="ack" />
 			<rsignal name="read" type="req" />
@@ -52,17 +53,18 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_in" porttype="passive" />
 			<channel id="1" type="data_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="out" type="ack" />
 			<rsignal name="inp" type="ack" />
 		</removesignals>
 		<interfacesignals>
+			<isignal id="1" name="aD_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="1" />
 			<igroup id="0">
 				<isignal id="0" name="rS#_$" direction="in" reftype="parameter" ref="1" />
 				<isignal id="1" name="d$" reftype="channel" ref="0" />
 			</igroup>
-			<isignal id="1" name="aD_$" direction="out" reftype="component" />
-			<isignal id="2" name="d$" reftype="channel" ref="1" />
 			<!-- <isignal id="3" name="" reftype="reset" /> -->
 		</interfacesignals>
 	</component>
@@ -72,6 +74,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>NoDataPath</datapathtype>
 	</component>
 	
 	<component breezename="BrzFetch" symbol="->">
@@ -84,6 +87,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="data_in" porttype="active" />
 			<channel id="2" type="data_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="activate" type="req" />
 			<rsignal name="activate" type="ack" />
@@ -108,6 +112,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="internal" type="node" />
 			<rsignal name="inp" type="ack" />
@@ -127,6 +132,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="data_in" porttype="active" />
 			<channel id="2" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="activate" type="req" />
 			<rsignal name="guard" type="req" />
@@ -155,6 +161,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="dataA_in" porttype="active" />
 			<channel id="2" type="dataB_in" porttype="active" />
 		</channels>
+		<datapathtype>DataPath</datapathtype>
 		<removesignals>
 			<rsignal name="inpA" type="req" />
 			<rsignal name="inpA" type="ack" />
@@ -185,6 +192,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_out" porttype="passive" />
 			<channel id="1" type="dataA_in" porttype="active" />
 		</channels>
+		<datapathtype>DataPath</datapathtype>
 		<removesignals>
 			<rsignal name="inpA" type="req" />
 			<rsignal name="inpA" type="ack" />
@@ -202,6 +210,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>NoDataPath</datapathtype>
 	</component>	
 	
 	<component breezename="BrzConstant">
@@ -212,6 +221,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		<channels>
 			<channel id="0" type="data_out" porttype="passive" />
 		</channels>
+		<datapathtype>DataPath</datapathtype>
 		<removesignals>
 			<rsignal name="out" type="req" />
 			<rsignal name="out" type="ack" />
@@ -232,6 +242,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="dataA_in" porttype="active" />
 			<channel id="2" type="dataB_in" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="LSInp" type="req" />
 			<rsignal name="LSInp" type="ack" />
@@ -258,6 +269,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="control_out" porttype="active" />
 			<channel id="2" type="data_out" porttype="passive" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="read" type="req" />
 			<rsignal name="read" type="ack" />
@@ -283,6 +295,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_out" porttype="passive" />
 			<channel id="1" type="data_in" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="inp" type="req" />
 			<rsignal name="inp" type="ack" />
@@ -300,6 +313,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>NoDataPath</datapathtype>
 	</component>
 	
 	<component breezename="BrzDecisionWait" symbol="DW">
@@ -311,6 +325,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="decision_in" porttype="passive" />
 			<channel id="2" type="decision_out" porttype="active" />
 		</channels>
+		<datapathtype>NoDataPath</datapathtype>
 	</component>
 	
 	<component breezename="BrzCaseFetch" symbol="@->">
@@ -325,6 +340,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="index_in" porttype="active" />
 			<channel id="2" type="data_in" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals />
 		<interfacesignals>
 			<isignal id="0" name="rE_$" reftype="component" direction="in" />
@@ -348,6 +364,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="2" type="arbA_out" porttype="active" />
 			<channel id="3" type="arbB_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="inpA" type="ack" />
 			<rsignal name="inpB" type="ack" />
@@ -372,6 +389,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_out" porttype="passive" />
 			<channel id="1" type="data_in" porttype="active" />	
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="out" type="req" />
 			<rsignal name="out" type="ack" />
@@ -394,6 +412,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="data_out" porttype="active" />
 		</channels>
+		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
 			<rsignal name="inp" type="ack" />
 			<rsignal name="out" type="ack" />
@@ -413,6 +432,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
+		<datapathtype>NoDataPath</datapathtype>
 	</component>
 	
 	<component breezename="BrzPassivatorPush">
@@ -424,7 +444,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="data_out" porttype="passive" />
 			<channel id="1" type="data_in" porttype="passive" />
 		</channels>
-		<datapathmissing>true</datapathmissing>
+		<datapathtype>DataPathNotYetImplemented</datapathtype>
 	</component>
 
 	<component breezename="BrzSynch" symbol="&#x00B7;(s)">
@@ -435,7 +455,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
-		<datapathmissing>true</datapathmissing>
+		<datapathtype>DataPathNotYetImplemented</datapathtype>
 	</component>
 	
 	<component breezename="BrzFork" symbol="^">
@@ -446,7 +466,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
-		<datapathmissing>true</datapathmissing>
+		<datapathtype>DataPathNotYetImplemented</datapathtype>
 	</component>
 	
 	<component breezename="BrzActiveEagerFalseVariable" symbol="aeFV">
@@ -461,7 +481,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="2" type="control_out" porttype="active" />
 			<channel id="3" type="data_out" porttype="passive" />
 		</channels>
-		<datapathmissing>true</datapathmissing>
+		<datapathtype>DataPathNotYetImplemented</datapathtype>
 	</component>
 	
 	<component breezename="BrzCall" symbol="&gt;-">
@@ -472,7 +492,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="0" type="control_in" porttype="passive" />
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
-		<datapathmissing>true</datapathmissing>
+		<datapathtype>DataPathNotYetImplemented</datapathtype>
 	</component>
 
 </components>
