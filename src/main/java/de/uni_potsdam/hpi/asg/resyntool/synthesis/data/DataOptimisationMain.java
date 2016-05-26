@@ -110,7 +110,7 @@ public class DataOptimisationMain {
                 uploadfiles.addAll(p.getAllUploadFiles());
             }
 
-            if(!sftpcon.uploadFiles(uploadfiles, remoteFolder)) {
+            if(!sftpcon.uploadFiles(uploadfiles, remoteFolder, "dataopt")) {
                 logger.error("Upload failed");
                 return false;
             }

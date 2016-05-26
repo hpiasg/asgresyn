@@ -49,14 +49,14 @@ public class SFTP {
         this.session = session;
     }
 
-    public boolean uploadFiles(Set<String> sourcefiles, String target) {
+    public boolean uploadFiles(Set<String> sourcefiles, String targetfolder, String tempname) {
         try {
 
-            String newTargetBase = target;
-            if(!target.endsWith("/")) {
+            String newTargetBase = targetfolder;
+            if(!targetfolder.endsWith("/")) {
                 newTargetBase += "/";
             }
-            newTargetBase += "dataopt";
+            newTargetBase += tempname;
             int tmpnum = 0;
 
             ChannelSftp channel = (ChannelSftp)session.openChannel("sftp");
