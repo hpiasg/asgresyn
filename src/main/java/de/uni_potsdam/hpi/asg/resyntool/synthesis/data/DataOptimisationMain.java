@@ -35,8 +35,8 @@ import com.jcraft.jsch.UIKeyboardInteractive;
 import com.jcraft.jsch.UserInfo;
 
 import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-import de.uni_potsdam.hpi.asg.resyntool.io.RunSHScript;
-import de.uni_potsdam.hpi.asg.resyntool.io.SFTP;
+import de.uni_potsdam.hpi.asg.common.io.remote.RunSHScript;
+import de.uni_potsdam.hpi.asg.common.io.remote.SFTP;
 
 public class DataOptimisationMain {
     private static final Logger logger = LogManager.getLogger();
