@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.io.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.HSComponentResyn;
@@ -40,12 +41,12 @@ public class DataSynthesisMain {
 
     private static final String opwending = "_data";
 
-    private String              technology;
+    private Technology          technology;
     private String              file;
     private BreezeProjectResyn  proj;
     private boolean             optimise;
 
-    public DataSynthesisMain(BreezeProjectResyn proj, String technology, boolean optimise) {
+    public DataSynthesisMain(BreezeProjectResyn proj, Technology technology, boolean optimise) {
         this.technology = technology;
         this.proj = proj;
         this.optimise = optimise;
@@ -61,10 +62,10 @@ public class DataSynthesisMain {
             logger.info("Generating " + type.getDef());
             switch(((ComponentResyn)((HSComponentResyn)type.getType().getComp()).getComp()).getDatapathType()) {
                 case DataPath:
-                    filelist_opt.add(type.generate(technology));
+                    filelist_opt.add(type.generate(technology.getBalsa().toString()));
                     break;
                 case DataPathDoNotOptimise:
-                    filelist.add(type.generate(technology));
+                    filelist.add(type.generate(technology.getBalsa().toString()));
                     break;
                 case DataPathNotYetImplemented:
                     break;
@@ -75,16 +76,16 @@ public class DataSynthesisMain {
 
         if(optimise) {
             RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
-            if(dc != null) {
+            if(dc != null && technology.getSynctool() != null) {
                 logger.info("Running data path optimsation");
-                DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir);
+                DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir, technology.getSynctool());
                 Set<String> optfilelist = opt.execute(filelist_opt);
                 if(optfilelist != null) {
                     filelist_opt.clear();
                     filelist_opt = optfilelist;
                 }
             } else {
-                logger.warn("No data path optimisation tool found. Omitting optimisation");
+                logger.warn("No data path optimisation tool config found. Omitting optimisation");
             }
         }
 

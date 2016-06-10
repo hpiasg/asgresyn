@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.io.technology.SyncTool;
 
 public class ScriptGenerator {
 
@@ -51,12 +52,14 @@ public class ScriptGenerator {
     private String              root;
     private File                localfile;
     private String              localfolder;
+    private SyncTool            synclib;
 
-    public ScriptGenerator(String arg_origfile) {
+    public ScriptGenerator(String arg_origfile, SyncTool synclib) {
         localfolder = WorkingdirGenerator.getInstance().getWorkingdir();
         localfile = new File(localfolder + arg_origfile);
         name = localfile.getName().split("\\.")[0];
         root = getRoot(localfile);
+        this.synclib = synclib;
     }
 
     public DataOptimisationPlan generate() {
@@ -91,6 +94,8 @@ public class ScriptGenerator {
                 line = line.replace("#*dc_v*#", name + dc_v_file);
                 line = line.replace("#*dc_log*#", name + dc_log_file);
                 line = line.replace("#*root*#", root);
+                line = line.replace("#*search_path*#", synclib.getSearchPaths());
+                line = line.replace("#*libraries*#", synclib.getLibraries());
 
                 out.add(line);
             }

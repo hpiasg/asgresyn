@@ -26,21 +26,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.io.remote.RemoteInformation;
+import de.uni_potsdam.hpi.asg.common.io.technology.SyncTool;
 
 public class DataOptimisationMain {
     private static final Logger logger = LogManager.getLogger();
 
     private RemoteInformation   rinfo;
+    private SyncTool            synclib;
 
-    public DataOptimisationMain(String host, String username, String password, String remotefolder) {
+    public DataOptimisationMain(String host, String username, String password, String remotefolder, SyncTool synclib) {
         this.rinfo = new RemoteInformation(host, username, password, remotefolder);
+        this.synclib = synclib;
     }
 
     public Set<String> execute(Set<String> files) {
 
         Set<DataOptimisationPlan> plans = new HashSet<>();
         for(String filename : files) {
-            ScriptGenerator gen = new ScriptGenerator(filename);
+            ScriptGenerator gen = new ScriptGenerator(filename, synclib);
             plans.add(gen.generate());
         }
 

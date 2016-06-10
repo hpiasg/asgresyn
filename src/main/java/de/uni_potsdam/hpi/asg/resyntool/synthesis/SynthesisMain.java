@@ -62,7 +62,7 @@ public class SynthesisMain {
         logger.info("Generate datapath");
         logger.info("------------------------------");
         if(!params.isSkipdatapath()) {
-            data = new DataSynthesisMain(proj, params.getTechnology().getBalsa().toString(), params.isOptimisedatapath());
+            data = new DataSynthesisMain(proj, params.getTechnology(), params.isOptimisedatapath());
             if(!data.generate()) {
                 logger.error("Could not generate datapath");
                 return false;
