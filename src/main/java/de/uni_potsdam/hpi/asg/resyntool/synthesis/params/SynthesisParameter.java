@@ -26,7 +26,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.resyntool.io.technology.Technology;
+import de.uni_potsdam.hpi.asg.common.io.technology.Technology;
 
 public class SynthesisParameter {
 
