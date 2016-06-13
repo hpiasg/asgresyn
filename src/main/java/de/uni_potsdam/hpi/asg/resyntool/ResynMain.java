@@ -43,7 +43,6 @@ public class ResynMain {
     public static Config                   config;
 
     private static boolean                 skipUndefinedComponents = false;
-    private static boolean                 skipSubComponents       = true;
 
     /**
      * Program entrance (with return code as <code>System.exit</code>)
@@ -111,7 +110,7 @@ public class ResynMain {
         logger.info("Parse Breeze");
         logger.info("------------------------------");
 
-        BreezeProjectResyn proj = BreezeProjectResyn.create(options.getHsfile(), config.componentconfig, skipUndefinedComponents, skipSubComponents);
+        BreezeProjectResyn proj = BreezeProjectResyn.create(options.getHsfile(), config.componentconfig, skipUndefinedComponents, options.isSkipSubComponents());
         if(proj == null) {
             logger.error("Could not create Netlist");
             return 1;
