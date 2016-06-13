@@ -84,6 +84,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     private boolean debug = false;
     @Option(name = "-sdp")
     private boolean skipdatapath = false;
+    @Option(name = "-ssc")
+    private boolean skipSubComponents = false;
     
     //@formatter:on
 
@@ -153,5 +155,9 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     public String getAsglogicParams() {
         return asglogicParams;
+    }
+
+    public boolean isSkipSubComponents() {
+        return skipSubComponents;
     }
 }
