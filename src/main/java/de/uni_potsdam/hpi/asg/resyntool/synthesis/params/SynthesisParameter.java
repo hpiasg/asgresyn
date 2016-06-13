@@ -42,8 +42,9 @@ public class SynthesisParameter {
     private Technology                technology;
     private Set<TackleComplexityType> tackleComplexityOrder;
     private boolean                   skipdatapath;
+    private String                    asglogicparams;
 
-    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath) {
+    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams) {
 
         SynthesisParameter retVal = new SynthesisParameter();
         retVal.decoStrategy = decoStrategy;
@@ -64,6 +65,7 @@ public class SynthesisParameter {
             return null;
         }
         retVal.skipdatapath = skipdatapath;
+        retVal.asglogicparams = asglogiparams;
         return retVal;
     }
 
@@ -136,5 +138,9 @@ public class SynthesisParameter {
 
     public boolean isSkipdatapath() {
         return skipdatapath;
+    }
+
+    public String getAsglogicparams() {
+        return asglogicparams;
     }
 }
