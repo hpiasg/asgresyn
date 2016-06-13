@@ -196,4 +196,11 @@ public class ResynInvoker extends Invoker {
         ProcessReturn ret = invoke(command, params); //, 600000); //10min
         return errorHandling(ret);
     }
+
+    public boolean invokeCommand(String cmd) {
+        String[] shcommand = convertCmd("sh -c");
+        String[] command = new String[]{"$(" + cmd + ")"};
+        ProcessReturn ret = invoke(shcommand, command);
+        return errorHandling(ret);
+    }
 }

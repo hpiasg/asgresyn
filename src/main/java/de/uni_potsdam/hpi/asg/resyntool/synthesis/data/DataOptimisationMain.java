@@ -27,6 +27,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.io.remote.RemoteInformation;
 import de.uni_potsdam.hpi.asg.common.io.technology.SyncTool;
+import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 
 public class DataOptimisationMain {
     private static final Logger logger = LogManager.getLogger();
@@ -55,6 +56,7 @@ public class DataOptimisationMain {
         Set<String> retVal = new HashSet<>();
         for(DataOptimisationPlan p : plans) {
             if(p.wasOptmisationSuccessfil()) {
+                doPostCompileOperation(p.getOptimisedfilename());
                 retVal.add(p.getOptimisedfilename());
             } else {
                 retVal.add(p.getUnoptimisedfilename());
@@ -64,8 +66,14 @@ public class DataOptimisationMain {
         return retVal;
     }
 
-    private boolean run(Set<DataOptimisationPlan> plans) {
+    private void doPostCompileOperation(String optimisedfilename) {
+        for(String str : synclib.getPostCompileCmds()) {
+            String cmd = str.replace("#*VFILE*#", optimisedfilename);
+            ResynInvoker.getInstance().invokeCommand(cmd);
+        }
+    }
 
+    private boolean run(Set<DataOptimisationPlan> plans) {
         Set<String> uploadfiles = new HashSet<>();
         Set<String> execScripts = new HashSet<>();
         for(DataOptimisationPlan p : plans) {
