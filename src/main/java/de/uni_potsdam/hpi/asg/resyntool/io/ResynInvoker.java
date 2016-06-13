@@ -186,14 +186,18 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokeASGLogic(String gfile, String vfile, String workingdir, String libfile, String logfile, String zipfile, String resettype) {
+    public boolean invokeASGLogic(String gfile, String vfile, String workingdir, String libfile, String logfile, String zipfile, String resettype, String additionalParams) {
         String[] command = convertCmd(ResynMain.config.toolconfig.asglogiccmd);
         if(command == null) {
             logger.error("Could not read asglogic cmd String");
         }
 
-        String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype, gfile};
-        ProcessReturn ret = invoke(command, params); //, 600000); //10min
+        String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype};
+        List<String> params2 = new ArrayList<>(Arrays.asList(params));
+        params2.addAll(Arrays.asList(additionalParams.split(" ")));
+        params2.add(gfile);
+
+        ProcessReturn ret = invoke(command, params2); //, 600000); //10min
         return errorHandling(ret);
     }
 
