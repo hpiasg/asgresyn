@@ -194,7 +194,10 @@ public class ResynInvoker extends Invoker {
 
         String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype};
         List<String> params2 = new ArrayList<>(Arrays.asList(params));
-        params2.addAll(Arrays.asList(additionalParams.split(" ")));
+
+        if(additionalParams != null && !additionalParams.equals("")) {
+            params2.addAll(Arrays.asList(additionalParams.split(" ")));
+        }
         params2.add(gfile);
 
         ProcessReturn ret = invoke(command, params2); //, 600000); //10min
