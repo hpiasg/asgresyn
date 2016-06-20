@@ -19,7 +19,9 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -75,7 +77,7 @@ public class DataOptimisationMain {
 
     private boolean run(Set<DataOptimisationPlan> plans) {
         Set<String> uploadfiles = new HashSet<>();
-        Set<String> execScripts = new HashSet<>();
+        List<String> execScripts = new ArrayList<>();
         for(DataOptimisationPlan p : plans) {
             uploadfiles.addAll(p.getAllUploadFiles());
             execScripts.add(p.getRemoteShScriptName());
