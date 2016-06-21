@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.io.technology.Balsa;
 import de.uni_potsdam.hpi.asg.common.io.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
@@ -58,14 +59,15 @@ public class DataSynthesisMain {
         Set<String> filelist = new HashSet<>();
         Set<String> filelist_opt = new HashSet<>();
 
+        Balsa balsatech = technology.getBalsa();
         for(ResynType type : proj.getAllResynTypes()) {
             logger.info("Generating " + type.getDef());
             switch(((ComponentResyn)((HSComponentResyn)type.getType().getComp()).getComp()).getDatapathType()) {
                 case DataPath:
-                    filelist_opt.add(type.generate(technology.getBalsa().toString()));
+                    filelist_opt.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
                     break;
                 case DataPathDoNotOptimise:
-                    filelist.add(type.generate(technology.getBalsa().toString()));
+                    filelist.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
                     break;
                 case DataPathNotYetImplemented:
                     break;
