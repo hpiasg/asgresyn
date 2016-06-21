@@ -31,6 +31,7 @@ import de.uni_potsdam.hpi.asg.common.breeze.model.BreezeNetlistInst;
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel;
 import de.uni_potsdam.hpi.asg.common.breeze.model.PortComponent;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal;
+import de.uni_potsdam.hpi.asg.common.breeze.model.Signal.Direction;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
@@ -65,6 +66,18 @@ public class WiringMain {
         }
         for(BreezeNetlistInst inst : netlist.getSubBreezeInst()) {
             allSignals.addAll(inst.getSignals());
+        }
+
+        // force a1
+        boolean founda1 = false;
+        for(Signal sig : allSignals) {
+            if(sig.getName().equals("a1")) {
+                founda1 = true;
+                break;
+            }
+        }
+        if(!founda1) {
+            allSignals.add(new Signal("a1", 0, Direction.out));
         }
 
         List<Integer> interfaceChannels = new ArrayList<Integer>();
@@ -224,8 +237,13 @@ public class WiringMain {
         }
 
         // stw
+        text.append(FileHelper.getNewline() + "  // Control" + FileHelper.getNewline());
+        // a1 fix
+        if(!founda1) {
+            text.append("  assign a1 = 0;" + FileHelper.getNewline());
+        }
+        // stws
         if(stwInfo != null) {
-            text.append(FileHelper.getNewline() + "  // Control" + FileHelper.getNewline());
             for(String stwInterface : stwInfo.getStwInterfaces()) {
                 text.append("  " + stwInterface + FileHelper.getNewline());
             }
