@@ -147,7 +147,6 @@ public class WiringMain {
 
         //header
         StringBuilder text = new StringBuilder();
-        text.append("`timescale 1ns / 1ps" + FileHelper.getNewline() + FileHelper.getNewline());
         text.append("module Balsa_" + netlist.getName() + " (");
         for(WireName str : interfaceSet) {
             text.append(str.getStr() + ", ");
