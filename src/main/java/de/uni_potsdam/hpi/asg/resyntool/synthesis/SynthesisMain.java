@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeNetlist;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper;
 import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.io.technology.Balsa;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.control.ControlSynthesis;
@@ -62,7 +63,8 @@ public class SynthesisMain {
         logger.info("Generate datapath");
         logger.info("------------------------------");
         if(!params.isSkipdatapath()) {
-            data = new DataSynthesisMain(proj, params.getTechnology().getBalsa().toString());
+            Balsa balsatech = params.getTechnology().getBalsa();
+            data = new DataSynthesisMain(proj, balsatech.getTech() + "/" + balsatech.getStyle());
             if(!data.generate()) {
                 logger.error("Could not generate datapath");
                 return false;
