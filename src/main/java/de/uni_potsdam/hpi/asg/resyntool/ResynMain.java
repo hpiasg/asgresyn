@@ -40,7 +40,9 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 public class ResynMain {
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
+
     public static Config                   config;
+    public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
 
@@ -79,6 +81,7 @@ public class ResynMain {
                     return 1;
                 }
                 WorkingdirGenerator.getInstance().create(options.getWorkingdir(), config.workdir, "resynwork", ResynInvoker.getInstance());
+                tooldebug = options.isTooldebug();
                 status = execute();
                 zipWorkfile();
                 WorkingdirGenerator.getInstance().delete();
@@ -90,6 +93,7 @@ public class ResynMain {
             return status;
         } catch(Exception e) {
             System.out.println("An error occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             return 1;
         }
     }
@@ -137,7 +141,8 @@ public class ResynMain {
             options.getPartitionHeuristic(), 
             options.isSkipdatapath(),
             options.getAsglogicParams(),
-            options.isOptimisedatapath());
+            options.isOptimisedatapath(),
+            options.getDesijbreezeexpr());
         //@formatter:on
 
         if(sparams == null) {

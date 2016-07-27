@@ -56,7 +56,7 @@ public class DecompositionBasedSynthesis extends ControlSynthesis {
         String filename_g = name + FileHelper.getFileEx(Filetype.stg);
         Pattern filepattern = Pattern.compile("(" + filename_g + "__final_.*)\\.g");
 
-        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_g, filename_breeze, true)) {
+        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_g, filename_breeze, true, params.getDesijBreezeExprFile())) {
             if(ResynInvoker.getInstance().invokeDesijDecomposition(params.getDecoStrategy(), params.getPartitionHeuristics(), filename_g)) {
                 List<String> decofiles = new ArrayList<String>();
                 File f = new File(WorkingdirGenerator.getInstance().getWorkingdir());

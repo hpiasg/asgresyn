@@ -58,7 +58,9 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     private String  decoStrategy = "breeze";
     @Option(name = "-p", metaVar = "<heuristic>", usage = "heuristic for partitioning [finest, roughest, multisignaluse, avoidcsc, reduceconc, lockedsignals, best, common-cause], default is common-cause")
     private String partitionHeuristic = "common-cause";
-
+    @Option(name = "-breezeexpr", metaVar = "<breeze expressions file>", usage = "Breeze expressions file for DesiJ")
+    private File desijbreezeexpr = null;
+    
     // ASGlogic Option
     @Option(name = "-ASGlogicParams")
     private String asglogicParams = "";
@@ -82,6 +84,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     @Option(name = "-debug")
     private boolean debug = false;
+    @Option(name = "-tooldebug")
+    private boolean tooldebug = false;
     @Option(name = "-sdp")
     private boolean skipdatapath = false;
     @Option(name = "-ssc")
@@ -166,5 +170,13 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     public boolean isSkipSubComponents() {
         return skipSubComponents;
+    }
+
+    public File getDesijbreezeexpr() {
+        return desijbreezeexpr;
+    }
+
+    public boolean isTooldebug() {
+        return tooldebug;
     }
 }
