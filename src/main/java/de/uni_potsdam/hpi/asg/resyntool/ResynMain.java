@@ -41,6 +41,7 @@ public class ResynMain {
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
     public static Config                   config;
+    public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
 
@@ -79,6 +80,7 @@ public class ResynMain {
                     return 1;
                 }
                 WorkingdirGenerator.getInstance().create(options.getWorkingdir(), config.workdir, "resynwork", ResynInvoker.getInstance());
+                tooldebug = options.isTooldebug();
                 status = execute();
                 zipWorkfile();
                 WorkingdirGenerator.getInstance().delete();

@@ -82,6 +82,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     @Option(name = "-debug")
     private boolean debug = false;
+    @Option(name = "-tooldebug")
+    private boolean tooldebug = false;
     @Option(name = "-sdp")
     private boolean skipdatapath = false;
     @Option(name = "-ssc")
@@ -159,5 +161,9 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     public boolean isSkipSubComponents() {
         return skipSubComponents;
+    }
+
+    public boolean isTooldebug() {
+        return tooldebug;
     }
 }

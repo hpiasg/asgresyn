@@ -104,7 +104,7 @@ public class ResynInvoker extends Invoker {
         if(cmd == null) {
             logger.error("Could not read desij cmd String");
         }
-        ProcessReturn ret = invoke(cmd, params);
+        ProcessReturn ret = invoke(cmd, params, ResynMain.tooldebug);
         return errorHandling(ret);
     }
 
