@@ -43,8 +43,9 @@ public class SynthesisParameter {
     private Set<TackleComplexityType> tackleComplexityOrder;
     private boolean                   skipdatapath;
     private String                    asglogicparams;
+    private File                      desijBreezeExprFile;
 
-    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams) {
+    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams, File desijBreezeExprFile) {
 
         SynthesisParameter retVal = new SynthesisParameter();
         retVal.decoStrategy = decoStrategy;
@@ -66,6 +67,7 @@ public class SynthesisParameter {
         }
         retVal.skipdatapath = skipdatapath;
         retVal.asglogicparams = asglogiparams;
+        retVal.desijBreezeExprFile = desijBreezeExprFile;
         return retVal;
     }
 
@@ -142,5 +144,9 @@ public class SynthesisParameter {
 
     public String getAsglogicparams() {
         return asglogicparams;
+    }
+
+    public File getDesijBreezeExprFile() {
+        return desijBreezeExprFile;
     }
 }

@@ -1,5 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool;
 
+import java.io.IOException;
+
 /*
  * Copyright (C) 2012 - 2015 Norman Kluge
  * 
@@ -40,6 +42,7 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 public class ResynMain {
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
+
     public static Config                   config;
     public static boolean                  tooldebug;
 
@@ -92,6 +95,7 @@ public class ResynMain {
             return status;
         } catch(Exception e) {
             System.out.println("An error occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             return 1;
         }
     }
@@ -138,7 +142,8 @@ public class ResynMain {
             options.getDecoStrategy(), 
             options.getPartitionHeuristic(), 
             options.isSkipdatapath(),
-            options.getAsglogicParams());
+            options.getAsglogicParams(),
+            options.getDesijbreezeexpr());
         //@formatter:on
 
         if(sparams == null) {

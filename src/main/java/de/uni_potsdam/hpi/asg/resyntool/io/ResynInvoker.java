@@ -20,6 +20,7 @@ package de.uni_potsdam.hpi.asg.resyntool.io;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,14 +78,27 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokeDesijBreeze(String outfile, String infile, boolean withdeco) {
+    public boolean invokeDesijBreeze(String outfile, String infile, boolean withdeco, File breezeExprFile) {
         String[] params = null;
         if(withdeco) {
-            params = new String[]{"-Y", "-g", "operation=breeze", "outfile=" + outfile, infile};
+            params = new String[]{"-Y", "-g", "operation=breeze"};
         } else {
-            params = new String[]{"-Y", "operation=breeze", "outfile=" + outfile, infile};
+            params = new String[]{"-Y", "operation=breeze"};
         }
-        return invokeDesij(Arrays.asList(params));
+        List<String> params2 = new ArrayList<>();
+        params2.addAll(Arrays.asList(params));
+
+        if(breezeExprFile != null) {
+            try {
+                params2.add("breezeexpressionsfile=" + breezeExprFile.getCanonicalPath());
+            } catch(IOException e) {
+            }
+        }
+
+        params2.add("outfile=" + outfile);
+        params2.add(infile);
+
+        return invokeDesij(params2);
     }
 
     public boolean invokeDesijKilldummies(String outfile, String infile) {
