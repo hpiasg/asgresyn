@@ -1,7 +1,5 @@
 package de.uni_potsdam.hpi.asg.resyntool;
 
-import java.io.IOException;
-
 /*
  * Copyright (C) 2012 - 2015 Norman Kluge
  * 
