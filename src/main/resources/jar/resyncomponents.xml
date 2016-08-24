@@ -114,15 +114,13 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		</channels>
 		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals>
-			<rsignal name="internal" type="node" />
-			<rsignal name="inp" type="ack" />
 			<rsignal name="activateOut" type="ack" />
-			<rsignal name="elseAck" type="node" />
 		</removesignals>
 		<interfacesignals>
 			<isignal id="0" name="rC_$" direction="in" reftype="component" />
-			<isignal id="1" name="d$" reftype="channel" ref="0" />
-			<isignal id="2" name="aD#_$" direction="out" reftype="parameter" ref="1" />
+			<isignal id="1" name="aE_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="aD#_$" direction="out" reftype="parameter" ref="1" />
 		</interfacesignals>
 	</component>
 	
@@ -343,11 +341,11 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		<datapathtype>DataPathDoNotOptimise</datapathtype>
 		<removesignals />
 		<interfacesignals>
-			<isignal id="0" name="rE_$" reftype="component" direction="in" />
+			<isignal id="0" name="rD_$" reftype="component" direction="in" />
 			<isignal id="1" name="aH_$" reftype="component" direction="out" />
 			<isignal id="2" name="d$" reftype="channel" ref="0" />
-			<isignal id="3" name="rD_$" reftype="component" direction="in" />
-			<isignal id="4" name="aD_$" reftype="component" direction="out" />
+			<isignal id="3" name="aD_$" reftype="component" direction="out" />
+			<isignal id="4" name="rE_$" reftype="component" direction="in" />
 			<isignal id="5" name="d$" reftype="channel" ref="1" />
 			<igroup id="6">
 				<isignal id="0" name="aF#_$" direction="out" reftype="parameter" ref="2" />
