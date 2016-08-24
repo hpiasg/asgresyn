@@ -109,15 +109,13 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 			<channel id="1" type="control_out" porttype="active" />
 		</channels>
 		<removesignals>
-			<rsignal name="internal" type="node" />
-			<rsignal name="inp" type="ack" />
 			<rsignal name="activateOut" type="ack" />
-			<rsignal name="elseAck" type="node" />
 		</removesignals>
 		<interfacesignals>
 			<isignal id="0" name="rC_$" direction="in" reftype="component" />
-			<isignal id="1" name="d$" reftype="channel" ref="0" />
-			<isignal id="2" name="aD#_$" direction="out" reftype="parameter" ref="1" />
+			<isignal id="1" name="aE_$" direction="out" reftype="component" />
+			<isignal id="2" name="d$" reftype="channel" ref="0" />
+			<isignal id="3" name="aD#_$" direction="out" reftype="parameter" ref="1" />
 		</interfacesignals>
 	</component>
 	
