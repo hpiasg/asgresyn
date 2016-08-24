@@ -4,6 +4,7 @@
 	("latchedIndex" (param "indexWidth") 0 1)
 	("muxOut" (param "width") 0 (param "inputCount"))
 	("elseAck" 1 0 1)
+	("negReqOut" 1 0 1)
 )
 (gates
 	(latch
@@ -11,7 +12,11 @@
 		(data "index")
 		(node "latchedIndex")
 	)
-	(demux2 (combine (dup (param "indexWidth") (req "out"))) (node "c") (node "t") (node "latchedIndex"))
+	(inv (node "negReqOut") (req "out"))
+	(inv (req "index") (node "negReqOut"))
+	
+	
+	(demux2 (combine (dup (param "indexWidth") (ack "index"))) (node "c") (node "t") (node "latchedIndex"))
 	(if (complete-encoding? (param "specification") (param "indexWidth"))
 		(gates
 			(decode and-or (param "specification") (node "c") (node "t") (req (each "inp")))
@@ -31,5 +36,5 @@
 		(data "out")
 		(node (each "muxOut"))
 	)
-	(connect (ack "index") (req "index"))
+	;;;(connect (ack "index") (req "index"))
 )
