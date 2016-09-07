@@ -24,8 +24,8 @@ import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.stg.STGInternalSignalFixer;
 
 public class DecompositionSynthesisFuture implements Callable<String> {

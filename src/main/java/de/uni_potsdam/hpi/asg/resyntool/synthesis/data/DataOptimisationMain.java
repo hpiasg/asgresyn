@@ -27,8 +27,8 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.remote.RemoteInformation;
-import de.uni_potsdam.hpi.asg.common.io.technology.SyncTool;
+import de.uni_potsdam.hpi.asg.common.remote.RemoteInformation;
+import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 
 public class DataOptimisationMain {

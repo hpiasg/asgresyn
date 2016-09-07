@@ -25,9 +25,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-import de.uni_potsdam.hpi.asg.common.io.technology.Technology;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.LogicSynthesisParameter;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;

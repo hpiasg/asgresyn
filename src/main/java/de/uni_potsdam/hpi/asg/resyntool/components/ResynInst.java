@@ -23,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel;
+import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel.DataType;
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSComponentInst;
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSComponentType;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal;
-import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel.DataType;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal.Direction;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.IGroup;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ISignal;

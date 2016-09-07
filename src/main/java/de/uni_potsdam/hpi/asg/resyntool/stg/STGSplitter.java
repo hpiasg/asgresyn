@@ -33,7 +33,7 @@ import java.util.TreeMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 
 public class STGSplitter {
     private static final Logger        logger      = LogManager.getLogger();
