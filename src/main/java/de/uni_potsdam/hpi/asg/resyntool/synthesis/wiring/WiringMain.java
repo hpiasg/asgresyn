@@ -253,12 +253,39 @@ public class WiringMain {
         if(!skipdatapath) {
             text.append(FileHelper.getNewline() + "  // Data" + FileHelper.getNewline());
             for(ResynInst comp : netlist.getAllResynInstances()) {
-                text.append("  " + comp.getResyntype().getDef() + " I" + comp.getInst().getNewId() + " (");
+                String id = "I" + comp.getInst().getNewId();
+                text.append("  " + comp.getResyntype().getDef() + " " + id + " (");
                 for(Signal sig : comp.getSignals()) {
                     text.append(sig.getName() + ", ");
                 }
                 text = new StringBuilder(text.substring(0, text.length() - 2));
                 text.append(");" + FileHelper.getNewline());
+
+//                System.out.println(comp.getResyntype().getDef());
+//                System.out.println("\t" + id);
+//                System.out.print("\tControlIn: ");
+//                for(Signal sig : comp.getControlIn()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tControlOut: ");
+//                for(Signal sig : comp.getControlOut()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tDataIn: ");
+//                for(Signal sig : comp.getDataIn()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tDataOut: ");
+//                for(Signal sig : comp.getDataOut()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
             }
         }
 

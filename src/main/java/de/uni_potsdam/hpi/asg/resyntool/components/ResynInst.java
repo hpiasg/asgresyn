@@ -20,7 +20,9 @@ package de.uni_potsdam.hpi.asg.resyntool.components;
  */
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel;
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel.DataType;
@@ -39,6 +41,11 @@ public class ResynInst {
     private ResynType        resyntype;
     private InterfaceSignals isignals;
 
+    private Set<Signal>      controlIn;
+    private Set<Signal>      controlOut;
+    private Set<Signal>      dataIn;
+    private Set<Signal>      dataOut;
+
     private ResynInst(HSComponentInst inst, HSComponentType type, ResynType resyntype, InterfaceSignals isignals) {
         this.inst = inst;
         this.type = type;
@@ -53,6 +60,10 @@ public class ResynInst {
 
     private void generateSignals() {
         signals = new ArrayList<Signal>();
+        controlIn = new HashSet<>();
+        controlOut = new HashSet<>();
+        dataIn = new HashSet<>();
+        dataOut = new HashSet<>();
         if(isignals != null) {
             int i = 0;
             boolean found = false;
@@ -125,7 +136,16 @@ public class ResynInst {
                             direction = Direction.in;
                         }
                     }
-                    retVal.add(new Signal(name, width, direction));
+                    Signal sig = new Signal(name, width, direction);
+                    retVal.add(sig);
+                    switch(direction) {
+                        case in:
+                            dataIn.add(sig);
+                            break;
+                        case out:
+                            dataOut.add(sig);
+                            break;
+                    }
                 }
                 break;
             case parameter:
@@ -136,15 +156,32 @@ public class ResynInst {
                     String jstr = (j == 0) ? "" : Integer.toString(j);
                     name = isig.getName().replace("#", jstr);
                     name = name.replace("$", Integer.toString(inst.getNewId()));
-                    retVal.add(new Signal(name, width, direction));
+                    Signal sig = new Signal(name, width, direction);
+                    retVal.add(sig);
+                    switch(direction) {
+                        case in:
+                            controlIn.add(sig);
+                            break;
+                        case out:
+                            controlOut.add(sig);
+                            break;
+                    }
                 }
                 break;
             case component:
                 name = isig.getName().replace("$", Integer.toString(inst.getNewId()));
-                ;
                 width = 0;
                 direction = (isig.getDirection() == ISignal.Direction.in) ? Direction.in : Direction.out;
-                retVal.add(new Signal(name, width, direction));
+                Signal sig = new Signal(name, width, direction);
+                retVal.add(sig);
+                switch(direction) {
+                    case in:
+                        controlIn.add(sig);
+                        break;
+                    case out:
+                        controlOut.add(sig);
+                        break;
+                }
                 break;
             case reset:
                 retVal.add(new Signal("_reset", 0, Direction.in));
@@ -165,5 +202,21 @@ public class ResynInst {
 
     public HSComponentInst getInst() {
         return inst;
+    }
+
+    public Set<Signal> getControlIn() {
+        return controlIn;
+    }
+
+    public Set<Signal> getControlOut() {
+        return controlOut;
+    }
+
+    public Set<Signal> getDataIn() {
+        return dataIn;
+    }
+
+    public Set<Signal> getDataOut() {
+        return dataOut;
     }
 }
