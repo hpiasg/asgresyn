@@ -528,7 +528,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
             <channel id="0" type="control_out" porttype="active" />
             <channel id="1" type="data_in" porttype="passive" />
         </channels>
-        <datapathtype>DataPathNotYetImplemented</datapathtype>
+        <datapathtype>NoDataPath</datapathtype>
     </component>
     
     <component breezename="BrzUnaryFunc">
