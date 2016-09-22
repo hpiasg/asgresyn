@@ -504,7 +504,20 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
             <channel id="1" type="dataA_out" porttype="active" />
             <channel id="2" type="dataB_out" porttype="active" />
         </channels>
-        <datapathtype>DataPathNotYetImplemented</datapathtype>
+        <datapathtype>DataPathDoNotOptimise</datapathtype>
+        <removesignals>
+            <rsignal name="inp" type="req" />
+            <rsignal name="inp" type="ack" />
+            <rsignal name="LSOut" type="req" />
+            <rsignal name="LSOut" type="ack" />
+            <rsignal name="MSOut" type="req" />
+            <rsignal name="MSOut" type="ack" />
+        </removesignals>
+        <interfacesignals>
+            <isignal id="0" name="d$" reftype="channel" ref="0" />
+            <isignal id="1" name="d$" reftype="channel" ref="1" />
+            <isignal id="2" name="d$" reftype="channel" ref="2" />
+        </interfacesignals>
     </component>
     
     <component breezename="BrzNullAdapt" symbol="NA">

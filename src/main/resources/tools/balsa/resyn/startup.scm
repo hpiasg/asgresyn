@@ -53,6 +53,7 @@
     "Encode"
     "FalseVariable"
     "Fetch"
+    "Split"
     "Variable"
     "While"
 ))
