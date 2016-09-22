@@ -79,7 +79,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
     
     <component breezename="BrzFetch" symbol="->">
         <parameters>
-            <parameter id="0" type="width" /> 
+            <parameter id="0" type="width" />
             <parameter id="1" type="fetch_spec" />
         </parameters>
         <channels>
@@ -209,7 +209,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
             <channel id="1" type="control_out" porttype="active" />
         </channels>
         <datapathtype>NoDataPath</datapathtype>
-    </component>    
+    </component>
     
     <component breezename="BrzConstant">
         <parameters>
@@ -385,7 +385,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
         </parameters>
         <channels>
             <channel id="0" type="data_out" porttype="passive" />
-            <channel id="1" type="data_in" porttype="active" /> 
+            <channel id="1" type="data_in" porttype="active" />
         </channels>
         <datapathtype>DataPathDoNotOptimise</datapathtype>
         <removesignals>

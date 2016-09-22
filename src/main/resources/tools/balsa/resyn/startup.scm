@@ -40,19 +40,19 @@
 		)
     )
 ) '(
-		"Adapt" 
-	"Arbiter"  
-		"BinaryFunc"
+    "Adapt"
+    "Arbiter"
+    "BinaryFunc"
     "BinaryFuncConstR"
     "CallMux"
     "Case"
-		"CaseFetch"
+    "CaseFetch"
     "Combine"
     "CombineEqual"
     "Constant"
-		"Encode"
-		"FalseVariable"
-		"Fetch"
+    "Encode"
+    "FalseVariable"
+    "Fetch"
     "Variable"
     "While"
 ))
