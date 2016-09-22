@@ -542,7 +542,17 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
             <channel id="0" type="data_out" porttype="passive" />
             <channel id="1" type="data_in" porttype="active" />
         </channels>
-        <datapathtype>DataPathNotYetImplemented</datapathtype>
+        <datapathtype>DataPath</datapathtype>
+        <removesignals>
+            <rsignal name="inp" type="req" />
+            <rsignal name="out" type="req" />
+        </removesignals>
+        <interfacesignals>
+            <isignal id="0" name="aD_$" direction="out" reftype="component" />
+            <isignal id="1" name="d$" reftype="channel" ref="0" />
+            <isignal id="2" name="rD_$" direction="in" reftype="component" />
+            <isignal id="3" name="d$" reftype="channel" ref="1" />
+        </interfacesignals>
     </component>
     
     <component breezename="BrzSplitEqual" symbol="&#x00BB;=&#x00AB;">
