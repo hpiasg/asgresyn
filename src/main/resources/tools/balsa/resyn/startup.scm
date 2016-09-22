@@ -54,6 +54,7 @@
     "FalseVariable"
     "Fetch"
     "Split"
+    "SplitEqual"
     "UnaryFunc"
     "Variable"
     "While"
