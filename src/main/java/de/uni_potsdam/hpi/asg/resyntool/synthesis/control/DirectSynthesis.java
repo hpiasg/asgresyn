@@ -70,7 +70,7 @@ public class DirectSynthesis extends ControlSynthesis {
                         return false;
                     }
                 } else {
-                    logger.error("Petrify synthesis failed with " + filename_g);
+                    logger.error("Logic synthesis failed with " + filename_g);
                     return false;
                 }
             } else {
