@@ -22,7 +22,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni_potsdam.hpi.asg</groupId>
 	<artifactId>asgresyn</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<organization>
 		<name>Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH</name>
 		<url>http://www.hpi.uni-potsdam.de</url>
