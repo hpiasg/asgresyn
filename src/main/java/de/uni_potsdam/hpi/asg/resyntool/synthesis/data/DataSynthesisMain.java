@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -20,40 +20,80 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
  */
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.technology.Balsa;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
+import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
+import de.uni_potsdam.hpi.asg.resyntool.components.HSComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.ResynType;
+import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
+import de.uni_potsdam.hpi.asg.resyntool.io.RemoteInvocation;
 
 public class DataSynthesisMain {
     private static final Logger logger    = LogManager.getLogger();
 
     private static final String opwending = "_data";
 
-    private String              technology;
+    private Technology          technology;
     private String              file;
     private BreezeProjectResyn  proj;
+    private boolean             optimise;
 
-    public DataSynthesisMain(BreezeProjectResyn proj, String technology) {
+    public DataSynthesisMain(BreezeProjectResyn proj, Technology technology, boolean optimise) {
         this.technology = technology;
         this.proj = proj;
+        this.optimise = optimise;
     }
 
     public boolean generate() {
         String opwfilename = opwending + FileHelper.getFileEx(Filetype.verilog);
 
-        List<String> filelist = new ArrayList<String>();
+        Set<String> filelist = new HashSet<>();
+        Set<String> filelist_opt = new HashSet<>();
+
+        Balsa balsatech = technology.getBalsa();
         for(ResynType type : proj.getAllResynTypes()) {
             logger.info("Generating " + type.getDef());
-            filelist.add(type.generate(technology));
+            switch(((ComponentResyn)((HSComponentResyn)type.getType().getComp()).getComp()).getDatapathType()) {
+                case DataPath:
+                    filelist_opt.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
+                    break;
+                case DataPathDoNotOptimise:
+                    filelist.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
+                    break;
+                case DataPathNotYetImplemented:
+                    break;
+                case NoDataPath:
+                    break;
+            }
         }
 
-        String text = FileHelper.getInstance().mergeFileContents(filelist);
+        if(optimise) {
+            RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
+            if(dc != null && technology.getSynctool() != null) {
+                logger.info("Running data path optimsation");
+                DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir, technology.getSynctool());
+                Set<String> optfilelist = opt.execute(filelist_opt);
+                if(optfilelist != null) {
+                    filelist_opt.clear();
+                    filelist_opt = optfilelist;
+                }
+            } else {
+                logger.warn("No data path optimisation tool config found. Omitting optimisation");
+            }
+        }
+
+        filelist.addAll(filelist_opt);
+
+        String text = FileHelper.getInstance().mergeFileContents(new ArrayList<>(filelist));
         if(text != null) {
             if(FileHelper.getInstance().writeFile(opwfilename, text)) {
                 file = opwfilename;

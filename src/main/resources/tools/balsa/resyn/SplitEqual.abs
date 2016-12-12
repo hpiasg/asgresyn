@@ -1,0 +1,5 @@
+(nodes)
+(gates)
+(connections
+	(connect (data "inp") (combine (data (each "out"))))
+)

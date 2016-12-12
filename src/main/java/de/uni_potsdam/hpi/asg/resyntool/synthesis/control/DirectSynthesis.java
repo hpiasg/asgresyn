@@ -25,8 +25,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.LogicSynthesisParameter;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
@@ -45,7 +45,7 @@ public class DirectSynthesis extends ControlSynthesis {
         String filename_g = name + FileHelper.getFileEx(Filetype.stg);
         String filename_v = name + stwending + FileHelper.getFileEx(Filetype.verilog);
 
-        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_gfull, filename_breeze, false)) {
+        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_gfull, filename_breeze, false, params.getDesijBreezeExprFile())) {
             if(ResynInvoker.getInstance().invokeDesijKilldummies(filename_g, filename_gfull)) {
                 LogicSynthesis synthesis = new LogicSynthesis(params);
                 if(synthesis.synthesise(filename_g, filename_v)) {
@@ -70,7 +70,7 @@ public class DirectSynthesis extends ControlSynthesis {
                         return false;
                     }
                 } else {
-                    logger.error("Petrify synthesis failed with " + filename_g);
+                    logger.error("Logic synthesis failed with " + filename_g);
                     return false;
                 }
             } else {

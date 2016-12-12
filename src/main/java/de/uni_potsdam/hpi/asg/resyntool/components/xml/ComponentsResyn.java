@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -30,15 +31,21 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 @XmlRootElement(name = "components")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ComponentsResyn {
-    protected static final Logger logger        = LogManager.getLogger();
-    protected static final String injarfilename = "/resyncomponents.xml";
+    protected static final Logger logger         = LogManager.getLogger();
+    protected static final String injarfilename  = "/resyncomponents.xml";
+    protected static final String schemafilename = "/components_config.xsd";
 
     @XmlElement(name = "component")
     private List<ComponentResyn>  components;
@@ -47,11 +54,19 @@ public class ComponentsResyn {
     }
 
     public static ComponentsResyn readIn(String filename) {
+        String usedfile = null;
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ComponentsResyn.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            Schema schema = sf.newSchema(new StreamSource(ComponentsResyn.class.getResourceAsStream(schemafilename)));
+
+            jaxbUnmarshaller.setSchema(schema);
+
             if(filename == null || filename.equals("")) {
                 logger.debug("Using in-jar components config");
+                usedfile = "in-jar: " + injarfilename;
 //                try {
 //                    logger.debug("Jar file: " + ComponentsResyn.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
 //                } catch(URISyntaxException e) {
@@ -59,6 +74,7 @@ public class ComponentsResyn {
                 InputStream inputStream = ComponentsResyn.class.getResourceAsStream(injarfilename);
                 return (ComponentsResyn)jaxbUnmarshaller.unmarshal(inputStream);
             } else {
+                usedfile = filename;
                 File file = new File(filename);
                 if(file.exists()) {
                     logger.debug("Using external components config: " + file.getAbsolutePath());
@@ -69,7 +85,17 @@ public class ComponentsResyn {
                 }
             }
         } catch(JAXBException e) {
+            if(e.getLinkedException() instanceof SAXParseException) {
+                SAXParseException e2 = (SAXParseException)e.getLinkedException();
+                logger.error("File: " + usedfile + ", Line: " + e2.getLineNumber() + ", Col: " + e2.getColumnNumber());
+                logger.error(e2.getLocalizedMessage());
+                return null;
+            }
             logger.error(e.getLocalizedMessage());
+            return null;
+        } catch(SAXException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
             return null;
         }
     }

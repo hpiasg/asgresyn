@@ -65,8 +65,16 @@ public class HSComponentResyn extends AbstractHSComponent {
         ComponentResyn comp2 = (ComponentResyn)comp;
 
         if(resynTypeMap.isEmpty()) {
-            if(comp2.isDatapathmissing()) {
-                logger.warn("Datapath defition missing for component " + comp.getBreezename());
+            switch(comp2.getDatapathType()) {
+                case DataPath:
+                    break;
+                case DataPathDoNotOptimise:
+                    break;
+                case DataPathNotYetImplemented:
+                    logger.warn("Datapath defition missing for component " + comp.getBreezename());
+                    break;
+                case NoDataPath:
+                    break;
             }
         }
 

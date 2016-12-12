@@ -29,6 +29,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeNetlist;
+import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractHSComponent;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.AbstractBreezeElement;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.BreezeComponentElement;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.BreezeElementFactory;
@@ -36,11 +38,9 @@ import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.BreezeImport;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.BreezePartElement;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezeparser.BreezeParser;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezeparser.ParseException;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
-import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeNetlist;
-import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractHSComponent;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 
 public class BreezeNetlistResyn extends AbstractBreezeNetlist {
     private static final Logger logger = LogManager.getLogger();

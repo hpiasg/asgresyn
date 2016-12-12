@@ -31,8 +31,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSComponentType;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.components.HSSignal.Signaltype;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.RSignal;
@@ -257,5 +257,9 @@ public class ResynType {
 
     public String getDef() {
         return def;
+    }
+
+    public HSComponentType getType() {
+        return type;
     }
 }

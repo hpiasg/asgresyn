@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -29,8 +29,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeNetlist;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.control.ControlSynthesis;
@@ -62,7 +62,7 @@ public class SynthesisMain {
         logger.info("Generate datapath");
         logger.info("------------------------------");
         if(!params.isSkipdatapath()) {
-            data = new DataSynthesisMain(proj, params.getTechnology().getBalsa().toString());
+            data = new DataSynthesisMain(proj, params.getTechnology(), params.isOptimisedatapath());
             if(!data.generate()) {
                 logger.error("Could not generate datapath");
                 return false;
@@ -140,7 +140,12 @@ public class SynthesisMain {
             }
             files.add(wiringfiles.get(netlist));
         }
-        return mergeAll(files);
+        if(!mergeAll(files)) {
+            logger.error("Could not merge files");
+            return false;
+        }
+
+        return true;
     }
 
     private boolean mergeAll(List<String> files) {

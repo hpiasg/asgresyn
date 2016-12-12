@@ -24,7 +24,7 @@ import java.io.File;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
-import de.uni_potsdam.hpi.asg.common.io.CommandlineOptions;
+import de.uni_potsdam.hpi.asg.common.iohelper.CommandlineOptions;
 
 public class ResynCommandlineOptions extends CommandlineOptions {
 
@@ -44,12 +44,7 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     @Option(name = "-tc", metaVar = "<order>", usage = "tackle complexity order [S=Straight, D=Decomposition], default order is SD") //usage="tackle complexity order [S=Straight, D=Decomposition, C=Clustering], default order is SDC")
     private String tackleComplexityOrder = "SD";
-        
-    @Option(name = "-d", metaVar = "<decostrategy>", usage = "strategy for decomposition [irr-csc-aware, csc-aware, tree, basic, lazy-multi, lazy-single, breeze], default is breeze")
-    private String  decoStrategy = "breeze";
-    @Option(name = "-p", metaVar = "<heuristic>", usage = "heuristic for partitioning [finest, roughest, multisignaluse, avoidcsc, reduceconc, lockedsignals, best, common-cause], default is common-cause")
-    private String partitionHeuristic = "common-cause";
-
+    
     @Option(name = "-ls", metaVar = "<strategy>", usage = "Logic synthesis parameter: default is PAAA\n" + 
         "1st: CSC solving: P=petrify, M=mpsat" + /*, *=dontcare*/ "\n" + 
         "2nd: Logic synthesis: P=petrify, A=ASGlogic\n" + 
@@ -58,6 +53,18 @@ public class ResynCommandlineOptions extends CommandlineOptions {
         "Allowed combinations for 2nd-4th: [PPP, PNP, PPI, AAA]")
     private String logicSynthesisParameter = "PAAA";
 
+    // DesiJ Options
+    @Option(name = "-d", metaVar = "<decostrategy>", usage = "strategy for decomposition [irr-csc-aware, csc-aware, tree, basic, lazy-multi, lazy-single, breeze], default is breeze")
+    private String  decoStrategy = "breeze";
+    @Option(name = "-p", metaVar = "<heuristic>", usage = "heuristic for partitioning [finest, roughest, multisignaluse, avoidcsc, reduceconc, lockedsignals, best, common-cause], default is common-cause")
+    private String partitionHeuristic = "common-cause";
+    @Option(name = "-breezeexpr", metaVar = "<breeze expressions file>", usage = "Breeze expressions file for DesiJ")
+    private File desijbreezeexpr = null;
+    
+    // ASGlogic Option
+    @Option(name = "-ASGlogicParams")
+    private String asglogicParams = "";
+    
     @Option(name = "-o", metaVar = "<level>", usage = "Outputlevel: 0:nothing\n1:errors\n[2:+warnings]\n3:+info")
     private int outputlevel             = 2;
     @Option(name = "-log", metaVar = "<logfile>", usage = "Define output Logfile, default is resyn.log")
@@ -77,8 +84,17 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     @Option(name = "-debug")
     private boolean debug = false;
+    @Option(name = "-tooldebug")
+    private boolean tooldebug = false;
     @Option(name = "-sdp")
     private boolean skipdatapath = false;
+    @Option(name = "-ssc")
+    private boolean skipSubComponents = false;
+    
+    @Option(name = "-odp", usage = "Optimise data path (Default: false)")
+    private boolean optimisedatapath = false;
+    
+    //@formatter:on
 
 //    public String getClustering() {
 //        return clustering;
@@ -91,7 +107,7 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     public File getTechnology() {
         return technology;
     }
-    
+
     public int getOutputlevel() {
         return outputlevel;
     }
@@ -139,8 +155,28 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     public boolean isSkipdatapath() {
         return skipdatapath;
     }
-    
+
     public File getWorkingdir() {
         return workingdir;
+    }
+
+    public boolean isOptimisedatapath() {
+        return optimisedatapath;
+    }
+
+    public String getAsglogicParams() {
+        return asglogicParams;
+    }
+
+    public boolean isSkipSubComponents() {
+        return skipSubComponents;
+    }
+
+    public File getDesijbreezeexpr() {
+        return desijbreezeexpr;
+    }
+
+    public boolean isTooldebug() {
+        return tooldebug;
     }
 }

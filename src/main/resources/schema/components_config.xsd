@@ -13,10 +13,10 @@
     <xs:complexContent>
       <xs:extension base="component">
         <xs:sequence>
+          <xs:element name="datapathtype" type="dataPathType"/>
           <xs:element name="resetNode" type="xs:string" minOccurs="0"/>
           <xs:element name="removesignals" type="removeSignals" minOccurs="0"/>
           <xs:element name="interfacesignals" type="interfaceSignals" minOccurs="0"/>
-          <xs:element name="datapathmissing" type="xs:boolean"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -55,7 +55,7 @@
     <xs:attribute name="id" type="xs:int" use="required"/>
     <xs:attribute name="name" type="xs:string" use="required"/>
     <xs:attribute name="reftype" type="refType" use="required"/>
-    <xs:attribute name="ref" type="xs:int" use="required"/>
+    <xs:attribute name="ref" type="xs:int"/>
     <xs:attribute name="direction" type="direction"/>
   </xs:complexType>
 
@@ -90,6 +90,15 @@
     <xs:attribute name="type" type="channelType" use="required"/>
     <xs:attribute name="porttype" type="portType" use="required"/>
   </xs:complexType>
+
+  <xs:simpleType name="dataPathType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NoDataPath"/>
+      <xs:enumeration value="DataPathNotYetImplemented"/>
+      <xs:enumeration value="DataPath"/>
+      <xs:enumeration value="DataPathDoNotOptimise"/>
+    </xs:restriction>
+  </xs:simpleType>
 
   <xs:simpleType name="rSignalType">
     <xs:restriction base="xs:string">

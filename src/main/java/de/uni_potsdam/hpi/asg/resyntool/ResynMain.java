@@ -23,10 +23,10 @@ import java.util.Arrays;
 
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.LoggerHelper;
-import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-import de.uni_potsdam.hpi.asg.common.io.Zipper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
@@ -40,10 +40,11 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 public class ResynMain {
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
+
     public static Config                   config;
+    public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
-    private static boolean                 skipSubComponents       = true;
 
     /**
      * Program entrance (with return code as <code>System.exit</code>)
@@ -80,6 +81,7 @@ public class ResynMain {
                     return 1;
                 }
                 WorkingdirGenerator.getInstance().create(options.getWorkingdir(), config.workdir, "resynwork", ResynInvoker.getInstance());
+                tooldebug = options.isTooldebug();
                 status = execute();
                 zipWorkfile();
                 WorkingdirGenerator.getInstance().delete();
@@ -91,6 +93,7 @@ public class ResynMain {
             return status;
         } catch(Exception e) {
             System.out.println("An error occurred: " + e.getLocalizedMessage());
+            e.printStackTrace();
             return 1;
         }
     }
@@ -111,7 +114,7 @@ public class ResynMain {
         logger.info("Parse Breeze");
         logger.info("------------------------------");
 
-        BreezeProjectResyn proj = BreezeProjectResyn.create(options.getHsfile(), config.componentconfig, skipUndefinedComponents, skipSubComponents);
+        BreezeProjectResyn proj = BreezeProjectResyn.create(options.getHsfile(), config.componentconfig, skipUndefinedComponents, options.isSkipSubComponents());
         if(proj == null) {
             logger.error("Could not create Netlist");
             return 1;
@@ -129,7 +132,19 @@ public class ResynMain {
      */
     private static int doSynthesis(BreezeProjectResyn proj) {
 
-        SynthesisParameter sparams = SynthesisParameter.create(options.getTechnology(), options.getTackleComplexityOrder(), options.getLogicSynthesisParameter(), options.getDecoStrategy(), options.getPartitionHeuristic(), options.isSkipdatapath());
+        //@formatter:off
+        SynthesisParameter sparams = SynthesisParameter.create(
+            options.getTechnology(), 
+            options.getTackleComplexityOrder(), 
+            options.getLogicSynthesisParameter(), 
+            options.getDecoStrategy(), 
+            options.getPartitionHeuristic(), 
+            options.isSkipdatapath(),
+            options.getAsglogicParams(),
+            options.isOptimisedatapath(),
+            options.getDesijbreezeexpr());
+        //@formatter:on
+
         if(sparams == null) {
             logger.error("SynthesisParameter incomplete");
             return 1;

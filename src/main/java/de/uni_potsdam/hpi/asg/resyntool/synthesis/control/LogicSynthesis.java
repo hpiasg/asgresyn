@@ -1,7 +1,5 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
 
-import java.util.Arrays;
-
 /*
  * Copyright (C) 2012 - 2015 Norman Kluge
  * 
@@ -21,16 +19,16 @@ import java.util.Arrays;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.WorkingdirGenerator;
-import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
-import de.uni_potsdam.hpi.asg.resyntool.io.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.LogicSynthesisParameter;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 
@@ -48,9 +46,12 @@ public class LogicSynthesis {
     private LogicSynthesisParameter strategy;
     private Technology              tech;
 
+    private String                  asglogicparams;
+
     public LogicSynthesis(SynthesisParameter params) {
         this.strategy = params.getLogicSynthesisStrategy();
         this.tech = params.getTechnology();
+        this.asglogicparams = params.getAsglogicparams();
     }
 
     public boolean synthesise(String gfile, String vfile) {
@@ -60,7 +61,7 @@ public class LogicSynthesis {
             return false;
         }
         logger.debug("CSC of " + gfile + " solved");
-        String libfile = tech.getPetrifyLib();
+        String libfile = tech.getGenLib();
         switch(strategy.getSynthesisStrategy()) {
             case PPP: {
                 String[] params = {"-no", "-rst1", "-tm", "-vl", vfile};
@@ -112,9 +113,7 @@ public class LogicSynthesis {
 
                 String reset = null;
 
-                if(ResynMain.config.toolconfig.asglogiccmd.contains("gC")) {
-                    reset = "ondemand";
-                } else {
+                if(asglogicparams.contains("-arch sC")) {
                     for(String line : FileHelper.getInstance().readFile(solvedCscFile)) {
                         if(line.startsWith(".inputs")) {
                             if(parseTypeLine(line).contains("r1")) {
@@ -124,13 +123,15 @@ public class LogicSynthesis {
                             }
                         }
                     }
+                } else {
+                    reset = "ondemand";
                 }
                 if(reset == null) {
                     logger.error("resettype not set");
                     return false;
                 }
 
-                if(!ResynInvoker.getInstance().invokeASGLogic(solvedCscFile, vfile, workingdir, libfile, logfile, zipfile, reset)) {
+                if(!ResynInvoker.getInstance().invokeASGLogic(solvedCscFile, vfile, workingdir, libfile, logfile, zipfile, reset, asglogicparams)) {
                     logger.error("AAA LogicSynthesis failed");
                     return false;
                 }

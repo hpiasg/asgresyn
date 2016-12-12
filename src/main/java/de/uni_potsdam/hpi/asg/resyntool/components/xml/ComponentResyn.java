@@ -28,17 +28,21 @@ import de.uni_potsdam.hpi.asg.common.breeze.model.xml.Component;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ComponentResyn extends Component {
 
+    public enum DataPathType {
+        NoDataPath, DataPathNotYetImplemented, DataPath, DataPathDoNotOptimise
+    }
+
     //@formatter:off
     
+    @XmlElement(name = "datapathtype", required = true)
+    private DataPathType datapathtype;
     @XmlElement(name = "resetNode", required = false)
     private String resetNode;
-    @XmlElement(name = "removesignals")
+    @XmlElement(name = "removesignals", required = false)
     private RemoveSignals removesignals;
-    @XmlElement(name = "interfacesignals")
+    @XmlElement(name = "interfacesignals", required = false)
     private InterfaceSignals interfacesignals;
-    @XmlElement(name = "datapathmissing")
-    private boolean datapathmissing;
-
+    
     //@formatter:on
 
     public InterfaceSignals getInterfacesignals() {
@@ -53,7 +57,7 @@ public class ComponentResyn extends Component {
         return resetNode;
     }
 
-    public boolean isDatapathmissing() {
-        return datapathmissing;
+    public DataPathType getDatapathType() {
+        return datapathtype;
     }
 }

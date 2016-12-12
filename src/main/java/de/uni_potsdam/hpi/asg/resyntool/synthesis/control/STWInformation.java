@@ -29,7 +29,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal.Direction;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 
 public class STWInformation {
     private static final Logger  logger     = LogManager.getLogger();

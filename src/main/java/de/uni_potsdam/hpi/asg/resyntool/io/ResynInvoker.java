@@ -20,6 +20,7 @@ package de.uni_potsdam.hpi.asg.resyntool.io;
  */
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +28,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.Invoker;
-import de.uni_potsdam.hpi.asg.common.io.ProcessReturn;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.Invoker;
+import de.uni_potsdam.hpi.asg.common.iohelper.ProcessReturn;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 
 public class ResynInvoker extends Invoker {
@@ -77,14 +78,27 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokeDesijBreeze(String outfile, String infile, boolean withdeco) {
+    public boolean invokeDesijBreeze(String outfile, String infile, boolean withdeco, File breezeExprFile) {
         String[] params = null;
         if(withdeco) {
-            params = new String[]{"-Y", "-g", "operation=breeze", "outfile=" + outfile, infile};
+            params = new String[]{"-Y", "-g", "operation=breeze"};
         } else {
-            params = new String[]{"-Y", "operation=breeze", "outfile=" + outfile, infile};
+            params = new String[]{"-Y", "operation=breeze"};
         }
-        return invokeDesij(Arrays.asList(params));
+        List<String> params2 = new ArrayList<>();
+        params2.addAll(Arrays.asList(params));
+
+        if(breezeExprFile != null) {
+            try {
+                params2.add("breezeexpressionsfile=" + breezeExprFile.getCanonicalPath());
+            } catch(IOException e) {
+            }
+        }
+
+        params2.add("outfile=" + outfile);
+        params2.add(infile);
+
+        return invokeDesij(params2);
     }
 
     public boolean invokeDesijKilldummies(String outfile, String infile) {
@@ -104,7 +118,7 @@ public class ResynInvoker extends Invoker {
         if(cmd == null) {
             logger.error("Could not read desij cmd String");
         }
-        ProcessReturn ret = invoke(cmd, params);
+        ProcessReturn ret = invoke(cmd, params, ResynMain.tooldebug);
         return errorHandling(ret);
     }
 
@@ -186,14 +200,28 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokeASGLogic(String gfile, String vfile, String workingdir, String libfile, String logfile, String zipfile, String resettype) {
+    public boolean invokeASGLogic(String gfile, String vfile, String workingdir, String libfile, String logfile, String zipfile, String resettype, String additionalParams) {
         String[] command = convertCmd(ResynMain.config.toolconfig.asglogiccmd);
         if(command == null) {
             logger.error("Could not read asglogic cmd String");
         }
 
-        String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype, gfile};
-        ProcessReturn ret = invoke(command, params); //, 600000); //10min
+        String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype};
+        List<String> params2 = new ArrayList<>(Arrays.asList(params));
+
+        if(additionalParams != null && !additionalParams.equals("")) {
+            params2.addAll(Arrays.asList(additionalParams.split(" ")));
+        }
+        params2.add(gfile);
+
+        ProcessReturn ret = invoke(command, params2); //, 600000); //10min
+        return errorHandling(ret);
+    }
+
+    public boolean invokeCommand(String cmd) {
+        String[] shcommand = convertCmd("sh -c");
+        String[] command = new String[]{"$(" + cmd + ")"};
+        ProcessReturn ret = invoke(shcommand, command);
         return errorHandling(ret);
     }
 }

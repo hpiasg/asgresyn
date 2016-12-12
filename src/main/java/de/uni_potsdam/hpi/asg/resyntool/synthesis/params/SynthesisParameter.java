@@ -26,7 +26,7 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.resyntool.io.technology.Technology;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
 
 public class SynthesisParameter {
 
@@ -42,8 +42,11 @@ public class SynthesisParameter {
     private Technology                technology;
     private Set<TackleComplexityType> tackleComplexityOrder;
     private boolean                   skipdatapath;
+    private boolean                   optimisedatapath;
+    private String                    asglogicparams;
+    private File                      desijBreezeExprFile;
 
-    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath) {
+    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams, boolean optimisedatapath, File desijBreezeExprFile) {
 
         SynthesisParameter retVal = new SynthesisParameter();
         retVal.decoStrategy = decoStrategy;
@@ -64,6 +67,9 @@ public class SynthesisParameter {
             return null;
         }
         retVal.skipdatapath = skipdatapath;
+        retVal.optimisedatapath = optimisedatapath;
+        retVal.asglogicparams = asglogiparams;
+        retVal.desijBreezeExprFile = desijBreezeExprFile;
         return retVal;
     }
 
@@ -136,5 +142,17 @@ public class SynthesisParameter {
 
     public boolean isSkipdatapath() {
         return skipdatapath;
+    }
+
+    public boolean isOptimisedatapath() {
+        return optimisedatapath;
+    }
+
+    public String getAsglogicparams() {
+        return asglogicparams;
+    }
+
+    public File getDesijBreezeExprFile() {
+        return desijBreezeExprFile;
     }
 }

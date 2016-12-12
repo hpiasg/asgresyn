@@ -1,7 +1,7 @@
-package de.uni_potsdam.hpi.asg.resyntool.io.technology;
+package de.uni_potsdam.hpi.asg.resyntool.io;
 
 /*
- * Copyright (C) 2012 - 2014 Norman Kluge
+ * Copyright (C) 2016 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -24,12 +24,13 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.NONE)
-public class Genlib {
-
-    @XmlElement(name = "libfile")
-    private String libfile;
-
-    public String getLibfile() {
-        return libfile;
-    }
+public class RemoteInvocation {
+    @XmlElement(required = true)
+    public String hostname;
+    @XmlElement(required = true)
+    public String username;
+    @XmlElement(required = true)
+    public String password;
+    @XmlElement(required = false)
+    public String workingdir;
 }

@@ -31,8 +31,9 @@ import de.uni_potsdam.hpi.asg.common.breeze.model.BreezeNetlistInst;
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSChannel;
 import de.uni_potsdam.hpi.asg.common.breeze.model.PortComponent;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper;
-import de.uni_potsdam.hpi.asg.common.io.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.breeze.model.Signal.Direction;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.ResynInst;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.control.STWInformation;
@@ -65,6 +66,18 @@ public class WiringMain {
         }
         for(BreezeNetlistInst inst : netlist.getSubBreezeInst()) {
             allSignals.addAll(inst.getSignals());
+        }
+
+        // force a1
+        boolean founda1 = false;
+        for(Signal sig : allSignals) {
+            if(sig.getName().equals("a1")) {
+                founda1 = true;
+                break;
+            }
+        }
+        if(!founda1) {
+            allSignals.add(new Signal("a1", 0, Direction.out));
         }
 
         List<Integer> interfaceChannels = new ArrayList<Integer>();
@@ -147,8 +160,7 @@ public class WiringMain {
 
         //header
         StringBuilder text = new StringBuilder();
-        text.append("`timescale 1ns / 1ps" + FileHelper.getNewline() + FileHelper.getNewline());
-        text.append("module resyn_" + netlist.getName() + " (");
+        text.append("module Balsa_" + netlist.getName() + " (");
         for(WireName str : interfaceSet) {
             text.append(str.getStr() + ", ");
         }
@@ -225,8 +237,13 @@ public class WiringMain {
         }
 
         // stw
+        text.append(FileHelper.getNewline() + "  // Control" + FileHelper.getNewline());
+        // a1 fix
+        if(!founda1) {
+            text.append("  assign a1 = 0;" + FileHelper.getNewline());
+        }
+        // stws
         if(stwInfo != null) {
-            text.append(FileHelper.getNewline() + "  // Control" + FileHelper.getNewline());
             for(String stwInterface : stwInfo.getStwInterfaces()) {
                 text.append("  " + stwInterface + FileHelper.getNewline());
             }
@@ -236,12 +253,39 @@ public class WiringMain {
         if(!skipdatapath) {
             text.append(FileHelper.getNewline() + "  // Data" + FileHelper.getNewline());
             for(ResynInst comp : netlist.getAllResynInstances()) {
-                text.append("  " + comp.getResyntype().getDef() + " I" + comp.getInst().getNewId() + " (");
+                String id = "I" + comp.getInst().getNewId();
+                text.append("  " + comp.getResyntype().getDef() + " " + id + " (");
                 for(Signal sig : comp.getSignals()) {
                     text.append(sig.getName() + ", ");
                 }
                 text = new StringBuilder(text.substring(0, text.length() - 2));
                 text.append(");" + FileHelper.getNewline());
+
+//                System.out.println(comp.getResyntype().getDef());
+//                System.out.println("\t" + id);
+//                System.out.print("\tControlIn: ");
+//                for(Signal sig : comp.getControlIn()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tControlOut: ");
+//                for(Signal sig : comp.getControlOut()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tDataIn: ");
+//                for(Signal sig : comp.getDataIn()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
+//
+//                System.out.print("\tDataOut: ");
+//                for(Signal sig : comp.getDataOut()) {
+//                    System.out.print(sig.getName() + ", ");
+//                }
+//                System.out.println();
             }
         }
 

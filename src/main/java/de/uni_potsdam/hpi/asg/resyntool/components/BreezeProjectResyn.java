@@ -54,7 +54,7 @@ public class BreezeProjectResyn extends AbstractBreezeProject {
             }
             return true;
         }
-        logger.error("Componentlist not found");
+        logger.error("Componentlist could not be generated");
         return false;
     }
 
