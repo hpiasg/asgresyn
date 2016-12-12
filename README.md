@@ -5,7 +5,7 @@ ASGresyn is a resynthesis tool, which implements a Breeze netlist in an optimise
 
 ### Installation ###
 
-Due to the operating system limitation of Balsa, ASGresyn is only available for UNIX-based systems. Balsa may need the following additional packages:  
+Due to the operating system limitation of Balsa, ASGresyn is only available for UNIX-based systems (on UNIX with 64-bit architecture, 32-bit support is required). Balsa may need the following additional packages:  
 
 * The multiprecision arithmetic library libgmp3c2 (32bit version). For Debian-based Linux distributions [this](http://www.ubuntuupdates.org/package/core/precise/universe/base/libgmp3c2) version should work.
 * The Scheme interpreter Guile 1.x (2.x won't work). For Debian-based Linux distributions execute `sudo apt-get install guile-1.8`
