@@ -20,7 +20,19 @@ The default configuration file is `ASGresyn_DIR/config/resynconfig.xml`. You can
 
 The `<workdir>` tag specifies a path where ASGresyn stores all temporary files during operation. The default value is empty (and therefore a default operating system directory is used). You can override these settings with `-w <dir>` option of ASGresyn.
 
-With the `<tools>` tag (and subtags) you can specify the command lines for calling external tools. Defaults are the included versions of the tools.  
+With the `<tools>` tag (and subtags) you can specify the command lines for calling external tools. Defaults are the included versions of the tools. For data path optimisation, the Synopsys Design Compiler is assumed to located on an external server. Thus, an additonal tag is required:
+```xml
+<tools>
+	...
+	<designCompilerCmd>
+		<hostname></hostname>
+		<username></username>
+		<password></password>
+		<workingdir></workingdir>
+	</designCompilerCmd>
+</tools>
+```
+If your Design Compiler executable differs from `dc_shell`, please adjust this in `ASGresyn_DIR/templates/resyn_dpopt.sh`.
 
 With the `<components>` tag you can specify the location of the components configuration file (see next section). By default the version included in the ASGresyn jar file is used.
 
@@ -100,6 +112,10 @@ With the `-ls` option of ASGresyn you can configure logic synthesis. It requires
   * A: ASGlogic
 
 Allowed combinations for 2nd-4th are [PPP, PNP, PPI, AAA]. Default is `-ls PAAA`.
+
+##### Data path optimisation #####
+
+With the `-odp` option, data path optimisation is enabled.
 
 ### Build instructions ###
 
