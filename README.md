@@ -124,4 +124,4 @@ To build ASGresyn, Apache Maven v3 (or later) and the Java Development Kit (JDK)
 1. Build [ASGcommon](https://github.com/hpiasg/asgcommon)
 2. Build [ASGlogic](https://github.com/hpiasg/asglogic)
 3. Build [DesiJ](https://github.com/hpiasg/desij)
-3. Execute `mvn clean install -DskipTests`
+4. Execute `mvn clean install -DskipTests`

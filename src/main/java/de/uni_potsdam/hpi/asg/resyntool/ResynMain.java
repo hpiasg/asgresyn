@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -29,6 +29,7 @@ import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
+import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.SynthesisMain;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
@@ -75,7 +76,7 @@ public class ResynMain {
             if(options.parseCmdLine(args)) {
                 logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
                 logger.debug("Args: " + Arrays.asList(args).toString());
-                config = Config.readIn(options.getConfigfile());
+                config = ConfigFile.readIn(options.getConfigfile());
                 if(config == null) {
                     logger.error("Could not read config");
                     return 1;

@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.io;
 
 /*
- * Copyright (C) 2012 - 2014 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -19,27 +19,14 @@ package de.uni_potsdam.hpi.asg.resyntool.io;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 @XmlRootElement(name = "resynconfig")
 @XmlAccessorType(XmlAccessType.NONE)
 public class Config {
-    private static final Logger logger = LogManager.getLogger();
 
     //@formatter:off
     
@@ -51,37 +38,4 @@ public class Config {
     public String workdir;
 
     //@formatter:on
-
-    public static Config readIn(File file) {
-        try {
-            if(file.exists()) {
-                JAXBContext jaxbContext = JAXBContext.newInstance(Config.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                return (Config)jaxbUnmarshaller.unmarshal(file);
-            } else {
-                logger.error("File " + file.getAbsolutePath() + " not found");
-                return null;
-            }
-        } catch(JAXBException e) {
-            logger.error(e.getLocalizedMessage());
-            return null;
-        }
-    }
-
-    public static boolean writeOut(Config cfg, String filename) {
-        try {
-            Writer fw = new FileWriter(filename);
-            JAXBContext context = JAXBContext.newInstance(Config.class);
-            Marshaller m = context.createMarshaller();
-            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-            m.marshal(cfg, fw);
-            return true;
-        } catch(JAXBException e) {
-            logger.error(e.getLocalizedMessage());
-            return false;
-        } catch(IOException e) {
-            logger.error(e.getLocalizedMessage());
-            return false;
-        }
-    }
 }
