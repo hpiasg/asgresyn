@@ -22,7 +22,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.uni_potsdam.hpi.asg</groupId>
 	<artifactId>asgresyn</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<organization>
 		<name>Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH</name>
 		<url>http://www.hpi.uni-potsdam.de</url>
@@ -43,8 +43,8 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 	</licenses>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<desij.version>3.1.0-SNAPSHOT</desij.version>
-		<logic.version>0.1.4-SNAPSHOT</logic.version>
+		<desij.version>3.1.1-SNAPSHOT</desij.version>
+		<logic.version>0.1.5-SNAPSHOT</logic.version>
 		<common.version>2.0.0-SNAPSHOT</common.version>
 	</properties>
 	<build>
@@ -206,23 +206,11 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 									<arg
 										line="${project.build.directory}/desij-${desij.version} ${project.build.directory}/desij" />
 								</exec>
-								<move file="${project.build.directory}/desij/LICENSE.txt"
-									tofile="${project.build.directory}/desij/bin/DesiJ_LICENSE.txt" />
-								<move file="${project.build.directory}/desij/NOTICE.txt"
-									tofile="${project.build.directory}/desij/bin/DesiJ_NOTICE.txt" />
-								<move file="${project.build.directory}/desij/README.md"
-									tofile="${project.build.directory}/desij/bin/DesiJ_README.md" />
 								<!-- Logic -->
 								<exec executable="mv">
 									<arg
 										line="${project.build.directory}/asglogic-${logic.version} ${project.build.directory}/asglogic" />
 								</exec>
-								<move file="${project.build.directory}/asglogic/LICENSE.txt"
-									tofile="${project.build.directory}/asglogic/bin/ASGlogic_LICENSE.txt" />
-								<move file="${project.build.directory}/asglogic/NOTICE.txt"
-									tofile="${project.build.directory}/asglogic/bin/ASGlogic_NOTICE.txt" />
-								<move file="${project.build.directory}/asglogic/README.md"
-									tofile="${project.build.directory}/asglogic/bin/ASGlogic_README.md" />
 								<!-- Balsa -->
 								<exec executable="tar">
 									<arg
