@@ -22,13 +22,26 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
 public class Parameters {
     private RunResynFrame frame;
 
+    //@formatter:off
     public enum TextParam {
-        BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles
+        /*general*/ BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
+        /*adv*/ asglogic
+        
     }
 
     public enum BooleanParam {
-        OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3
+        /*general*/ OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
+        /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI
     }
+    
+    public enum EnumParam {
+        /*general*/
+        /*adv*/ decoStrat, decoPart
+    }
+    //@formatter:on
+
+    public static String[] decoStrategies = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
+    public static String[] partHeuristics = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
 
     public void setFrame(RunResynFrame frame) {
         this.frame = frame;
