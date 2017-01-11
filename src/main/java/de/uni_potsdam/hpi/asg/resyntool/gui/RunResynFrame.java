@@ -60,7 +60,7 @@ public class RunResynFrame extends JFrame {
 
     private Parameters                        params;
 
-    public RunResynFrame(Parameters params, WindowAdapter adapt) {
+    public RunResynFrame(Parameters params, WindowAdapter adapt, boolean isDebug) {
         super("ASGresyn runner");
         this.params = params;
         this.params.setFrame(this);
@@ -75,7 +75,9 @@ public class RunResynFrame extends JFrame {
 
         constructGeneralPanel(tabbedPane);
         constructAdvancedPanel(tabbedPane);
-
+        if(isDebug) {
+            constructDebugPanel(tabbedPane);
+        }
     }
 
     private void constructGeneralPanel(JTabbedPane tabbedPane) {
@@ -124,7 +126,22 @@ public class RunResynFrame extends JFrame {
         constructSingleRadioButtonGroup(panel, 10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
         constructFeasibilityEnforcement();
         constructTextEntry(panel, 11, TextParam.asglogic, "Additional ASGlogic parameters", "", false, null, false);
+    }
 
+    private void constructDebugPanel(JTabbedPane tabbedPane) {
+        JPanel panel = new JPanel();
+        tabbedPane.addTab("Debug", null, panel, null);
+        GridBagLayout gbl_advpanel = new GridBagLayout();
+        gbl_advpanel.columnWidths = new int[]{200, 300, 30, 80, 0};
+        gbl_advpanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_advpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
+        gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        panel.setLayout(gbl_advpanel);
+
+        constructCheckboxEntry(panel, 0, BooleanParam.debug, "Debug", true);
+        constructCheckboxEntry(panel, 1, BooleanParam.tooldebug, "Tool debug", false);
+        constructCheckboxEntry(panel, 2, BooleanParam.sdp, "Skip data path", false);
+        constructCheckboxEntry(panel, 3, BooleanParam.ssc, "Skip subcomponents", false);
     }
 
     private void constructFeasibilityEnforcement() {

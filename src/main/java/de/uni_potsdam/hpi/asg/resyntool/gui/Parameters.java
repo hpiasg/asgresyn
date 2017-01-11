@@ -26,12 +26,13 @@ public class Parameters {
     public enum TextParam {
         /*general*/ BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
         /*adv*/ asglogic
-        
+        /*debug*/ 
     }
 
     public enum BooleanParam {
         /*general*/ OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
-        /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI
+        /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
+        /*debug*/ debug, tooldebug, sdp, ssc
     }
     
     public enum EnumParam {

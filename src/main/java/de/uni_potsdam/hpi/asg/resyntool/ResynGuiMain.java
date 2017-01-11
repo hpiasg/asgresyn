@@ -29,13 +29,15 @@ import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynWindowAdapter;
 
 public class ResynGuiMain {
     public static void main(String[] args) {
+        boolean isDebug = true;
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
             return;
         }
         RunResynWindowAdapter adapt = new RunResynWindowAdapter();
-        RunResynFrame rframe = new RunResynFrame(new Parameters(), adapt);
+        RunResynFrame rframe = new RunResynFrame(new Parameters(), adapt, isDebug);
         rframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         rframe.pack();
         rframe.setLocationRelativeTo(null); //center
