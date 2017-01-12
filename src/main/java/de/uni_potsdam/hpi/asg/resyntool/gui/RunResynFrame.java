@@ -60,7 +60,7 @@ public class RunResynFrame extends JFrame {
 
     private Parameters                        params;
 
-    public RunResynFrame(Parameters params, WindowAdapter adapt, boolean isDebug) {
+    public RunResynFrame(final Parameters params, WindowAdapter adapt, boolean isDebug) {
         super("ASGresyn runner");
         this.params = params;
         this.params.setFrame(this);
@@ -78,6 +78,15 @@ public class RunResynFrame extends JFrame {
         if(isDebug) {
             constructDebugPanel(tabbedPane);
         }
+
+        JButton runBtn = new JButton("Run");
+        runBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                ResynRunner run = new ResynRunner(params);
+                run.run();
+            }
+        });
+        getContentPane().add(runBtn, BorderLayout.PAGE_END);
     }
 
     private void constructGeneralPanel(JTabbedPane tabbedPane) {
