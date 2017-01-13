@@ -167,6 +167,10 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 								<commandLineArgument>-cfg "$BASEDIR"/config/resynconfig.xml</commandLineArgument>
 							</commandLineArguments>
 						</program>
+						<program>
+							<mainClass>de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain</mainClass>
+							<id>ASGresyn_gui</id>
+						</program>
 					</programs>
 					<repositoryLayout>flat</repositoryLayout>
 					<repositoryName>lib</repositoryName>
