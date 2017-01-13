@@ -102,14 +102,14 @@ public class RunResynFrame extends JFrame {
         constructTextEntry(panel, 0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
         constructTextEntry(panel, 1, TextParam.TechLib, "Technology library", "", true, JFileChooser.FILES_ONLY, false);
         constructCheckboxEntry(panel, 2, BooleanParam.OptDp, "Optimise data path", false);
-        constructTextEntry(panel, 3, TextParam.OutDir, "Output directory", "$USER-DIR", true, JFileChooser.DIRECTORIES_ONLY, true);
+        constructTextEntry(panel, 3, TextParam.OutDir, "Output directory", Parameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
         constructTextEntry(panel, 4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
         // 5: blank
-        constructTextEntry(panel, 6, TextParam.CfgFile, "Configuration file", "$BASEDIR/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
-        constructTextEntry(panel, 7, TextParam.WorkingDir, "Working directory", "$NULL", true, JFileChooser.DIRECTORIES_ONLY, true);
+        constructTextEntry(panel, 6, TextParam.CfgFile, "Configuration file", Parameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
+        constructTextEntry(panel, 7, TextParam.WorkingDir, "Working directory", Parameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
         constructSingleRadioButtonGroup(panel, 8, "Log level", new String[]{"Nothing", "Errors", "+Warnings", "+Info"}, new BooleanParam[]{BooleanParam.LogLvl0, BooleanParam.LogLvl1, BooleanParam.LogLvl2, BooleanParam.LogLvl3}, 3);
-        constructTextEntry(panel, 9, TextParam.LogFile, "Log file name", "$OUTFILE.log", false, null, true);
-        constructTextEntry(panel, 10, TextParam.TempFiles, "Temp files file name", "$OUTFILE.zip", false, null, true);
+        constructTextEntry(panel, 9, TextParam.LogFile, "Log file name", Parameters.outfilebaseName + ".log", false, null, true);
+        constructTextEntry(panel, 10, TextParam.TempFiles, "Temp files file name", Parameters.outfilebaseName + ".zip", false, null, true);
     }
 
     private void constructAdvancedPanel(JTabbedPane tabbedPane) {
@@ -134,7 +134,7 @@ public class RunResynFrame extends JFrame {
         constructSingleRadioButtonGroup(panel, 9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
         constructSingleRadioButtonGroup(panel, 10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
         constructFeasibilityEnforcement();
-        constructTextEntry(panel, 11, TextParam.asglogic, "Additional ASGlogic parameters", "", false, null, false);
+        constructTextEntry(panel, 11, TextParam.Asglogic, "Additional ASGlogic parameters", "", false, null, false);
     }
 
     private void constructDebugPanel(JTabbedPane tabbedPane) {
@@ -151,6 +151,7 @@ public class RunResynFrame extends JFrame {
         constructCheckboxEntry(panel, 1, BooleanParam.tooldebug, "Tool debug", false);
         constructCheckboxEntry(panel, 2, BooleanParam.sdp, "Skip data path", false);
         constructCheckboxEntry(panel, 3, BooleanParam.ssc, "Skip subcomponents", false);
+        constructTextEntry(panel, 4, TextParam.BreezeExprFile, "Breeze Expression", Parameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
     }
 
     private void constructFeasibilityEnforcement() {
@@ -534,5 +535,17 @@ public class RunResynFrame extends JFrame {
             panel.add(defaultcheckbox, gbc_defaultcheckbox);
             defaultcheckbox.setSelected(true);
         }
+    }
+
+    public String getTextValue(TextParam param) {
+        return textfields.get(param).getText();
+    }
+
+    public boolean getBooleanValue(BooleanParam param) {
+        return buttons.get(param).isSelected();
+    }
+
+    public int getEnumValue(EnumParam param) {
+        return enumfields.get(param).getSelectedIndex();
     }
 }

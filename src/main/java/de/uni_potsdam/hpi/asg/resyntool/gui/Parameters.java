@@ -25,8 +25,8 @@ public class Parameters {
     //@formatter:off
     public enum TextParam {
         /*general*/ BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
-        /*adv*/ asglogic
-        /*debug*/ 
+        /*adv*/ Asglogic,
+        /*debug*/ BreezeExprFile
     }
 
     public enum BooleanParam {
@@ -41,19 +41,35 @@ public class Parameters {
     }
     //@formatter:on
 
-    public static String[] decoStrategies = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
-    public static String[] partHeuristics = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
+    public static String[] decoStrategies  = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
+    public static String[] partHeuristics  = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
+
+    public static String   unsetStr        = "$UNSET";
+    public static String   userDirStr      = "$USER-DIR";
+    public static String   basedirStr      = "$BASEDIR";
+    public static String   outfilebaseName = "$OUTFILE";
 
     public void setFrame(RunResynFrame frame) {
         this.frame = frame;
     }
 
-    private String replaceBasedir(String str) {
-        String basedir = System.getProperty("basedir");
-        String os = System.getProperty("os.name").toLowerCase();
-        if(os.contains("win")) {
-            basedir = basedir.replaceAll("\\\\", "/");
+    public String getTextValue(TextParam param) {
+        return frame.getTextValue(param);
+    }
+
+    public boolean getBooleanValue(BooleanParam param) {
+        return frame.getBooleanValue(param);
+    }
+
+    public String getEnumValue(EnumParam param) {
+        int index = frame.getEnumValue(param);
+        switch(param) {
+            case decoPart:
+                return partHeuristics[index];
+            case decoStrat:
+                return decoStrategies[index];
+            default:
+                return null;
         }
-        return str.replaceAll("\\$BASEDIR", basedir);
     }
 }
