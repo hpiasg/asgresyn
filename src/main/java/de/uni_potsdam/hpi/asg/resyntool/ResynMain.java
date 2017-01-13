@@ -92,7 +92,7 @@ public class ResynMain {
                 logger.info("Runtime: " + LoggerHelper.formatRuntime(end - start, false));
             }
             return status;
-        } catch(Exception e) {
+        } catch(Exception | Error e) {
             System.out.println("An error occurred: " + e.getLocalizedMessage());
             e.printStackTrace();
             return 1;
