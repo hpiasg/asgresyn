@@ -134,7 +134,7 @@ public class RunResynFrame extends JFrame {
         constructSingleRadioButtonGroup(panel, 9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
         constructSingleRadioButtonGroup(panel, 10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
         constructFeasibilityEnforcement();
-        constructTextEntry(panel, 11, TextParam.Asglogic, "Additional ASGlogic parameters", "", false, null, false);
+        constructTextEntry(panel, 11, TextParam.Asglogic, "Additional ASGlogic parameters", Parameters.unsetStr, false, null, true);
     }
 
     private void constructDebugPanel(JTabbedPane tabbedPane) {

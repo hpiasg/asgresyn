@@ -49,12 +49,23 @@ public class Parameters {
     public static String   basedirStr      = "$BASEDIR";
     public static String   outfilebaseName = "$OUTFILE";
 
+    public static String   basedir         = System.getProperty("basedir");
+
     public void setFrame(RunResynFrame frame) {
         this.frame = frame;
     }
 
     public String getTextValue(TextParam param) {
-        return frame.getTextValue(param);
+        String str = frame.getTextValue(param);
+        if(str.equals(Parameters.unsetStr)) {
+            return null;
+        }
+        if(str.equals(Parameters.userDirStr)) {
+            return System.getProperty("user.dir");
+        }
+        String retVal = str.replaceAll("\\" + Parameters.basedirStr, basedir);
+        retVal = retVal.replaceAll("\\" + Parameters.outfilebaseName, frame.getTextValue(TextParam.OutFile).replaceAll(".v", ""));
+        return retVal;
     }
 
     public boolean getBooleanValue(BooleanParam param) {
