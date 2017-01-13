@@ -75,9 +75,7 @@ public class RunResynFrame extends JFrame {
 
         constructGeneralPanel(tabbedPane);
         constructAdvancedPanel(tabbedPane);
-        if(isDebug) {
-            constructDebugPanel(tabbedPane);
-        }
+        constructDebugPanel(tabbedPane, isDebug);
 
         JButton runBtn = new JButton("Run");
         runBtn.addActionListener(new ActionListener() {
@@ -137,9 +135,11 @@ public class RunResynFrame extends JFrame {
         constructTextEntry(panel, 11, TextParam.Asglogic, "Additional ASGlogic parameters", Parameters.unsetStr, false, null, true);
     }
 
-    private void constructDebugPanel(JTabbedPane tabbedPane) {
+    private void constructDebugPanel(JTabbedPane tabbedPane, boolean isDebug) {
         JPanel panel = new JPanel();
-        tabbedPane.addTab("Debug", null, panel, null);
+        if(isDebug) {
+            tabbedPane.addTab("Debug", null, panel, null);
+        }
         GridBagLayout gbl_advpanel = new GridBagLayout();
         gbl_advpanel.columnWidths = new int[]{200, 300, 30, 80, 0};
         gbl_advpanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
@@ -147,7 +147,7 @@ public class RunResynFrame extends JFrame {
         gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_advpanel);
 
-        constructCheckboxEntry(panel, 0, BooleanParam.debug, "Debug", true);
+        constructCheckboxEntry(panel, 0, BooleanParam.debug, "Debug", isDebug);
         constructCheckboxEntry(panel, 1, BooleanParam.tooldebug, "Tool debug", false);
         constructCheckboxEntry(panel, 2, BooleanParam.sdp, "Skip data path", false);
         constructCheckboxEntry(panel, 3, BooleanParam.ssc, "Skip subcomponents", false);
