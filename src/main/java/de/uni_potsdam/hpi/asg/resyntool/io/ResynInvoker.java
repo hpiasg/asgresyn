@@ -57,6 +57,7 @@ public class ResynInvoker extends Invoker {
 //        String[] cmd = convertCmd(ResynMain.config.toolconfig.balsaccmd);
 //        if(cmd == null) {
 //            logger.error("Could not read balsac cmd String");
+//            return false;
 //        }
 //        String[] params = {"-o", ".", infile};
 //        ProcessReturn ret = invoke(cmd, params);
@@ -67,6 +68,7 @@ public class ResynInvoker extends Invoker {
         String[] cmd = convertCmd(ResynMain.config.toolconfig.balsanetlistcmd);
         if(cmd == null) {
             logger.error("Could not read balsanetlist cmd String");
+            return false;
         }
         String[] params1 = {"-X", technology, "-o", filename, "-t", component};
         List<String> params2 = new ArrayList<String>();
@@ -117,6 +119,7 @@ public class ResynInvoker extends Invoker {
         String[] cmd = convertCmd(ResynMain.config.toolconfig.desijcmd);
         if(cmd == null) {
             logger.error("Could not read desij cmd String");
+            return false;
         }
         ProcessReturn ret = invoke(cmd, params, ResynMain.tooldebug);
         return errorHandling(ret);
@@ -128,6 +131,7 @@ public class ResynInvoker extends Invoker {
         String[] cmd = convertCmd(ResynMain.config.toolconfig.punfcmd);
         if(cmd == null) {
             logger.error("Could not read punf cmd String");
+            return false;
         }
         String[] params = {"-m=" + mcifile, "-f=" + infile};
         ProcessReturn ret = invoke(cmd, params);
@@ -150,6 +154,7 @@ public class ResynInvoker extends Invoker {
         String[] cmd2 = convertCmd(ResynMain.config.toolconfig.mpsatcmd);
         if(cmd2 == null) {
             logger.error("Could not read mpsat cmd String");
+            return false;
         }
         String[] params2 = {"-R", "-f", "-@", "-p0", "-cl", "../" + mcifile};
         ProcessReturn ret2 = invoke(cmd2, params2, tmpfolder);
@@ -171,6 +176,7 @@ public class ResynInvoker extends Invoker {
         String[] command = convertCmd(ResynMain.config.toolconfig.petrifycmd);
         if(command == null) {
             logger.error("Could not read petrify cmd String");
+            return false;
         }
         String[] params = {"-csc", "-dead", "-o", outfile, "-log", logfile, infile};
         ProcessReturn ret = invoke(command, params);
@@ -181,6 +187,7 @@ public class ResynInvoker extends Invoker {
         String[] command = convertCmd(ResynMain.config.toolconfig.petrifycmd);
         if(command == null) {
             logger.error("Could not read petrify cmd String");
+            return false;
         }
         String[] last = {"-dead", "-log", logfile, "-lib", libfile, infile};
         String[] newparams = new String[params.length + last.length];
@@ -194,6 +201,7 @@ public class ResynInvoker extends Invoker {
         String[] command = convertCmd(ResynMain.config.toolconfig.petresetcmd);
         if(command == null) {
             logger.error("Could not read petreset cmd String");
+            return false;
         }
         String[] params = new String[]{"-lib", libfile, "-i", eqnfile, "-stg", stgfile, "-verilog", outfile};
         ProcessReturn ret = invoke(command, params, 60000);
@@ -204,6 +212,7 @@ public class ResynInvoker extends Invoker {
         String[] command = convertCmd(ResynMain.config.toolconfig.asglogiccmd);
         if(command == null) {
             logger.error("Could not read asglogic cmd String");
+            return false;
         }
 
         String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype};

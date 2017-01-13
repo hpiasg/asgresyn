@@ -28,6 +28,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeProject;
 import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractHSComponent;
+import de.uni_potsdam.hpi.asg.common.breeze.parser.breezeparser.TokenMgrError;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentsResyn;
 
@@ -39,7 +40,12 @@ public class BreezeProjectResyn extends AbstractBreezeProject {
         if(!retVal.readComponentsList(componentconfig)) {
             return null;
         }
-        if(!BreezeNetlistResyn.create(rootfile, skipUndefinedComponents, skipSubComponents, retVal)) {
+        try {
+            if(!BreezeNetlistResyn.create(rootfile, skipUndefinedComponents, skipSubComponents, retVal)) {
+                logger.error("Could not create Breeze netlist for " + rootfile);
+                return null;
+            }
+        } catch(TokenMgrError e) {
             logger.error("Could not create Breeze netlist for " + rootfile);
             return null;
         }

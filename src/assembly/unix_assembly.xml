@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-Copyright 2014 - 2016 Norman Kluge
+Copyright 2014 - 2017 Norman Kluge
  
 This file is part of ASGresyn.
  
@@ -25,16 +25,24 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		<format>tar.gz</format>
 		<format>dir</format>
 	</formats>
+	<files>
+		<file>
+			<source>LICENSE.txt</source>
+			<outputDirectory>legal</outputDirectory>
+			<destName>ASGresyn_LICENSE.txt</destName>
+		</file>
+		<file>
+			<source>NOTICE.txt</source>
+			<outputDirectory>legal</outputDirectory>
+			<destName>ASGresyn_NOTICE.txt</destName>
+		</file>
+		<file>
+			<source>README.md</source>
+			<outputDirectory>readme</outputDirectory>
+			<destName>ASGresyn_README.md</destName>
+		</file>
+	</files>
 	<fileSets>
-		<fileSet>
-			<directory>.</directory>
-			<outputDirectory>.</outputDirectory>
-			<includes>
-				<include>LICENSE.txt</include>
-				<include>NOTICE.txt</include>
-				<include>README.md</include>
-			</includes>
-		</fileSet>
 		<fileSet>
 			<directory>src/main/resources</directory>
 			<outputDirectory>.</outputDirectory>

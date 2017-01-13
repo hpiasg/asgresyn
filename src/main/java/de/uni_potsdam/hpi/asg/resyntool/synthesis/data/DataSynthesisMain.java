@@ -63,12 +63,22 @@ public class DataSynthesisMain {
         for(ResynType type : proj.getAllResynTypes()) {
             logger.info("Generating " + type.getDef());
             switch(((ComponentResyn)((HSComponentResyn)type.getType().getComp()).getComp()).getDatapathType()) {
-                case DataPath:
-                    filelist_opt.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
+                case DataPath: {
+                    String result = type.generate(balsatech.getTech() + "/" + balsatech.getStyle());
+                    if(result == null) {
+                        return false;
+                    }
+                    filelist_opt.add(result);
                     break;
-                case DataPathDoNotOptimise:
-                    filelist.add(type.generate(balsatech.getTech() + "/" + balsatech.getStyle()));
+                }
+                case DataPathDoNotOptimise: {
+                    String result = type.generate(balsatech.getTech() + "/" + balsatech.getStyle());
+                    if(result == null) {
+                        return false;
+                    }
+                    filelist.add(result);
                     break;
+                }
                 case DataPathNotYetImplemented:
                     break;
                 case NoDataPath:
