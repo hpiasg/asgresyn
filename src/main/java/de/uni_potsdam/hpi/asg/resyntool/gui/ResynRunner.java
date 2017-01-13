@@ -51,9 +51,9 @@ public class ResynRunner {
 //        };
         //@formatter:on
 
-//        if(!checkParams()) {
-//            return;
-//        }
+        if(!checkParams()) {
+            return;
+        }
         List<String> cmd = buildCmd();
 
         StringBuilder str = new StringBuilder();
@@ -78,19 +78,19 @@ public class ResynRunner {
         streamThread.start();
     }
 
-//    private boolean checkParams() {
-//        File breezefile = new File(params.getTextValue(TextParam.BreezeFile));
-//        if(!breezefile.exists()) {
-//            System.err.println("Breezefile not found");
-//            return false;
-//        }
-//        File techfile = new File(params.getTextValue(TextParam.TechLib));
-//        if(!techfile.exists()) {
-//            System.err.println("Techfile not found");
-//            return false;
-//        }
-//        return true;
-//    }
+    private boolean checkParams() {
+        File breezefile = new File(params.getTextValue(TextParam.BreezeFile));
+        if(!breezefile.exists()) {
+            System.err.println("Breezefile not found");
+            return false;
+        }
+        File techfile = new File(params.getTextValue(TextParam.TechLib));
+        if(!techfile.exists()) {
+            System.err.println("Techfile not found");
+            return false;
+        }
+        return true;
+    }
 
     private List<String> buildCmd() {
         List<String> cmd = new ArrayList<>();
@@ -228,8 +228,11 @@ public class ResynRunner {
         }
         cmd.add(ls.toString());
 
-        cmd.add("-ASGlogicParams");
-        cmd.add(params.getTextValue(TextParam.Asglogic));
+        String asglogicParams = params.getTextValue(TextParam.Asglogic);
+        if(asglogicParams != null) {
+            cmd.add("-ASGlogicParams");
+            cmd.add(asglogicParams);
+        }
     }
 
     private void addDebugParams(List<String> cmd) {
