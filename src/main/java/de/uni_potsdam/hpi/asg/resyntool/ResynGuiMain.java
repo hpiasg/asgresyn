@@ -29,12 +29,22 @@ import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynWindowAdapter;
 
 public class ResynGuiMain {
     public static void main(String[] args) {
-        boolean isDebug = true;
+        int status = main2(args);
+        System.exit(status);
+    }
+
+    public static int main2(String[] args) {
+        boolean isDebug = false;
+        for(String str : args) {
+            if(str.equals("-debug")) {
+                isDebug = true;
+            }
+        }
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
-            return;
+            return 1;
         }
         RunResynWindowAdapter adapt = new RunResynWindowAdapter();
         RunResynFrame rframe = new RunResynFrame(new Parameters(), adapt, isDebug);
@@ -49,5 +59,6 @@ public class ResynGuiMain {
             } catch(InterruptedException e) {
             }
         }
+        return 0;
     }
 }
