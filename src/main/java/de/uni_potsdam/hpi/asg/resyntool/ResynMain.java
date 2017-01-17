@@ -72,6 +72,7 @@ public class ResynMain {
         try {
             long start = System.currentTimeMillis();
             int status = -1;
+            addShutdownHook();
             options = new ResynCommandlineOptions();
             if(options.parseCmdLine(args)) {
                 logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
@@ -187,5 +188,20 @@ public class ResynMain {
             return false;
         }
         return true;
+    }
+
+    private static void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                if(logger != null) {
+                    logger.debug("Killing subprocesses");
+                }
+                ResynInvoker inv = ResynInvoker.getInstance();
+                if(inv != null) {
+                    inv.killSubprocesses();
+                }
+            }
+        });
     }
 }
