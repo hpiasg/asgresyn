@@ -19,23 +19,27 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractBooleanParam;
+import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractEnumParam;
+import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractTextParam;
+
 public class Parameters {
     private RunResynFrame frame;
 
     //@formatter:off
-    public enum TextParam {
+    public enum TextParam implements AbstractTextParam {
         /*general*/ BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
         /*adv*/ Asglogic,
         /*debug*/ BreezeExprFile
     }
 
-    public enum BooleanParam {
+    public enum BooleanParam implements AbstractBooleanParam {
         /*general*/ OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
         /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
         /*debug*/ debug, tooldebug, sdp, ssc
     }
     
-    public enum EnumParam {
+    public enum EnumParam implements AbstractEnumParam {
         /*general*/
         /*adv*/ decoStrat, decoPart
     }

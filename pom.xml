@@ -45,7 +45,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<desij.version>3.1.1-SNAPSHOT</desij.version>
 		<logic.version>0.1.5-SNAPSHOT</logic.version>
-		<common.version>2.0.1-SNAPSHOT</common.version>
+		<common.version>2.1.0-SNAPSHOT</common.version>
 	</properties>
 	<build>
 		<resources>
@@ -123,9 +123,6 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-					<testExcludes>
-				    	<testExclude>**/*</testExclude>
-				    </testExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
