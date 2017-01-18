@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool;
 
 /*
- * Copyright (C) 2012 - 2016 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -29,12 +29,12 @@ import de.uni_potsdam.hpi.asg.common.iohelper.CommandlineOptions;
 public class ResynCommandlineOptions extends CommandlineOptions {
 
     public boolean parseCmdLine(String[] args) {
-        return super.parseCmdLine(args, "Usage: ASGresyn -lib <technologyfile> [options] <breeze file>\nOptions:");
+        return super.parseCmdLine(args, "Usage: ASGresyn [options] <breeze file>\nOptions:");
     }
 
     //@formatter:off
     
-    @Option(name = "-lib", metaVar = "<technologyfile>", usage = "technology description for implementation", required = true)
+    @Option(name = "-lib", metaVar = "<technologyfile>", usage = "technology description for implementation")
     private File technology;
     
     //@Option(name="-c", metaVar="<algorithm>") //, usage="clustering algorithm [finest, roughest, rule], default is rule")

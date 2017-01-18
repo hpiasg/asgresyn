@@ -19,14 +19,17 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.Arrays;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
@@ -107,8 +110,9 @@ public class ResynMain {
      *         something went wrong)
      */
     private static int execute() {
-        if(options.getTechnology() == null) {
-            logger.error("No technology file defined");
+        Technology tech = readTechnology(options.getTechnology(), config.defaultTech);
+        if(tech == null) {
+            logger.error("No technology found");
             return 1;
         }
 
@@ -122,8 +126,42 @@ public class ResynMain {
             return 1;
         }
 
-        int synresult = doSynthesis(proj);
+        int synresult = doSynthesis(proj, tech);
         return synresult;
+    }
+
+    private static Technology readTechnology(File optTech, String cfgTech) {
+        if(optTech != null) {
+            if(optTech.exists()) {
+                logger.debug("Using options technology file: " + optTech.getAbsolutePath());
+                return Technology.readIn(optTech);
+            } else {
+                logger.warn("Options technology file " + optTech.getAbsolutePath() + " not found. Trying default from config");
+            }
+        }
+
+        if(cfgTech != null) {
+            File cfgTechFile = new File(replaceBasedir(cfgTech));
+            if(cfgTechFile.exists()) {
+                logger.debug("Using config technology file: " + cfgTechFile.getAbsolutePath());
+                return Technology.readIn(cfgTechFile);
+            } else {
+                logger.warn("Config technology file " + cfgTechFile.getAbsolutePath() + " not found.");
+            }
+        } else {
+            logger.warn("No default technology in config file defined");
+        }
+
+        return null;
+    }
+
+    private static String replaceBasedir(String str) {
+        String basedir = System.getProperty("basedir");
+        if(SystemUtils.IS_OS_WINDOWS) {
+            basedir = basedir.replaceAll("\\\\", "/");
+        }
+
+        return str.replaceAll("\\$BASEDIR", basedir);
     }
 
     /**
@@ -132,11 +170,10 @@ public class ResynMain {
      * @return return code (<code>0</code>: ok, <code>1</code>: something went
      *         wrong)
      */
-    private static int doSynthesis(BreezeProjectResyn proj) {
-
+    private static int doSynthesis(BreezeProjectResyn proj, Technology tech) {
         //@formatter:off
         SynthesisParameter sparams = SynthesisParameter.create(
-            options.getTechnology(), 
+            tech, 
             options.getTackleComplexityOrder(), 
             options.getLogicSynthesisParameter(), 
             options.getDecoStrategy(), 

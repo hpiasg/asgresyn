@@ -36,6 +36,8 @@ public class Config {
     public String componentconfig;
     @XmlElement(name = "workdir", required = false)
     public String workdir;
+    @XmlElement(name = "defaulttech", required = false)
+    public String defaultTech;
 
     //@formatter:on
 }
