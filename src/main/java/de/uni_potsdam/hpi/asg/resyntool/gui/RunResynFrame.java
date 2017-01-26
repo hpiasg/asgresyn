@@ -37,12 +37,13 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 
-import de.uni_potsdam.hpi.asg.common.gui.ParamFrame;
+import de.uni_potsdam.hpi.asg.common.gui.PropertiesFrame;
+import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
 
-public class RunResynFrame extends ParamFrame {
+public class RunResynFrame extends PropertiesFrame {
     private static final long serialVersionUID = -2928503560193350216L;
 
     private Parameters        params;
@@ -71,7 +72,7 @@ public class RunResynFrame extends ParamFrame {
     }
 
     private void constructGeneralPanel(JTabbedPane tabbedPane) {
-        JPanel panel = new JPanel();
+        PropertiesPanel panel = new PropertiesPanel(this);
         tabbedPane.addTab("General", null, panel, null);
         GridBagLayout gbl_generalpanel = new GridBagLayout();
         gbl_generalpanel.columnWidths = new int[]{150, 300, 30, 80, 0};
@@ -80,21 +81,23 @@ public class RunResynFrame extends ParamFrame {
         gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_generalpanel);
 
-        constructTextEntry(panel, 0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
-        constructTextEntry(panel, 1, TextParam.TechLib, "Technology library", "", true, JFileChooser.FILES_ONLY, false);
-        constructCheckboxEntry(panel, 2, BooleanParam.OptDp, "Optimise data path", false);
-        constructTextEntry(panel, 3, TextParam.OutDir, "Output directory", Parameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
-        constructTextEntry(panel, 4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
+        panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
+        panel.addTextEntry(1, TextParam.TechLib, "Technology library", "", true, JFileChooser.FILES_ONLY, false);
+        panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
+        panel.addTextEntry(3, TextParam.OutDir, "Output directory", Parameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
+        panel.addTextEntry(4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
         // 5: blank
-        constructTextEntry(panel, 6, TextParam.CfgFile, "Configuration file", Parameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
-        constructTextEntry(panel, 7, TextParam.WorkingDir, "Working directory", Parameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
-        constructSingleRadioButtonGroup(panel, 8, "Log level", new String[]{"Nothing", "Errors", "+Warnings", "+Info"}, new BooleanParam[]{BooleanParam.LogLvl0, BooleanParam.LogLvl1, BooleanParam.LogLvl2, BooleanParam.LogLvl3}, 3);
-        constructTextEntry(panel, 9, TextParam.LogFile, "Log file name", Parameters.outfilebaseName + ".log", false, null, true);
-        constructTextEntry(panel, 10, TextParam.TempFiles, "Temp files file name", Parameters.outfilebaseName + ".zip", false, null, true);
+        panel.addTextEntry(6, TextParam.CfgFile, "Configuration file", Parameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
+        panel.addTextEntry(7, TextParam.WorkingDir, "Working directory", Parameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
+        panel.addSingleRadioButtonGroupEntry(8, "Log level", new String[]{"Nothing", "Errors", "+Warnings", "+Info"}, new BooleanParam[]{BooleanParam.LogLvl0, BooleanParam.LogLvl1, BooleanParam.LogLvl2, BooleanParam.LogLvl3}, 3);
+        panel.addTextEntry(9, TextParam.LogFile, "Log file name", Parameters.outfilebaseName + ".log", false, null, true);
+        panel.addTextEntry(10, TextParam.TempFiles, "Temp files file name", Parameters.outfilebaseName + ".zip", false, null, true);
+
+        getDataFromPanel(panel);
     }
 
     private void constructAdvancedPanel(JTabbedPane tabbedPane) {
-        JPanel panel = new JPanel();
+        PropertiesPanel panel = new PropertiesPanel(this);
         tabbedPane.addTab("Advanced", null, panel, null);
         GridBagLayout gbl_advpanel = new GridBagLayout();
         gbl_advpanel.columnWidths = new int[]{200, 300, 30, 80, 0};
@@ -103,23 +106,25 @@ public class RunResynFrame extends ParamFrame {
         gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_advpanel);
 
-        constructLabelCell(panel, 0, "<html><body><b>Tackle complexity</b></body></html>");
+        panel.addLabelEntry(0, "<html><body><b>Tackle complexity</b></body></html>");
         constructTcEntries(panel, 1);
         // 2: also constructTcEntries
-        constructComboBox(panel, 3, EnumParam.decoStrat, "Decomposition strategy", Parameters.decoStrategies);
-        constructComboBox(panel, 4, EnumParam.decoPart, "Partitioning heuristic ", Parameters.partHeuristics);
+        panel.addComboBoxEntry(3, EnumParam.decoStrat, "Decomposition strategy", Parameters.decoStrategies);
+        panel.addComboBoxEntry(4, EnumParam.decoPart, "Partitioning heuristic ", Parameters.partHeuristics);
         // 5: spacer
-        constructLabelCell(panel, 6, "<html><body><b>Logic synthesis</b></body></html>");
-        constructSingleRadioButtonGroup(panel, 7, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);
-        constructSingleRadioButtonGroup(panel, 8, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
-        constructSingleRadioButtonGroup(panel, 9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
-        constructSingleRadioButtonGroup(panel, 10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
-        constructFeasibilityEnforcement();
-        constructTextEntry(panel, 11, TextParam.Asglogic, "Additional ASGlogic parameters", Parameters.unsetStr, false, null, true);
+        panel.addLabelEntry(6, "<html><body><b>Logic synthesis</b></body></html>");
+        panel.addSingleRadioButtonGroupEntry(7, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);
+        panel.addSingleRadioButtonGroupEntry(8, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
+        panel.addSingleRadioButtonGroupEntry(9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
+        panel.addSingleRadioButtonGroupEntry(10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
+        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", Parameters.unsetStr, false, null, true);
+
+        getDataFromPanel(panel);
+        establishFeasibilityEnforcement();
     }
 
     private void constructDebugPanel(JTabbedPane tabbedPane, boolean isDebug) {
-        JPanel panel = new JPanel();
+        PropertiesPanel panel = new PropertiesPanel(this);
         if(isDebug) {
             tabbedPane.addTab("Debug", null, panel, null);
         }
@@ -130,14 +135,16 @@ public class RunResynFrame extends ParamFrame {
         gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_advpanel);
 
-        constructCheckboxEntry(panel, 0, BooleanParam.debug, "Debug", isDebug);
-        constructCheckboxEntry(panel, 1, BooleanParam.tooldebug, "Tool debug", false);
-        constructCheckboxEntry(panel, 2, BooleanParam.sdp, "Skip data path", false);
-        constructCheckboxEntry(panel, 3, BooleanParam.ssc, "Skip subcomponents", false);
-        constructTextEntry(panel, 4, TextParam.BreezeExprFile, "Breeze Expression", Parameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
+        panel.addCheckboxEntry(0, BooleanParam.debug, "Debug", isDebug);
+        panel.addCheckboxEntry(1, BooleanParam.tooldebug, "Tool debug", false);
+        panel.addCheckboxEntry(2, BooleanParam.sdp, "Skip data path", false);
+        panel.addCheckboxEntry(3, BooleanParam.ssc, "Skip subcomponents", false);
+        panel.addTextEntry(4, TextParam.BreezeExprFile, "Breeze Expression", Parameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
+
+        getDataFromPanel(panel);
     }
 
-    private void constructFeasibilityEnforcement() {
+    private void establishFeasibilityEnforcement() {
         // Allowed: PPP, PNP, PPI, AAA
         final JRadioButton synA = (JRadioButton)buttons.get(BooleanParam.synA);
         final JRadioButton synP = (JRadioButton)buttons.get(BooleanParam.synP);
@@ -236,8 +243,8 @@ public class RunResynFrame extends ParamFrame {
         });
     }
 
-    private void constructTcEntries(JPanel panel, int row) {
-        constructLabelCell(panel, row, "Direct");
+    private void constructTcEntries(PropertiesPanel panel, int row) {
+        panel.addLabelCell(row, "Direct");
 
         JPanel directInternalPanel = new JPanel();
         directInternalPanel.setLayout(new FlowLayout());
@@ -268,7 +275,7 @@ public class RunResynFrame extends ParamFrame {
 
         //--
 
-        constructLabelCell(panel, row + 1, "Decomposition");
+        panel.addLabelCell(row + 1, "Decomposition");
 
         JPanel decoInternalPanel = new JPanel();
         decoInternalPanel.setLayout(new FlowLayout());

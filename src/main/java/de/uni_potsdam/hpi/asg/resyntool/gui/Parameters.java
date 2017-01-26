@@ -19,9 +19,9 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractBooleanParam;
-import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractEnumParam;
-import de.uni_potsdam.hpi.asg.common.gui.ParamFrame.AbstractTextParam;
+import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractBooleanParam;
+import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractEnumParam;
+import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractTextParam;
 
 public class Parameters {
     private RunResynFrame frame;
