@@ -78,7 +78,7 @@ public class ResynMain {
             addShutdownHook();
             options = new ResynCommandlineOptions();
             if(options.parseCmdLine(args)) {
-                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
+                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug(), "/resyn_log4j2.xml");
                 logger.debug("Args: " + Arrays.asList(args).toString());
                 config = ConfigFile.readIn(options.getConfigfile());
                 if(config == null) {
