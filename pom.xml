@@ -44,7 +44,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<desij.version>3.1.1-SNAPSHOT</desij.version>
-		<logic.version>0.1.5-SNAPSHOT</logic.version>
+		<logic.version>0.1.6-SNAPSHOT</logic.version>
 		<common.version>2.1.0-SNAPSHOT</common.version>
 	</properties>
 	<build>
