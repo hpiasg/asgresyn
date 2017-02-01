@@ -33,6 +33,7 @@ import java.awt.event.WindowAdapter;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
@@ -47,12 +48,14 @@ public class RunResynFrame extends PropertiesFrame {
     private static final long serialVersionUID = -2928503560193350216L;
 
     private Parameters        params;
+    private boolean           errorOccured;
 
     public RunResynFrame(final Parameters params, WindowAdapter adapt, boolean isDebug) {
         super("ASGresyn runner");
         this.params = params;
         this.params.setFrame(this);
         this.addWindowListener(adapt);
+        this.errorOccured = false;
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -82,7 +85,15 @@ public class RunResynFrame extends PropertiesFrame {
         panel.setLayout(gbl_generalpanel);
 
         panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
-        panel.addTextEntry(1, TextParam.TechLib, "Technology library", "", true, JFileChooser.FILES_ONLY, false);
+
+        String[] techs = params.getAvailableTechs();
+        String defTech = params.getDefTech();
+        if(techs.length == 0) {
+            JOptionPane.showMessageDialog(this, "No technologies installed. Please run ASGtechmngr", "Error", JOptionPane.ERROR_MESSAGE);
+            errorOccured = true;
+        }
+        panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");
+
         panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
         panel.addTextEntry(3, TextParam.OutDir, "Output directory", Parameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
         panel.addTextEntry(4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
@@ -385,5 +396,9 @@ public class RunResynFrame extends PropertiesFrame {
                 }
             }
         });
+    }
+
+    public boolean hasErrorOccured() {
+        return errorOccured;
     }
 }

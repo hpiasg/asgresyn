@@ -19,15 +19,26 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
+import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters;
 import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynFrame;
 import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynWindowAdapter;
+import de.uni_potsdam.hpi.asg.resyntool.io.Config;
+import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 
 public class ResynGuiMain {
+
+    public static final String techdir     = "$BASEDIR/tech";
+    public static final String resynconfig = "$BASEDIR/config/resynconfig.xml";
+
     public static void main(String[] args) {
         int status = main2(args);
         System.exit(status);
@@ -46,8 +57,31 @@ public class ResynGuiMain {
         } catch(ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e1) {
             return 1;
         }
+
+        File cfgFile = FileHelper.getInstance().replaceBasedir(resynconfig);
+        Config cfg = ConfigFile.readIn(cfgFile);
+        String defTechName = null;
+        if(cfg.defaultTech != null) {
+            File defTechFile = FileHelper.getInstance().replaceBasedir(cfg.defaultTech);
+            if(defTechFile != null) {
+                Technology defTech = Technology.readInSilent(defTechFile);
+                if(defTech != null) {
+                    defTechName = defTech.getName();
+                }
+            }
+        }
+        TechnologyDirectory techDir = TechnologyDirectory.create(techdir, null);
+        if(techDir == null) {
+            return 1;
+        }
+        Parameters params = new Parameters(defTechName, techDir);
+
         RunResynWindowAdapter adapt = new RunResynWindowAdapter();
-        RunResynFrame rframe = new RunResynFrame(new Parameters(), adapt, isDebug);
+        RunResynFrame rframe = new RunResynFrame(params, adapt, isDebug);
+        if(rframe.hasErrorOccured()) {
+            return 1;
+        }
+
         rframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         rframe.pack();
         rframe.setLocationRelativeTo(null); //center
@@ -60,5 +94,6 @@ public class ResynGuiMain {
             }
         }
         return 0;
+
     }
 }

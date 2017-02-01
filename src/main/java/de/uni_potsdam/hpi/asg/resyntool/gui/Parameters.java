@@ -22,25 +22,24 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractBooleanParam;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractEnumParam;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractTextParam;
+import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 
 public class Parameters {
-    private RunResynFrame frame;
-
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
-        /*general*/ BreezeFile, TechLib, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
+        /*general*/ BreezeFile, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
         /*adv*/ Asglogic,
         /*debug*/ BreezeExprFile
     }
 
     public enum BooleanParam implements AbstractBooleanParam {
-        /*general*/ OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
+        /*general*/ TechLibDef, OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
         /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
         /*debug*/ debug, tooldebug, sdp, ssc
     }
     
     public enum EnumParam implements AbstractEnumParam {
-        /*general*/
+        /*general*/ TechLib,
         /*adv*/ decoStrat, decoPart
     }
     //@formatter:on
@@ -52,8 +51,16 @@ public class Parameters {
     public static String   userDirStr      = "$USER-DIR";
     public static String   basedirStr      = "$BASEDIR";
     public static String   outfilebaseName = "$OUTFILE";
-
     public static String   basedir         = System.getProperty("basedir");
+
+    private RunResynFrame  frame;
+    private String         defTech;
+    private String[]       techs;
+
+    public Parameters(String defTech, TechnologyDirectory techDir) {
+        this.defTech = defTech;
+        this.techs = techDir.getTechNames();
+    }
 
     public void setFrame(RunResynFrame frame) {
         this.frame = frame;
@@ -83,8 +90,18 @@ public class Parameters {
                 return partHeuristics[index];
             case decoStrat:
                 return decoStrategies[index];
+            case TechLib:
+                return techs[index];
             default:
                 return null;
         }
+    }
+
+    public String getDefTech() {
+        return defTech;
+    }
+
+    public String[] getAvailableTechs() {
+        return techs;
     }
 }

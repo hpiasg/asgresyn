@@ -26,6 +26,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
+import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
@@ -84,11 +87,16 @@ public class ResynRunner {
             System.err.println("Breezefile not found");
             return false;
         }
-        File techfile = new File(params.getTextValue(TextParam.TechLib));
-        if(!techfile.exists()) {
-            System.err.println("Techfile not found");
-            return false;
+        if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
+            String techName = params.getEnumValue(EnumParam.TechLib);
+            String tech = ResynGuiMain.techdir + "/" + techName + TechnologyDirectory.techfileExtension;
+            File techfile = FileHelper.getInstance().replaceBasedir(tech);
+            if(!techfile.exists()) {
+                System.err.println("Techfile not found");
+                return false;
+            }
         }
+
         return true;
     }
 
@@ -107,7 +115,7 @@ public class ResynRunner {
 
     private void addGeneralParams(List<String> cmd) {
         cmd.add("-lib");
-        cmd.add(params.getTextValue(TextParam.TechLib));
+        cmd.add(FileHelper.getInstance().replaceBasedir(params.getEnumValue(EnumParam.TechLib)).getAbsolutePath());
 
         if(params.getBooleanValue(BooleanParam.OptDp)) {
             cmd.add("-odp");
