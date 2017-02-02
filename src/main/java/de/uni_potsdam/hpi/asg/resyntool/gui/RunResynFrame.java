@@ -38,6 +38,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesFrame;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.BooleanParam;
@@ -45,10 +48,11 @@ import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
 
 public class RunResynFrame extends PropertiesFrame {
-    private static final long serialVersionUID = -2928503560193350216L;
+    private static final long   serialVersionUID = -2928503560193350216L;
+    private static final Logger logger           = LogManager.getLogger();
 
-    private Parameters        params;
-    private boolean           errorOccured;
+    private Parameters          params;
+    private boolean             errorOccured;
 
     public RunResynFrame(final Parameters params, WindowAdapter adapt, boolean isDebug) {
         super("ASGresyn runner");
@@ -89,7 +93,7 @@ public class RunResynFrame extends PropertiesFrame {
         String[] techs = params.getAvailableTechs();
         String defTech = params.getDefTech();
         if(techs.length == 0) {
-            JOptionPane.showMessageDialog(this, "No technologies installed. Please run ASGtechmngr", "Error", JOptionPane.ERROR_MESSAGE);
+            logger.error("No technologies installed. Please run ASGtechmngr");
             errorOccured = true;
         }
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");

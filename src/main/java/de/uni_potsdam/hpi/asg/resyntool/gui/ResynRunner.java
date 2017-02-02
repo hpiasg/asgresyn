@@ -26,6 +26,9 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
@@ -34,26 +37,15 @@ import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
 
 public class ResynRunner {
+    private static final Logger logger = LogManager.getLogger();
 
-    private Parameters params;
+    private Parameters          params;
 
     public ResynRunner(Parameters params) {
         this.params = params;
     }
 
     public void run() {
-
-        //@formatter:off
-//        String[] cmd = {
-//            "/home/norman/workspace/resyntool/target/asgresyn-1.1.2-SNAPSHOT-unix/asgresyn-1.1.2-SNAPSHOT/bin/ASGresyn",
-//            "-lib", "/home/norman/workspace/data/tech/ihp130nm/ihp130nm_full.xml",
-//            "-sout",  "/home/norman/temp/resyn.v", "-zip", "/home/norman/temp/resyn.zip", "-log", "/home/norman/temp/resyn.log",
-//            "-tc", "D",
-//            "-debug",
-//            "/home/norman/workspace/data/benchmarks_balsa/breeze/gcd.breeze"
-//        };
-        //@formatter:on
-
         if(!checkParams()) {
             return;
         }
@@ -84,7 +76,7 @@ public class ResynRunner {
     private boolean checkParams() {
         File breezefile = new File(params.getTextValue(TextParam.BreezeFile));
         if(!breezefile.exists()) {
-            System.err.println("Breezefile not found");
+            logger.error("Breezefile not found");
             return false;
         }
         if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
@@ -92,7 +84,7 @@ public class ResynRunner {
             String tech = ResynGuiMain.techdir + "/" + techName + TechnologyDirectory.techfileExtension;
             File techfile = FileHelper.getInstance().replaceBasedir(tech);
             if(!techfile.exists()) {
-                System.err.println("Techfile not found");
+                logger.error("Techfile not found");
                 return false;
             }
         }
