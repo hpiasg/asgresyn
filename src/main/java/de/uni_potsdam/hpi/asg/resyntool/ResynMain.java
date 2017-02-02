@@ -23,9 +23,7 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.SystemUtils;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.status.StatusLogger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
@@ -52,10 +50,6 @@ public class ResynMain {
 
     private static boolean                 skipUndefinedComponents = false;
 
-    static {
-        StatusLogger.getLogger().setLevel(Level.OFF);
-    }
-
     /**
      * Program entrance (with return code as <code>System.exit</code>)
      * 
@@ -81,10 +75,9 @@ public class ResynMain {
         try {
             long start = System.currentTimeMillis();
             int status = -1;
-            addShutdownHook();
             options = new ResynCommandlineOptions();
             if(options.parseCmdLine(args)) {
-                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug(), "/resyn_log4j2.xml");
+                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
                 logger.debug("Args: " + Arrays.asList(args).toString());
                 config = ConfigFile.readIn(options.getConfigfile());
                 if(config == null) {
@@ -93,6 +86,7 @@ public class ResynMain {
                 }
                 WorkingdirGenerator.getInstance().create(options.getWorkingdir(), config.workdir, "resynwork", ResynInvoker.getInstance());
                 tooldebug = options.isTooldebug();
+                addShutdownHook();
                 status = execute();
                 zipWorkfile();
                 WorkingdirGenerator.getInstance().delete();
