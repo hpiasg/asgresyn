@@ -23,7 +23,9 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.status.StatusLogger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
@@ -49,6 +51,10 @@ public class ResynMain {
     public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
+
+    static {
+        StatusLogger.getLogger().setLevel(Level.OFF);
+    }
 
     /**
      * Program entrance (with return code as <code>System.exit</code>)
