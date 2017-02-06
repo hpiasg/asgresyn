@@ -82,9 +82,7 @@ public class ResynRunner {
             return false;
         }
         if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
-            String techName = params.getEnumValue(EnumParam.TechLib);
-            String tech = ResynGuiMain.techdir + "/" + techName + TechnologyDirectory.techfileExtension;
-            File techfile = FileHelper.getInstance().replaceBasedir(tech);
+            File techfile = getTechFile();
             if(!techfile.exists()) {
                 logger.error("Techfile not found");
                 return false;
@@ -92,6 +90,13 @@ public class ResynRunner {
         }
 
         return true;
+    }
+
+    private File getTechFile() {
+        String techName = params.getEnumValue(EnumParam.TechLib);
+        String tech = ResynGuiMain.techdir + "/" + techName + TechnologyDirectory.techfileExtension;
+        File techfile = FileHelper.getInstance().replaceBasedir(tech);
+        return techfile;
     }
 
     private List<String> buildCmd() {
@@ -108,8 +113,11 @@ public class ResynRunner {
     }
 
     private void addGeneralParams(List<String> cmd) {
-        cmd.add("-lib");
-        cmd.add(FileHelper.getInstance().replaceBasedir(params.getEnumValue(EnumParam.TechLib)).getAbsolutePath());
+        if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
+            cmd.add("-lib");
+            File techfile = getTechFile();
+            cmd.add(techfile.getAbsolutePath());
+        }
 
         if(params.getBooleanValue(BooleanParam.OptDp)) {
             cmd.add("-odp");

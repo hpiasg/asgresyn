@@ -71,7 +71,7 @@ public class ResynGuiMain {
         if(cfg.defaultTech != null) {
             File defTechFile = FileHelper.getInstance().replaceBasedir(cfg.defaultTech);
             if(defTechFile != null) {
-                Technology defTech = Technology.readInSilent(defTechFile);
+                Technology defTech = Technology.readIn(defTechFile);
                 if(defTech != null) {
                     defTechName = defTech.getName();
                 }
