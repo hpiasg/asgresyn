@@ -28,12 +28,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.status.StatusLogger;
 
+import de.uni_potsdam.hpi.asg.common.gui.WatchForCloseWindowAdapter;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters;
 import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynFrame;
-import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynWindowAdapter;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 
@@ -83,7 +83,7 @@ public class ResynGuiMain {
         }
         Parameters params = new Parameters(defTechName, techDir);
 
-        RunResynWindowAdapter adapt = new RunResynWindowAdapter();
+        WatchForCloseWindowAdapter adapt = new WatchForCloseWindowAdapter();
         RunResynFrame rframe = new RunResynFrame(params, adapt, isDebug);
         if(rframe.hasErrorOccured()) {
             return 1;

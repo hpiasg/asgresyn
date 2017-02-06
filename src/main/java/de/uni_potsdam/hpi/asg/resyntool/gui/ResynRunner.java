@@ -29,6 +29,8 @@ import javax.swing.JFrame;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.uni_potsdam.hpi.asg.common.gui.runner.IOStreamReader;
+import de.uni_potsdam.hpi.asg.common.gui.runner.TerminalFrame;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
@@ -64,7 +66,7 @@ public class ResynRunner {
             e.printStackTrace();
         }
 
-        TerminalFrame tframe = new TerminalFrame(str.toString(), new TerminalWindowAdapter(process));
+        TerminalFrame tframe = new TerminalFrame("ASGresyn terminal", str.toString(), process);
         tframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         tframe.setVisible(true);
 
