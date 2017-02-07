@@ -20,17 +20,13 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
  */
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.JFrame;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.gui.runner.IOStreamReader;
-import de.uni_potsdam.hpi.asg.common.gui.runner.TerminalFrame;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
@@ -38,12 +34,13 @@ import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
 
-public class ResynRunner {
+public class ResynRunner extends AbstractRunner {
     private static final Logger logger = LogManager.getLogger();
 
-    private ResynParameters          params;
+    private ResynParameters     params;
 
     public ResynRunner(ResynParameters params) {
+        super(params);
         this.params = params;
     }
 
@@ -52,27 +49,7 @@ public class ResynRunner {
             return;
         }
         List<String> cmd = buildCmd();
-
-        StringBuilder str = new StringBuilder();
-        for(String s : cmd) {
-            str.append(s + " ");
-        }
-
-        ProcessBuilder pb = new ProcessBuilder(cmd);
-        Process process = null;
-        try {
-            process = pb.start();
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-
-        TerminalFrame tframe = new TerminalFrame("ASGresyn terminal", str.toString(), process);
-        tframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        tframe.setVisible(true);
-
-        IOStreamReader ioreader = new IOStreamReader(process, tframe.getText());
-        Thread streamThread = new Thread(ioreader);
-        streamThread.start();
+        exec(cmd, "ASGresyn terminal");
     }
 
     private boolean checkParams() {
@@ -124,62 +101,7 @@ public class ResynRunner {
             cmd.add("-odp");
         }
 
-        String outDir = params.getTextValue(TextParam.OutDir);
-        String outFile = params.getTextValue(TextParam.OutFile);
-        if(outFile != null) {
-            cmd.add("-sout");
-            if(outDir == null) {
-                cmd.add(outFile);
-            } else {
-                File file = new File(outDir, outFile);
-                cmd.add(file.getAbsolutePath());
-            }
-        }
-
-        String cfgFile = params.getTextValue(TextParam.CfgFile);
-        if(cfgFile != null) {
-            cmd.add("-cfg");
-            cmd.add(cfgFile);
-        }
-
-        String workDir = params.getTextValue(TextParam.WorkingDir);
-        if(workDir != null) {
-            cmd.add("-w");
-            cmd.add(workDir);
-        }
-
-        cmd.add("-o");
-        if(params.getBooleanValue(BooleanParam.LogLvl0)) {
-            cmd.add("0");
-        } else if(params.getBooleanValue(BooleanParam.LogLvl1)) {
-            cmd.add("1");
-        } else if(params.getBooleanValue(BooleanParam.LogLvl2)) {
-            cmd.add("2");
-        } else if(params.getBooleanValue(BooleanParam.LogLvl3)) {
-            cmd.add("3");
-        }
-
-        String logFile = params.getTextValue(TextParam.LogFile);
-        if(logFile != null) {
-            cmd.add("-log");
-            if(outDir == null) {
-                cmd.add(logFile);
-            } else {
-                File file = new File(outDir, logFile);
-                cmd.add(file.getAbsolutePath());
-            }
-        }
-
-        String zipFile = params.getTextValue(TextParam.TempFiles);
-        if(zipFile != null) {
-            cmd.add("-zip");
-            if(outDir == null) {
-                cmd.add(zipFile);
-            } else {
-                File file = new File(outDir, zipFile);
-                cmd.add(file.getAbsolutePath());
-            }
-        }
+        addStandardIOParams(cmd, "-sout");
     }
 
     private void addAdvancedParams(List<String> cmd) {

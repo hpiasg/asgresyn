@@ -22,18 +22,19 @@ package de.uni_potsdam.hpi.asg.resyntool.gui;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractBooleanParam;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractEnumParam;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractTextParam;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 
-public class ResynParameters {
+public class ResynParameters extends AbstractParameters {
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
-        /*general*/ BreezeFile, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
+        /*general*/ BreezeFile,
         /*adv*/ Asglogic,
         /*debug*/ BreezeExprFile
     }
 
     public enum BooleanParam implements AbstractBooleanParam {
-        /*general*/ TechLibDef, OptDp, LogLvl0, LogLvl1, LogLvl2, LogLvl3,
+        /*general*/ TechLibDef, OptDp,
         /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
         /*debug*/ debug, tooldebug, sdp, ssc
     }
@@ -44,16 +45,9 @@ public class ResynParameters {
     }
     //@formatter:on
 
-    public static String[] decoStrategies  = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
-    public static String[] partHeuristics  = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
+    public static String[] decoStrategies = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
+    public static String[] partHeuristics = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
 
-    public static String   unsetStr        = "$UNSET";
-    public static String   userDirStr      = "$USER-DIR";
-    public static String   basedirStr      = "$BASEDIR";
-    public static String   outfilebaseName = "$OUTFILE";
-    public static String   basedir         = System.getProperty("basedir");
-
-    private RunResynFrame  frame;
     private String         defTech;
     private String[]       techs;
 
@@ -62,38 +56,17 @@ public class ResynParameters {
         this.techs = techDir.getTechNames();
     }
 
-    public void setFrame(RunResynFrame frame) {
-        this.frame = frame;
-    }
-
-    public String getTextValue(TextParam param) {
-        String str = frame.getTextValue(param);
-        if(str.equals(ResynParameters.unsetStr)) {
-            return null;
-        }
-        if(str.equals(ResynParameters.userDirStr)) {
-            return System.getProperty("user.dir");
-        }
-        String retVal = str.replaceAll("\\" + ResynParameters.basedirStr, basedir);
-        retVal = retVal.replaceAll("\\" + ResynParameters.outfilebaseName, frame.getTextValue(TextParam.OutFile).replaceAll(".v", ""));
-        return retVal;
-    }
-
-    public boolean getBooleanValue(BooleanParam param) {
-        return frame.getBooleanValue(param);
-    }
-
-    public String getEnumValue(EnumParam param) {
+    @Override
+    public String getEnumValue(AbstractEnumParam param) {
         int index = frame.getEnumValue(param);
-        switch(param) {
-            case decoPart:
-                return partHeuristics[index];
-            case decoStrat:
-                return decoStrategies[index];
-            case TechLib:
-                return techs[index];
-            default:
-                return null;
+        if(param == EnumParam.decoPart) {
+            return partHeuristics[index];
+        } else if(param == EnumParam.decoStrat) {
+            return decoStrategies[index];
+        } else if(param == EnumParam.TechLib) {
+            return techs[index];
+        } else {
+            return null;
         }
     }
 

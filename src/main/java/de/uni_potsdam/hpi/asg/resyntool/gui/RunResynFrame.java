@@ -40,25 +40,22 @@ import javax.swing.JTabbedPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.gui.PropertiesFrame;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunFrame;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
 
-public class RunResynFrame extends PropertiesFrame {
+public class RunResynFrame extends AbstractRunFrame {
     private static final long   serialVersionUID = -2928503560193350216L;
     private static final Logger logger           = LogManager.getLogger();
 
-    private ResynParameters          params;
-    private boolean             errorOccured;
+    private ResynParameters     params;
 
     public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug) {
-        super("ASGresyn runner");
+        super("ASGresyn runner", params, adapt);
         this.params = params;
-        this.params.setFrame(this);
-        this.addWindowListener(adapt);
-        this.errorOccured = false;
 
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
@@ -98,14 +95,9 @@ public class RunResynFrame extends PropertiesFrame {
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");
 
         panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
-        panel.addTextEntry(3, TextParam.OutDir, "Output directory", ResynParameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
-        panel.addTextEntry(4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
+        addOutSection(panel, 3, "resyn.v");
         // 5: blank
-        panel.addTextEntry(6, TextParam.CfgFile, "Configuration file", ResynParameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
-        panel.addTextEntry(7, TextParam.WorkingDir, "Working directory", ResynParameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
-        panel.addSingleRadioButtonGroupEntry(8, "Log level", new String[]{"Nothing", "Errors", "+Warnings", "+Info"}, new BooleanParam[]{BooleanParam.LogLvl0, BooleanParam.LogLvl1, BooleanParam.LogLvl2, BooleanParam.LogLvl3}, 3);
-        panel.addTextEntry(9, TextParam.LogFile, "Log file name", ResynParameters.outfilebaseName + ".log", false, null, true);
-        panel.addTextEntry(10, TextParam.TempFiles, "Temp files file name", ResynParameters.outfilebaseName + ".zip", false, null, true);
+        addIOSection(panel, 6, AbstractParameters.basedirStr + "/config/resynconfig.xml");
 
         getDataFromPanel(panel);
     }
@@ -399,9 +391,5 @@ public class RunResynFrame extends PropertiesFrame {
                 }
             }
         });
-    }
-
-    public boolean hasErrorOccured() {
-        return errorOccured;
     }
 }
