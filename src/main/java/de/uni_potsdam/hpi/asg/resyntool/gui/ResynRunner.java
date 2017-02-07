@@ -101,7 +101,8 @@ public class ResynRunner {
 
     private List<String> buildCmd() {
         List<String> cmd = new ArrayList<>();
-        cmd.add(System.getProperty("basedir") + "/bin/ASGresyn");
+        File resynbin = FileHelper.getInstance().replaceBasedir(ResynGuiMain.resynbin);
+        cmd.add(resynbin.getAbsolutePath());
 
         addGeneralParams(cmd);
         addAdvancedParams(cmd);

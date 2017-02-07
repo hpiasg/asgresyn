@@ -41,6 +41,7 @@ public class ResynGuiMain {
 
     public static final String techdir     = "$BASEDIR/tech";
     public static final String resynconfig = "$BASEDIR/config/resynconfig.xml";
+    public static final String resynbin    = "$BASEDIR/bin/ASGresyn";
 
     static {
         StatusLogger.getLogger().setLevel(Level.OFF);
