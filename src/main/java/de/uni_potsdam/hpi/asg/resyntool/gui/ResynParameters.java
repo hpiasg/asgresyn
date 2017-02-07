@@ -24,7 +24,7 @@ import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractEnumParam;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel.AbstractTextParam;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 
-public class Parameters {
+public class ResynParameters {
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
         /*general*/ BreezeFile, OutDir, OutFile, CfgFile, WorkingDir, LogFile, TempFiles,
@@ -57,7 +57,7 @@ public class Parameters {
     private String         defTech;
     private String[]       techs;
 
-    public Parameters(String defTech, TechnologyDirectory techDir) {
+    public ResynParameters(String defTech, TechnologyDirectory techDir) {
         this.defTech = defTech;
         this.techs = techDir.getTechNames();
     }
@@ -68,14 +68,14 @@ public class Parameters {
 
     public String getTextValue(TextParam param) {
         String str = frame.getTextValue(param);
-        if(str.equals(Parameters.unsetStr)) {
+        if(str.equals(ResynParameters.unsetStr)) {
             return null;
         }
-        if(str.equals(Parameters.userDirStr)) {
+        if(str.equals(ResynParameters.userDirStr)) {
             return System.getProperty("user.dir");
         }
-        String retVal = str.replaceAll("\\" + Parameters.basedirStr, basedir);
-        retVal = retVal.replaceAll("\\" + Parameters.outfilebaseName, frame.getTextValue(TextParam.OutFile).replaceAll(".v", ""));
+        String retVal = str.replaceAll("\\" + ResynParameters.basedirStr, basedir);
+        retVal = retVal.replaceAll("\\" + ResynParameters.outfilebaseName, frame.getTextValue(TextParam.OutFile).replaceAll(".v", ""));
         return retVal;
     }
 

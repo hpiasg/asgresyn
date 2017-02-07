@@ -34,16 +34,16 @@ import de.uni_potsdam.hpi.asg.common.gui.runner.TerminalFrame;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.BooleanParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
 
 public class ResynRunner {
     private static final Logger logger = LogManager.getLogger();
 
-    private Parameters          params;
+    private ResynParameters          params;
 
-    public ResynRunner(Parameters params) {
+    public ResynRunner(ResynParameters params) {
         this.params = params;
     }
 

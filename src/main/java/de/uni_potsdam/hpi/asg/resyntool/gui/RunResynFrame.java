@@ -42,18 +42,18 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesFrame;
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.BooleanParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.EnumParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.Parameters.TextParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
+import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
 
 public class RunResynFrame extends PropertiesFrame {
     private static final long   serialVersionUID = -2928503560193350216L;
     private static final Logger logger           = LogManager.getLogger();
 
-    private Parameters          params;
+    private ResynParameters          params;
     private boolean             errorOccured;
 
-    public RunResynFrame(final Parameters params, WindowAdapter adapt, boolean isDebug) {
+    public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug) {
         super("ASGresyn runner");
         this.params = params;
         this.params.setFrame(this);
@@ -98,14 +98,14 @@ public class RunResynFrame extends PropertiesFrame {
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");
 
         panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
-        panel.addTextEntry(3, TextParam.OutDir, "Output directory", Parameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
+        panel.addTextEntry(3, TextParam.OutDir, "Output directory", ResynParameters.userDirStr, true, JFileChooser.DIRECTORIES_ONLY, true);
         panel.addTextEntry(4, TextParam.OutFile, "Output file name", "resyn.v", false, null, false);
         // 5: blank
-        panel.addTextEntry(6, TextParam.CfgFile, "Configuration file", Parameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
-        panel.addTextEntry(7, TextParam.WorkingDir, "Working directory", Parameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
+        panel.addTextEntry(6, TextParam.CfgFile, "Configuration file", ResynParameters.basedirStr + "/config/resynconfig.xml", true, JFileChooser.FILES_ONLY, true);
+        panel.addTextEntry(7, TextParam.WorkingDir, "Working directory", ResynParameters.unsetStr, true, JFileChooser.DIRECTORIES_ONLY, true);
         panel.addSingleRadioButtonGroupEntry(8, "Log level", new String[]{"Nothing", "Errors", "+Warnings", "+Info"}, new BooleanParam[]{BooleanParam.LogLvl0, BooleanParam.LogLvl1, BooleanParam.LogLvl2, BooleanParam.LogLvl3}, 3);
-        panel.addTextEntry(9, TextParam.LogFile, "Log file name", Parameters.outfilebaseName + ".log", false, null, true);
-        panel.addTextEntry(10, TextParam.TempFiles, "Temp files file name", Parameters.outfilebaseName + ".zip", false, null, true);
+        panel.addTextEntry(9, TextParam.LogFile, "Log file name", ResynParameters.outfilebaseName + ".log", false, null, true);
+        panel.addTextEntry(10, TextParam.TempFiles, "Temp files file name", ResynParameters.outfilebaseName + ".zip", false, null, true);
 
         getDataFromPanel(panel);
     }
@@ -123,15 +123,15 @@ public class RunResynFrame extends PropertiesFrame {
         panel.addLabelEntry(0, "<html><body><b>Tackle complexity</b></body></html>");
         constructTcEntries(panel, 1);
         // 2: also constructTcEntries
-        panel.addComboBoxEntry(3, EnumParam.decoStrat, "Decomposition strategy", Parameters.decoStrategies);
-        panel.addComboBoxEntry(4, EnumParam.decoPart, "Partitioning heuristic ", Parameters.partHeuristics);
+        panel.addComboBoxEntry(3, EnumParam.decoStrat, "Decomposition strategy", ResynParameters.decoStrategies);
+        panel.addComboBoxEntry(4, EnumParam.decoPart, "Partitioning heuristic ", ResynParameters.partHeuristics);
         // 5: spacer
         panel.addLabelEntry(6, "<html><body><b>Logic synthesis</b></body></html>");
         panel.addSingleRadioButtonGroupEntry(7, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);
         panel.addSingleRadioButtonGroupEntry(8, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
         panel.addSingleRadioButtonGroupEntry(9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
         panel.addSingleRadioButtonGroupEntry(10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
-        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", Parameters.unsetStr, false, null, true);
+        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", ResynParameters.unsetStr, false, null, true);
 
         getDataFromPanel(panel);
         establishFeasibilityEnforcement();
@@ -153,7 +153,7 @@ public class RunResynFrame extends PropertiesFrame {
         panel.addCheckboxEntry(1, BooleanParam.tooldebug, "Tool debug", false);
         panel.addCheckboxEntry(2, BooleanParam.sdp, "Skip data path", false);
         panel.addCheckboxEntry(3, BooleanParam.ssc, "Skip subcomponents", false);
-        panel.addTextEntry(4, TextParam.BreezeExprFile, "Breeze Expression", Parameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
+        panel.addTextEntry(4, TextParam.BreezeExprFile, "Breeze Expression", ResynParameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
 
         getDataFromPanel(panel);
     }
