@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.components;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -32,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSComponentType;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.components.HSSignal.Signaltype;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.RSignal;
@@ -91,7 +91,7 @@ public class ResynType {
     }
 
     public String generate(String technology) {
-        String filename = def + FileHelper.getFileEx(Filetype.verilog);
+        String filename = def + CommonConstants.VERILOG_FILE_EXTENSION;
         ResynInvoker.getInstance().invokeBalsaNetlist(technology, filename, balsaNetlistStr, balsaNetlistParams);
         List<String> text = FileHelper.getInstance().readFile(filename);
         if(text == null) {

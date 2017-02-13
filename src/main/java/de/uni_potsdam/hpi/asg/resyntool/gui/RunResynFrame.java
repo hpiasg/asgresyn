@@ -41,8 +41,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
-import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunFrame;
+import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
@@ -97,7 +97,7 @@ public class RunResynFrame extends AbstractRunFrame {
         panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
         addOutSection(panel, 3, "resyn.v");
         // 5: blank
-        addIOSection(panel, 6, AbstractParameters.basedirStr + "/config/resynconfig.xml");
+        addIOSection(panel, 6, ResynMain.DEF_CONFIG_FILE_NAME);
 
         getDataFromPanel(panel);
     }
@@ -123,7 +123,7 @@ public class RunResynFrame extends AbstractRunFrame {
         panel.addSingleRadioButtonGroupEntry(8, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
         panel.addSingleRadioButtonGroupEntry(9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
         panel.addSingleRadioButtonGroupEntry(10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
-        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", ResynParameters.unsetStr, false, null, true);
+        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", ResynParameters.UNSET_STR, false, null, true);
 
         getDataFromPanel(panel);
         establishFeasibilityEnforcement();
@@ -145,7 +145,7 @@ public class RunResynFrame extends AbstractRunFrame {
         panel.addCheckboxEntry(1, BooleanParam.tooldebug, "Tool debug", false);
         panel.addCheckboxEntry(2, BooleanParam.sdp, "Skip data path", false);
         panel.addCheckboxEntry(3, BooleanParam.ssc, "Skip subcomponents", false);
-        panel.addTextEntry(4, TextParam.BreezeExprFile, "Breeze Expression", ResynParameters.unsetStr, true, JFileChooser.FILES_ONLY, true);
+        panel.addTextEntry(4, TextParam.BreezeExprFile, "Breeze Expression", ResynParameters.UNSET_STR, true, JFileChooser.FILES_ONLY, true);
 
         getDataFromPanel(panel);
     }

@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
 
 /*
- * Copyright (C) 2012 - 2014 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -24,8 +24,7 @@ import java.util.concurrent.Callable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.stg.STGInternalSignalFixer;
 
 public class DecompositionSynthesisFuture implements Callable<String> {
@@ -42,8 +41,8 @@ public class DecompositionSynthesisFuture implements Callable<String> {
     @Override
     public String call() {
         try {
-            String filename_v = name + FileHelper.getFileEx(Filetype.verilog);
-            String filename_g = name + FileHelper.getFileEx(Filetype.stg);
+            String filename_v = name + CommonConstants.VERILOG_FILE_EXTENSION;
+            String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
 
             if(STGInternalSignalFixer.fix(filename_g)) {
                 if(synthesis.synthesise(filename_g, filename_v)) {

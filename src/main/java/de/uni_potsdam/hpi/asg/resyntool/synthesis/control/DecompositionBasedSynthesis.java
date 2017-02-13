@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -37,8 +37,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.LogicSynthesisParameter;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
@@ -52,8 +52,8 @@ public class DecompositionBasedSynthesis extends ControlSynthesis {
 
     @Override
     public boolean generate() {
-        String filename_breeze = name + FileHelper.getFileEx(Filetype.breeze);
-        String filename_g = name + FileHelper.getFileEx(Filetype.stg);
+        String filename_breeze = name + CommonConstants.BREEZE_FILE_EXTENSION;
+        String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
         Pattern filepattern = Pattern.compile("(" + filename_g + "__final_.*)\\.g");
 
         if(ResynInvoker.getInstance().invokeDesijBreeze(filename_g, filename_breeze, true, params.getDesijBreezeExprFile())) {
@@ -122,7 +122,7 @@ public class DecompositionBasedSynthesis extends ControlSynthesis {
                 }
 
                 if(componentFailed == 0) {
-                    String filename_v = name + stwending + FileHelper.getFileEx(Filetype.verilog);
+                    String filename_v = name + stwending + CommonConstants.VERILOG_FILE_EXTENSION;
                     if(!FileHelper.getInstance().writeFile(filename_v, FileHelper.getInstance().mergeFileContents(filelist))) {
                         logger.error("Could not write Netlist");
                         return false;

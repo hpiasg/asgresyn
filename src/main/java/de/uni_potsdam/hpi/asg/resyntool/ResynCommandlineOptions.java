@@ -25,6 +25,7 @@ import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.CommandlineOptions;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 
 public class ResynCommandlineOptions extends CommandlineOptions {
 
@@ -67,15 +68,15 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     
     @Option(name = "-o", metaVar = "<level>", usage = "Outputlevel: 0:nothing\n1:errors\n[2:+warnings]\n3:+info")
     private int outputlevel             = 2;
-    @Option(name = "-log", metaVar = "<logfile>", usage = "Define output Logfile, default is resyn.log")
-    private File logfile = new File("resyn.log");
-    @Option(name = "-sout", metaVar = "<file>", usage = "synthesis outfile, default is resyn.v")
-    private File synthesisOutfile = new File(System.getProperty("user.dir") + File.separator + "resyn.v");
-    @Option(name = "-zip", metaVar = "<zipfile>", usage = "Define the zip file with all temp files, default is resyn.zip")
-    private File workfile = new File(System.getProperty("user.dir") + File.separator + "resyn.zip");
+    @Option(name = "-log", metaVar = "<logfile>", usage = "Define output Logfile, default is resyn" + CommonConstants.LOG_FILE_EXTENSION)
+    private File logfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.LOG_FILE_EXTENSION);
+    @Option(name = "-sout", metaVar = "<file>", usage = "synthesis outfile, default is resyn" + CommonConstants.VERILOG_FILE_EXTENSION)
+    private File synthesisOutfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.VERILOG_FILE_EXTENSION);
+    @Option(name = "-zip", metaVar = "<zipfile>", usage = "Define the zip file with all temp files, default is resyn" + CommonConstants.ZIP_FILE_EXTENSION)
+    private File workfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.ZIP_FILE_EXTENSION);
     
-    @Option(name = "-cfg", metaVar = "<configfile>", usage = "Config file, default is resynconfig.xml")
-    private File configfile = new File("resynconfig.xml");
+    @Option(name = "-cfg", metaVar = "<configfile>", usage = "Config file, default is " + ResynMain.DEF_CONFIG_FILE_NAME)
+    private File configfile = new File(CommonConstants.DEF_CONFIG_DIR_FILE, ResynMain.DEF_CONFIG_FILE_NAME);
     @Option(name = "-w", metaVar = "<workingdir>", usage = "Working directory. If not given, the value in configfile is used. If there is no entry, 'resynwork*' in the os default tmp dir is used.")
     private File workingdir = null;
 

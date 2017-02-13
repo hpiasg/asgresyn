@@ -27,8 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
@@ -71,15 +70,12 @@ public class ResynRunner extends AbstractRunner {
 
     private File getTechFile() {
         String techName = params.getEnumValue(EnumParam.TechLib);
-        String tech = ResynGuiMain.techdir + "/" + techName + TechnologyDirectory.techfileExtension;
-        File techfile = FileHelper.getInstance().replaceBasedir(tech);
-        return techfile;
+        return new File(CommonConstants.DEF_TECH_DIR_FILE, techName + CommonConstants.XMLTECH_FILE_EXTENSION);
     }
 
     private List<String> buildCmd() {
         List<String> cmd = new ArrayList<>();
-        File resynbin = FileHelper.getInstance().replaceBasedir(ResynGuiMain.resynbin);
-        cmd.add(resynbin.getAbsolutePath());
+        cmd.add(ResynGuiMain.RESYN_BIN.getAbsolutePath());
 
         addGeneralParams(cmd);
         addAdvancedParams(cmd);

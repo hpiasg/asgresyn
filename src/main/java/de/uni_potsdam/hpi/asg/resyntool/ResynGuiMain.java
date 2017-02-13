@@ -27,6 +27,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import de.uni_potsdam.hpi.asg.common.gui.WatchForCloseWindowAdapter;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters;
@@ -36,9 +37,7 @@ import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 
 public class ResynGuiMain {
 
-    public static final String techdir     = "$BASEDIR/tech";
-    public static final String resynconfig = "$BASEDIR/config/resynconfig.xml";
-    public static final String resynbin    = "$BASEDIR/bin/ASGresyn";
+    public static final File RESYN_BIN = new File(CommonConstants.DEF_BIN_DIR_FILE, "ASGresyn");
 
     public static void main(String[] args) {
         int status = main2(args);
@@ -59,8 +58,8 @@ public class ResynGuiMain {
             return 1;
         }
 
-        File cfgFile = FileHelper.getInstance().replaceBasedir(resynconfig);
-        Config cfg = ConfigFile.readIn(cfgFile);
+//        Config cfg = ConfigFile.readIn(ResynMain.CONFIG_FILE);
+        Config cfg = ConfigFile.readIn(new File(CommonConstants.DEF_CONFIG_DIR_FILE, ResynMain.DEF_CONFIG_FILE_NAME));
         String defTechName = null;
         if(cfg.defaultTech != null) {
             File defTechFile = FileHelper.getInstance().replaceBasedir(cfg.defaultTech);
@@ -71,7 +70,7 @@ public class ResynGuiMain {
                 }
             }
         }
-        TechnologyDirectory techDir = TechnologyDirectory.create(techdir, null);
+        TechnologyDirectory techDir = TechnologyDirectory.createDefault();
         if(techDir == null) {
             return 1;
         }

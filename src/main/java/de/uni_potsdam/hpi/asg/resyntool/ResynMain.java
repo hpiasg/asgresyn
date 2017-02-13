@@ -19,6 +19,7 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.Logger;
@@ -27,6 +28,7 @@ import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.ReadTechnologyHelper;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
@@ -41,6 +43,10 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
  * 
  */
 public class ResynMain {
+
+    public static final String             DEF_CONFIG_FILE_NAME    = "resynconfig.xml";
+    //public static final File               CONFIG_FILE             = new File(CommonConstants.DEF_CONFIG_DIR_FILE, DEF_CONFIG_FILE_NAME);
+
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
 
@@ -48,6 +54,10 @@ public class ResynMain {
     public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
+
+    static {
+        System.out.println();
+    }
 
     /**
      * Program entrance (with return code as <code>System.exit</code>)
