@@ -76,7 +76,7 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     private File workfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.ZIP_FILE_EXTENSION);
     
     @Option(name = "-cfg", metaVar = "<configfile>", usage = "Config file, default is " + ResynMain.DEF_CONFIG_FILE_NAME)
-    private File configfile = new File(CommonConstants.DEF_CONFIG_DIR_FILE, ResynMain.DEF_CONFIG_FILE_NAME);
+    private File configfile = ResynMain.DEF_CONFIG_FILE;
     @Option(name = "-w", metaVar = "<workingdir>", usage = "Working directory. If not given, the value in configfile is used. If there is no entry, 'resynwork*' in the os default tmp dir is used.")
     private File workingdir = null;
 

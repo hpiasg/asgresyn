@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.uni_potsdam.hpi.asg.common.iohelper.BasedirHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
@@ -45,8 +46,8 @@ public class ScriptGenerator {
     public static final String  dc_log_file         = "_dpopt.log";
 
     public static final Pattern module_pattern      = Pattern.compile("module (.*) \\(.*");
-    public static final File    dc_sh_templatefile  = FileHelper.getInstance().getBasedirFile("templates/resyn_dpopt.sh");
-    public static final File    dc_tcl_templatefile = FileHelper.getInstance().getBasedirFile("templates/resyn_dpopt.tcl");
+    public static final File    dc_sh_templatefile  = BasedirHelper.getFileInBasedir("templates/resyn_dpopt.sh");
+    public static final File    dc_tcl_templatefile = BasedirHelper.getFileInBasedir("templates/resyn_dpopt.tcl");
 
     private String              name;
     private String              root;

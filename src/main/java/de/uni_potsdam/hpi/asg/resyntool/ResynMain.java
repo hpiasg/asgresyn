@@ -45,7 +45,7 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 public class ResynMain {
 
     public static final String             DEF_CONFIG_FILE_NAME    = "resynconfig.xml";
-    //public static final File               CONFIG_FILE             = new File(CommonConstants.DEF_CONFIG_DIR_FILE, DEF_CONFIG_FILE_NAME);
+    public static final File               DEF_CONFIG_FILE         = new File(CommonConstants.DEF_CONFIG_DIR_FILE, DEF_CONFIG_FILE_NAME);
 
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
