@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper.Mode;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
 import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
@@ -83,7 +84,7 @@ public class ResynMain {
             int status = -1;
             options = new ResynCommandlineOptions();
             if(options.parseCmdLine(args)) {
-                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
+                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug(), Mode.cmdline);
                 logger.debug("Args: " + Arrays.asList(args).toString());
                 logger.debug("Using config file " + options.getConfigfile());
                 config = ConfigFile.readIn(options.getConfigfile());

@@ -160,12 +160,9 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 						<program>
 							<mainClass>de.uni_potsdam.hpi.asg.resyntool.ResynMain</mainClass>
 							<id>ASGresyn</id>
-							<commandLineArguments>
-								<commandLineArgument>-cfg "$BASEDIR"/config/resynconfig.xml</commandLineArgument>
-							</commandLineArguments>
 							<jvmSettings>
 								<extraArguments>
-									<extraArgument>-Dlog4j.configurationFile=@BASEDIR@/config/resyn_log4j2.xml</extraArgument>
+									<extraArgument>-Dlog4j.configurationFile=@BASEDIR@/config/log4j2_noconfig.xml</extraArgument>
 								</extraArguments>
 							</jvmSettings>
 						</program>
@@ -174,7 +171,7 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 							<id>ASGresyn_gui</id>
 							<jvmSettings>
 								<extraArguments>
-									<extraArgument>-Dlog4j.configurationFile=@BASEDIR@/config/resyn_gui_log4j2.xml</extraArgument>
+									<extraArgument>-Dlog4j.configurationFile=@BASEDIR@/config/log4j2_noconfig.xml</extraArgument>
 								</extraArguments>
 							</jvmSettings>
 						</program>
