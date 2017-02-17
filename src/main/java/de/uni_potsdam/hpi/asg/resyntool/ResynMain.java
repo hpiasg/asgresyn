@@ -35,6 +35,7 @@ import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
+import de.uni_potsdam.hpi.asg.resyntool.io.ShutdownThread;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.SynthesisMain;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 
@@ -54,10 +55,6 @@ public class ResynMain {
     public static boolean                  tooldebug;
 
     private static boolean                 skipUndefinedComponents = false;
-
-    static {
-        System.out.println();
-    }
 
     /**
      * Program entrance (with return code as <code>System.exit</code>)
@@ -88,6 +85,7 @@ public class ResynMain {
             if(options.parseCmdLine(args)) {
                 logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
                 logger.debug("Args: " + Arrays.asList(args).toString());
+                logger.debug("Using config file " + options.getConfigfile());
                 config = ConfigFile.readIn(options.getConfigfile());
                 if(config == null) {
                     logger.error("Could not read config");
@@ -203,17 +201,6 @@ public class ResynMain {
     }
 
     private static void addShutdownHook() {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                if(logger != null) {
-                    logger.debug("Killing subprocesses");
-                }
-                ResynInvoker inv = ResynInvoker.getInstance();
-                if(inv != null) {
-                    inv.killSubprocesses();
-                }
-            }
-        });
+        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
     }
 }
