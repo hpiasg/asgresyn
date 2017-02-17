@@ -80,8 +80,8 @@ public class RunResynFrame extends AbstractRunFrame {
         GridBagLayout gbl_generalpanel = new GridBagLayout();
         gbl_generalpanel.columnWidths = new int[]{150, 300, 30, 80, 0};
         gbl_generalpanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_generalpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
-        gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_generalpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
+        gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_generalpanel);
 
         panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
@@ -93,11 +93,9 @@ public class RunResynFrame extends AbstractRunFrame {
             errorOccured = true;
         }
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");
-
-        panel.addCheckboxEntry(2, BooleanParam.OptDp, "Optimise data path", false);
-        addOutSection(panel, 3, "resyn.v");
-        // 5: blank
-        addIOSection(panel, 6, ResynMain.DEF_CONFIG_FILE_NAME);
+        addOutSection(panel, 2, "resyn.v");
+        // 4: blank
+        addIOSection(panel, 5, ResynMain.DEF_CONFIG_FILE_NAME);
 
         getDataFromPanel(panel);
     }
@@ -108,22 +106,25 @@ public class RunResynFrame extends AbstractRunFrame {
         GridBagLayout gbl_advpanel = new GridBagLayout();
         gbl_advpanel.columnWidths = new int[]{200, 300, 30, 80, 0};
         gbl_advpanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_advpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
-        gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_advpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
+        gbl_advpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_advpanel);
 
-        panel.addLabelEntry(0, "<html><body><b>Tackle complexity</b></body></html>");
-        constructTcEntries(panel, 1);
-        // 2: also constructTcEntries
-        panel.addComboBoxEntry(3, EnumParam.decoStrat, "Decomposition strategy", ResynParameters.decoStrategies);
-        panel.addComboBoxEntry(4, EnumParam.decoPart, "Partitioning heuristic ", ResynParameters.partHeuristics);
-        // 5: spacer
-        panel.addLabelEntry(6, "<html><body><b>Logic synthesis</b></body></html>");
-        panel.addSingleRadioButtonGroupEntry(7, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);
-        panel.addSingleRadioButtonGroupEntry(8, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
-        panel.addSingleRadioButtonGroupEntry(9, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
-        panel.addSingleRadioButtonGroupEntry(10, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
-        panel.addTextEntry(11, TextParam.Asglogic, "Additional ASGlogic parameters", ResynParameters.UNSET_STR, false, null, true);
+        panel.addLabelEntry(0, "<html><body><b>Data path</b></body></html>");
+        panel.addCheckboxEntry(1, BooleanParam.OptDp, "Optimise data path", false);
+        // 2: spacer
+        panel.addLabelEntry(3, "<html><body><b>Tackle complexity (control)</b></body></html>");
+        constructTcEntries(panel, 4);
+        // 5: also constructTcEntries
+        panel.addComboBoxEntry(6, EnumParam.decoStrat, "Decomposition strategy", ResynParameters.decoStrategies);
+        panel.addComboBoxEntry(7, EnumParam.decoPart, "Partitioning heuristic ", ResynParameters.partHeuristics);
+        // 8: spacer
+        panel.addLabelEntry(9, "<html><body><b>Logic synthesis (control)</b></body></html>");
+        panel.addSingleRadioButtonGroupEntry(10, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);
+        panel.addSingleRadioButtonGroupEntry(11, "Synthesis", new String[]{"ASGlogic", "Petrify"}, new BooleanParam[]{BooleanParam.synA, BooleanParam.synP}, 0);
+        panel.addSingleRadioButtonGroupEntry(12, "Technology mapping", new String[]{"ASGlogic", "Petrify", "No"}, new BooleanParam[]{BooleanParam.tmA, BooleanParam.tmP, BooleanParam.tmN}, 0);
+        panel.addSingleRadioButtonGroupEntry(13, "Reset insertion", new String[]{"ASGlogic", "Petrify", "Petreset"}, new BooleanParam[]{BooleanParam.rstA, BooleanParam.rstP, BooleanParam.rstI}, 0);
+        panel.addTextEntry(14, TextParam.Asglogic, "Additional ASGlogic parameters", ResynParameters.UNSET_STR, false, null, true);
 
         getDataFromPanel(panel);
         establishFeasibilityEnforcement();

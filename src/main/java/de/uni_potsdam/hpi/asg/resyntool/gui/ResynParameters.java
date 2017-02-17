@@ -35,8 +35,8 @@ public class ResynParameters extends AbstractParameters {
     }
 
     public enum BooleanParam implements AbstractBooleanParam {
-        /*general*/ TechLibDef, OptDp,
-        /*adv*/ tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
+        /*general*/ TechLibDef,
+        /*adv*/ OptDp, tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
         /*debug*/ debug, tooldebug, sdp, ssc
     }
     
