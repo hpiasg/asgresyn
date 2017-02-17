@@ -19,7 +19,6 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.JFrame;
@@ -85,7 +84,7 @@ public class ResynGuiMain {
         if(runpanel.hasErrorOccured()) {
             return 1;
         }
-        runframe.getContentPane().add(runpanel, BorderLayout.CENTER);
+        runframe.getContentPane().add(runpanel);
         WatchForCloseWindowAdapter adapt = new WatchForCloseWindowAdapter();
         runframe.addWindowListener(adapt);
         runframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
