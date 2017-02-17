@@ -24,11 +24,11 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.WindowAdapter;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -41,28 +41,31 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
-import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunFrame;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunPanel;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
 
-public class RunResynFrame extends AbstractRunFrame {
+public class RunResynPanel extends AbstractRunPanel {
     private static final long   serialVersionUID = -2928503560193350216L;
     private static final Logger logger           = LogManager.getLogger();
 
     private ResynParameters     params;
+    private Window              parent;
 
-    public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug) {
-        this(params, adapt, isDebug, false);
+    public RunResynPanel(Window parent, final ResynParameters params, boolean isDebug) {
+        this(parent, params, isDebug, false);
     }
 
-    public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug, boolean hideGeneral) {
-        super("ASGresyn runner", params, adapt);
+    public RunResynPanel(Window parent, final ResynParameters params, boolean isDebug, boolean hideGeneral) {
+        super(params);
         this.params = params;
+        this.parent = parent;
 
+        this.setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        getContentPane().add(tabbedPane, BorderLayout.CENTER);
+        this.add(tabbedPane, BorderLayout.CENTER);
 
         constructGeneralPanel(tabbedPane);
         constructAdvancedPanel(tabbedPane);
@@ -75,7 +78,7 @@ public class RunResynFrame extends AbstractRunFrame {
                 run.run();
             }
         });
-        getContentPane().add(runBtn, BorderLayout.PAGE_END);
+        this.add(runBtn, BorderLayout.PAGE_END);
 
         if(hideGeneral) {
             tabbedPane.setEnabledAt(0, false);
@@ -84,7 +87,7 @@ public class RunResynFrame extends AbstractRunFrame {
     }
 
     private void constructGeneralPanel(JTabbedPane tabbedPane) {
-        PropertiesPanel panel = new PropertiesPanel(this);
+        PropertiesPanel panel = new PropertiesPanel(parent);
         tabbedPane.addTab("General", null, panel, null);
         GridBagLayout gbl_generalpanel = new GridBagLayout();
         gbl_generalpanel.columnWidths = new int[]{150, 300, 30, 80, 0};
@@ -110,7 +113,7 @@ public class RunResynFrame extends AbstractRunFrame {
     }
 
     private void constructAdvancedPanel(JTabbedPane tabbedPane) {
-        PropertiesPanel panel = new PropertiesPanel(this);
+        PropertiesPanel panel = new PropertiesPanel(parent);
         tabbedPane.addTab("Advanced", null, panel, null);
         GridBagLayout gbl_advpanel = new GridBagLayout();
         gbl_advpanel.columnWidths = new int[]{200, 300, 30, 80, 0};
@@ -140,7 +143,7 @@ public class RunResynFrame extends AbstractRunFrame {
     }
 
     private void constructDebugPanel(JTabbedPane tabbedPane, boolean isDebug) {
-        PropertiesPanel panel = new PropertiesPanel(this);
+        PropertiesPanel panel = new PropertiesPanel(parent);
         if(isDebug) {
             tabbedPane.addTab("Debug", null, panel, null);
         }

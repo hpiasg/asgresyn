@@ -82,7 +82,7 @@ public class ResynParameters extends AbstractParameters {
 
     @Override
     public String getEnumValue(AbstractEnumParam param) {
-        int index = frame.getEnumValue(param);
+        int index = mainpanel.getEnumValue(param);
         if(param == EnumParam.decoPart) {
             return PARTIONING_HEURISTICS[index];
         } else if(param == EnumParam.decoStrat) {

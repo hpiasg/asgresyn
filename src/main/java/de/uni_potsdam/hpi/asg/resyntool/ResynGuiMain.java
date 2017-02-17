@@ -19,6 +19,7 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.JFrame;
@@ -33,7 +34,7 @@ import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters;
-import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynFrame;
+import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynPanel;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 
@@ -79,16 +80,18 @@ public class ResynGuiMain {
         }
         ResynParameters params = new ResynParameters(defTechName, techDir);
 
-        WatchForCloseWindowAdapter adapt = new WatchForCloseWindowAdapter();
-        RunResynFrame rframe = new RunResynFrame(params, adapt, isDebug);
-        if(rframe.hasErrorOccured()) {
+        JFrame runframe = new JFrame("ASGresyn runner");
+        RunResynPanel runpanel = new RunResynPanel(runframe, params, isDebug);
+        if(runpanel.hasErrorOccured()) {
             return 1;
         }
-
-        rframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        rframe.pack();
-        rframe.setLocationRelativeTo(null); //center
-        rframe.setVisible(true);
+        runframe.getContentPane().add(runpanel, BorderLayout.CENTER);
+        WatchForCloseWindowAdapter adapt = new WatchForCloseWindowAdapter();
+        runframe.addWindowListener(adapt);
+        runframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        runframe.pack();
+        runframe.setLocationRelativeTo(null); //center
+        runframe.setVisible(true);
 
         while(!adapt.isClosed()) {
             try {
