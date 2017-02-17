@@ -54,6 +54,10 @@ public class RunResynFrame extends AbstractRunFrame {
     private ResynParameters     params;
 
     public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug) {
+        this(params, adapt, isDebug, false);
+    }
+
+    public RunResynFrame(final ResynParameters params, WindowAdapter adapt, boolean isDebug, boolean hideGeneral) {
         super("ASGresyn runner", params, adapt);
         this.params = params;
 
@@ -72,6 +76,11 @@ public class RunResynFrame extends AbstractRunFrame {
             }
         });
         getContentPane().add(runBtn, BorderLayout.PAGE_END);
+
+        if(hideGeneral) {
+            tabbedPane.setEnabledAt(0, false);
+            tabbedPane.setSelectedIndex(1);
+        }
     }
 
     private void constructGeneralPanel(JTabbedPane tabbedPane) {
@@ -84,7 +93,7 @@ public class RunResynFrame extends AbstractRunFrame {
         gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_generalpanel);
 
-        panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", "", true, JFileChooser.FILES_ONLY, false);
+        panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", params.getDefBreezeFileName(), true, JFileChooser.FILES_ONLY, false);
 
         String[] techs = params.getAvailableTechs();
         String defTech = params.getDefTech();
@@ -92,8 +101,8 @@ public class RunResynFrame extends AbstractRunFrame {
             logger.error("No technologies installed. Please run ASGtechmngr");
             errorOccured = true;
         }
-        panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.TechLibDef, "Use default");
-        addOutSection(panel, 2, "resyn.v");
+        panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.DefTechLib, "Use default");
+        addOutSection(panel, 2, params.getDefOutFileName(), params.getDefOutDirName());
         // 4: blank
         addIOSection(panel, 5, ResynMain.DEF_CONFIG_FILE_NAME);
 
@@ -116,8 +125,8 @@ public class RunResynFrame extends AbstractRunFrame {
         panel.addLabelEntry(3, "<html><body><b>Tackle complexity (control)</b></body></html>");
         constructTcEntries(panel, 4);
         // 5: also constructTcEntries
-        panel.addComboBoxEntry(6, EnumParam.decoStrat, "Decomposition strategy", ResynParameters.decoStrategies);
-        panel.addComboBoxEntry(7, EnumParam.decoPart, "Partitioning heuristic ", ResynParameters.partHeuristics);
+        panel.addComboBoxEntry(6, EnumParam.decoStrat, "Decomposition strategy", ResynParameters.DECO_STRATEGIES);
+        panel.addComboBoxEntry(7, EnumParam.decoPart, "Partitioning heuristic ", ResynParameters.PARTIONING_HEURISTICS);
         // 8: spacer
         panel.addLabelEntry(9, "<html><body><b>Logic synthesis (control)</b></body></html>");
         panel.addSingleRadioButtonGroupEntry(10, "Solve CSC", new String[]{"Petrify", "MPSAT"}, new BooleanParam[]{BooleanParam.cscP, BooleanParam.cscM}, 0);

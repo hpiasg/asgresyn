@@ -27,6 +27,13 @@ import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
 
 public class ResynParameters extends AbstractParameters {
+
+    public static final String[] DECO_STRATEGIES       = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
+    public static final String[] PARTIONING_HEURISTICS = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
+
+    private static final String  DEF_BREEZE_FILE_NAME  = "";
+    private static final String  DEF_OUT_FILE_NAME     = "resyn.v";
+
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
         /*general*/ BreezeFile,
@@ -35,7 +42,7 @@ public class ResynParameters extends AbstractParameters {
     }
 
     public enum BooleanParam implements AbstractBooleanParam {
-        /*general*/ TechLibDef,
+        /*general*/ DefTechLib,
         /*adv*/ OptDp, tcS0, tcS1, tcS2, tcD0, tcD1, tcD2, cscP, cscM, synA, synP, tmA, tmP, tmN, rstA, rstP, rstI,
         /*debug*/ debug, tooldebug, sdp, ssc
     }
@@ -46,25 +53,40 @@ public class ResynParameters extends AbstractParameters {
     }
     //@formatter:on
 
-    public static String[] decoStrategies = {"breeze", "irr-csc-aware", "csc-aware", "tree", "basic", "lazy-multi", "lazy-single"};
-    public static String[] partHeuristics = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
-
-    private String         defTech;
-    private String[]       techs;
+    private String   defTech;
+    private String[] techs;
+    private boolean  forceTech;
+    private String   defBreezeFileName;
+    private String   defOutDirName;
+    private String   defOutFileName;
 
     public ResynParameters(String defTech, TechnologyDirectory techDir) {
         super(CommonConstants.VERILOG_FILE_EXTENSION);
         this.defTech = defTech;
         this.techs = techDir.getTechNames();
+        this.forceTech = false;
+        this.defBreezeFileName = DEF_BREEZE_FILE_NAME;
+        this.defOutDirName = AbstractParameters.DEF_OUT_DIR;
+        this.defOutFileName = DEF_OUT_FILE_NAME;
+    }
+
+    public ResynParameters(String defTech, TechnologyDirectory techDir, boolean forceTech, String breezeFile, String outDir, String outFile) {
+        super(CommonConstants.VERILOG_FILE_EXTENSION);
+        this.defTech = defTech;
+        this.techs = techDir.getTechNames();
+        this.forceTech = true;
+        this.defBreezeFileName = breezeFile;
+        this.defOutDirName = outDir;
+        this.defOutFileName = outFile;
     }
 
     @Override
     public String getEnumValue(AbstractEnumParam param) {
         int index = frame.getEnumValue(param);
         if(param == EnumParam.decoPart) {
-            return partHeuristics[index];
+            return PARTIONING_HEURISTICS[index];
         } else if(param == EnumParam.decoStrat) {
-            return decoStrategies[index];
+            return DECO_STRATEGIES[index];
         } else if(param == EnumParam.TechLib) {
             return techs[index];
         } else {
@@ -78,5 +100,21 @@ public class ResynParameters extends AbstractParameters {
 
     public String[] getAvailableTechs() {
         return techs;
+    }
+
+    public String getDefBreezeFileName() {
+        return defBreezeFileName;
+    }
+
+    public String getDefOutFileName() {
+        return defOutFileName;
+    }
+
+    public String getDefOutDirName() {
+        return defOutDirName;
+    }
+
+    public boolean isForceTech() {
+        return forceTech;
     }
 }

@@ -57,7 +57,7 @@ public class ResynRunner extends AbstractRunner {
             logger.error("Breezefile not found");
             return false;
         }
-        if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
+        if(!params.getBooleanValue(BooleanParam.DefTechLib) || params.isForceTech()) {
             File techfile = getTechFile();
             if(!techfile.exists()) {
                 logger.error("Techfile not found");
@@ -87,7 +87,7 @@ public class ResynRunner extends AbstractRunner {
     }
 
     private void addGeneralParams(List<String> cmd) {
-        if(!params.getBooleanValue(BooleanParam.TechLibDef)) {
+        if(!params.getBooleanValue(BooleanParam.DefTechLib) || params.isForceTech()) {
             cmd.add("-lib");
             File techfile = getTechFile();
             cmd.add(techfile.getAbsolutePath());
