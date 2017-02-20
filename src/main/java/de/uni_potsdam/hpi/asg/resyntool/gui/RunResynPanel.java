@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -53,15 +54,18 @@ public class RunResynPanel extends AbstractRunPanel {
 
     private ResynParameters     params;
     private Window              parent;
+    private boolean             userHitRun;
 
     public RunResynPanel(Window parent, final ResynParameters params, boolean isDebug) {
-        this(parent, params, isDebug, false);
+        this(parent, params, isDebug, false, false);
     }
 
-    public RunResynPanel(Window parent, final ResynParameters params, boolean isDebug, boolean hideGeneral) {
+    public RunResynPanel(final Window parent, final ResynParameters params, boolean isDebug, boolean hideGeneral, final boolean closeOnRun) {
         super(params);
+        final RunResynPanel thepanel = this;
         this.params = params;
         this.parent = parent;
+        this.userHitRun = false;
 
         this.setLayout(new BorderLayout());
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -74,6 +78,11 @@ public class RunResynPanel extends AbstractRunPanel {
         JButton runBtn = new JButton("Run");
         runBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if(closeOnRun) {
+                    parent.dispatchEvent(new WindowEvent(parent, WindowEvent.WINDOW_CLOSING));
+                    thepanel.userHitRun = true;
+                    return;
+                }
                 ResynRunner run = new ResynRunner(params);
                 run.run();
             }
@@ -404,5 +413,9 @@ public class RunResynPanel extends AbstractRunPanel {
                 }
             }
         });
+    }
+
+    public boolean isUserHitRun() {
+        return userHitRun;
     }
 }
