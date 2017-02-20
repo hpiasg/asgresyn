@@ -23,6 +23,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -44,11 +46,15 @@ public class ResynRunner extends AbstractRunner {
     }
 
     public void run() {
+        run(null);
+    }
+
+    public void run(JTextArea text) {
         if(!checkParams()) {
             return;
         }
         List<String> cmd = buildCmd();
-        exec(cmd, "ASGresyn terminal");
+        exec(cmd, "ASGresyn terminal", text);
     }
 
     private boolean checkParams() {
