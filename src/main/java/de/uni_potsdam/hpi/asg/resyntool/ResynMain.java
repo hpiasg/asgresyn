@@ -165,6 +165,13 @@ public class ResynMain {
 
         SynthesisMain smain = new SynthesisMain(proj, sparams);
         if(smain.generate()) {
+            if(options.getStgOutfile() != null) {
+                if(FileHelper.getInstance().copyfile(smain.getBalsaSTGfilename(), options.getStgOutfile())) {
+                    logger.info("Export STG into: " + options.getStgOutfile());
+                } else {
+                    logger.warn("Export of STG failed");
+                }
+            }
             if(options.getSynthesisOutfile() != null) {
                 if(!options.isSkipdatapath()) {
                     if(FileHelper.getInstance().copyfile(smain.getFile(), options.getSynthesisOutfile())) {
@@ -176,6 +183,7 @@ public class ResynMain {
             } else {
                 logger.warn("Synthesis successful: No outfile " + smain.getFile());
             }
+
         } else {
             logger.error("Synthesis failed");
             return 1;

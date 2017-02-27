@@ -42,6 +42,7 @@ public class DirectSynthesis extends ControlSynthesis {
         String filename_breeze = name + CommonConstants.BREEZE_FILE_EXTENSION;
         String filename_gfull = name + "_full" + CommonConstants.STG_FILE_EXTENSION;
         String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
+        balsaSTGfilename = filename_g;
         String filename_v = name + stwending + CommonConstants.VERILOG_FILE_EXTENSION;
 
         if(ResynInvoker.getInstance().invokeDesijBreeze(filename_gfull, filename_breeze, false, params.getDesijBreezeExprFile())) {

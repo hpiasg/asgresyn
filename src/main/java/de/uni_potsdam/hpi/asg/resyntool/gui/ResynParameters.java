@@ -36,7 +36,7 @@ public class ResynParameters extends AbstractParameters {
 
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
-        /*general*/ BreezeFile,
+        /*general*/ BreezeFile, STGout,
         /*adv*/ Asglogic,
         /*debug*/ BreezeExprFile
     }

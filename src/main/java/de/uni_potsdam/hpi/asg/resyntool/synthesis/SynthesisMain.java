@@ -49,6 +49,7 @@ public class SynthesisMain {
     private SynthesisParameter  params;
 
     private String              file;
+    private String              balsaSTGfilename;
 
     public SynthesisMain(BreezeProjectResyn proj, SynthesisParameter params) {
         this.proj = proj;
@@ -103,6 +104,7 @@ public class SynthesisMain {
                 }
                 if(control.generate()) {
                     controlSuccess = true;
+                    balsaSTGfilename = control.getBalsaSTGfilename();
                     stwmap.put(netlist, control.getStwInfo());
                     logger.info("");
                     break;
@@ -167,5 +169,9 @@ public class SynthesisMain {
 
     public String getFile() {
         return file;
+    }
+
+    public String getBalsaSTGfilename() {
+        return balsaSTGfilename;
     }
 }

@@ -54,6 +54,7 @@ public class DecompositionBasedSynthesis extends ControlSynthesis {
     public boolean generate() {
         String filename_breeze = name + CommonConstants.BREEZE_FILE_EXTENSION;
         String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
+        balsaSTGfilename = filename_g;
         Pattern filepattern = Pattern.compile("(" + filename_g + "__final_.*)\\.g");
 
         if(ResynInvoker.getInstance().invokeDesijBreeze(filename_g, filename_breeze, true, params.getDesijBreezeExprFile())) {

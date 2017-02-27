@@ -29,6 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters.GeneralTextParam;
 import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
@@ -101,6 +102,18 @@ public class ResynRunner extends AbstractRunner {
 
         if(params.getBooleanValue(BooleanParam.OptDp)) {
             cmd.add("-odp");
+        }
+
+        String outDir = params.getTextValue(GeneralTextParam.OutDir);
+        String stgFile = params.getTextValue(TextParam.STGout);
+        if(stgFile != null) {
+            cmd.add("-stgout");
+            if(outDir == null) {
+                cmd.add(stgFile);
+            } else {
+                File file = new File(outDir, stgFile);
+                cmd.add(file.getAbsolutePath());
+            }
         }
 
         addStandardIOParams(cmd, "-sout");

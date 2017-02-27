@@ -72,6 +72,8 @@ public class ResynCommandlineOptions extends CommandlineOptions {
     private File logfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.LOG_FILE_EXTENSION);
     @Option(name = "-sout", metaVar = "<file>", usage = "synthesis outfile, default is resyn" + CommonConstants.VERILOG_FILE_EXTENSION)
     private File synthesisOutfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.VERILOG_FILE_EXTENSION);
+    @Option(name = "-stgout", metaVar = "<file>", usage = "Export of the used Balsa-STG. Default is no export")
+    private File stgOutfile = null;
     @Option(name = "-zip", metaVar = "<zipfile>", usage = "Define the zip file with all temp files, default is resyn" + CommonConstants.ZIP_FILE_EXTENSION)
     private File workfile = new File(System.getProperty("user.dir"), "resyn" + CommonConstants.ZIP_FILE_EXTENSION);
     
@@ -179,5 +181,9 @@ public class ResynCommandlineOptions extends CommandlineOptions {
 
     public boolean isTooldebug() {
         return tooldebug;
+    }
+
+    public File getStgOutfile() {
+        return stgOutfile;
     }
 }

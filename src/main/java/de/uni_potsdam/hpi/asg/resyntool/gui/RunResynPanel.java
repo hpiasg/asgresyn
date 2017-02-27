@@ -43,6 +43,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunPanel;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
@@ -101,8 +102,8 @@ public class RunResynPanel extends AbstractRunPanel {
         GridBagLayout gbl_generalpanel = new GridBagLayout();
         gbl_generalpanel.columnWidths = new int[]{150, 300, 30, 80, 0};
         gbl_generalpanel.columnWeights = new double[]{0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_generalpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
-        gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_generalpanel.rowHeights = new int[]{15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 0};
+        gbl_generalpanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_generalpanel);
 
         panel.addTextEntry(0, TextParam.BreezeFile, "Breeze file", params.getDefBreezeFileName(), true, JFileChooser.FILES_ONLY, false);
@@ -115,8 +116,9 @@ public class RunResynPanel extends AbstractRunPanel {
         }
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.DefTechLib, "Use default");
         addOutSection(panel, 2, params.getDefOutFileName(), params.getDefOutDirName());
-        // 4: blank
-        addIOSection(panel, 5, ResynMain.DEF_CONFIG_FILE_NAME);
+        panel.addTextEntry(4, TextParam.STGout, "Balsa-STG export file name", AbstractParameters.UNSET_STR, false, null, true);
+        // 5: blank
+        addIOSection(panel, 6, ResynMain.DEF_CONFIG_FILE_NAME);
 
         getDataFromPanel(panel);
     }
