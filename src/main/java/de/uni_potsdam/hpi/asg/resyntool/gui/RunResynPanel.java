@@ -43,7 +43,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunPanel;
-import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters;
+import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner.TerminalMode;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
 import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
@@ -85,7 +85,7 @@ public class RunResynPanel extends AbstractRunPanel {
                     return;
                 }
                 ResynRunner run = new ResynRunner(params);
-                run.run();
+                run.run(TerminalMode.frame);
             }
         });
         this.add(runBtn, BorderLayout.PAGE_END);
