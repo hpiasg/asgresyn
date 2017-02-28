@@ -32,7 +32,9 @@ public class ResynParameters extends AbstractParameters {
     public static final String[] PARTIONING_HEURISTICS = {"common-cause", "finest", "roughest", "multisignaluse", "avoidcsc", "reduceconc", "lockedsignals", "best"};
 
     private static final String  DEF_BREEZE_FILE_NAME  = "";
-    private static final String  DEF_OUT_FILE_NAME     = "resyn.v";
+    private static final String  DEF_OUT_FILE_NAME     = "resyn" + CommonConstants.VERILOG_FILE_EXTENSION;
+    private static final String  DEF_LOG_FILE_NAME     = "resyn" + CommonConstants.LOG_FILE_EXTENSION;
+    private static final String  DEF_ZIP_FILE_NAME     = "resyn" + CommonConstants.ZIP_FILE_EXTENSION;
 
     //@formatter:off
     public enum TextParam implements AbstractTextParam {
@@ -59,6 +61,9 @@ public class ResynParameters extends AbstractParameters {
     private String   defBreezeFileName;
     private String   defOutDirName;
     private String   defOutFileName;
+    private String   defLogFileName;
+    private String   defZipFileName;
+    private String   defStgFileName;
 
     public ResynParameters(String defTech, TechnologyDirectory techDir) {
         super(CommonConstants.VERILOG_FILE_EXTENSION);
@@ -68,9 +73,12 @@ public class ResynParameters extends AbstractParameters {
         this.defBreezeFileName = DEF_BREEZE_FILE_NAME;
         this.defOutDirName = AbstractParameters.DEF_OUT_DIR;
         this.defOutFileName = DEF_OUT_FILE_NAME;
+        this.defLogFileName = DEF_LOG_FILE_NAME;
+        this.defZipFileName = DEF_ZIP_FILE_NAME;
+        this.defStgFileName = AbstractParameters.UNSET_STR;
     }
 
-    public ResynParameters(String defTech, TechnologyDirectory techDir, boolean forceTech, String breezeFile, String outDir, String outFile) {
+    public ResynParameters(String defTech, TechnologyDirectory techDir, boolean forceTech, String breezeFile, String outDir, String outFile, String logFile, String zipFile, String stgFile) {
         super(CommonConstants.VERILOG_FILE_EXTENSION);
         this.defTech = defTech;
         this.techs = techDir.getTechNames();
@@ -78,6 +86,9 @@ public class ResynParameters extends AbstractParameters {
         this.defBreezeFileName = breezeFile;
         this.defOutDirName = outDir;
         this.defOutFileName = outFile;
+        this.defLogFileName = logFile;
+        this.defZipFileName = zipFile;
+        this.defStgFileName = stgFile;
     }
 
     @Override
@@ -116,5 +127,17 @@ public class ResynParameters extends AbstractParameters {
 
     public boolean isForceTech() {
         return forceTech;
+    }
+
+    public String getDefLogFileName() {
+        return defLogFileName;
+    }
+
+    public String getDefZipFileName() {
+        return defZipFileName;
+    }
+
+    public String getDefStgFileName() {
+        return defStgFileName;
     }
 }

@@ -116,9 +116,9 @@ public class RunResynPanel extends AbstractRunPanel {
         }
         panel.addTechnologyChooserWithDefaultEntry(1, "Technology library", techs, defTech, EnumParam.TechLib, BooleanParam.DefTechLib, "Use default");
         addOutSection(panel, 2, params.getDefOutFileName(), params.getDefOutDirName());
-        panel.addTextEntry(4, TextParam.STGout, "Balsa-STG export file name", AbstractParameters.UNSET_STR, false, null, true);
+        panel.addTextEntry(4, TextParam.STGout, "Balsa-STG export file name", params.getDefStgFileName(), false, null, true);
         // 5: blank
-        addIOSection(panel, 6, ResynMain.DEF_CONFIG_FILE_NAME);
+        addIOSection(panel, 6, ResynMain.DEF_CONFIG_FILE_NAME, params.getDefLogFileName(), params.getDefZipFileName());
 
         getDataFromPanel(panel);
     }
