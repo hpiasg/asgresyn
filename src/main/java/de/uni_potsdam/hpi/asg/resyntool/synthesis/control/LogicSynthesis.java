@@ -61,7 +61,7 @@ public class LogicSynthesis {
             return false;
         }
         logger.debug("CSC of " + gfile + " solved");
-        String libfile = tech.getGenLib();
+        String libfile = tech.getGenLib().getAbsolutePath();
         switch(strategy.getSynthesisStrategy()) {
             case PPP: {
                 String[] params = {"-no", "-rst1", "-tm", "-vl", vfile};
