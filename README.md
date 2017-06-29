@@ -34,6 +34,12 @@ You can find the XML schema [here](src/main/resources/schema/components_config.x
 
 For the following example commands it is assumed that your current working directory is the ASGresyn main directory. If you want run ASGresyn from another directory you have to add the path to the ASGresyn main directory in front of the following commands (or you could add the `bin/` directory to your `PATH` variable).
 
+#### Runner ####
+
+To run a graphical tool featuring input masks for all important command line arguments execute
+
+    bin/ASGresyn_run
+
 ##### List of supported arguments #####
 
 To see a list of supported command line arguments execute

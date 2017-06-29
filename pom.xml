@@ -167,8 +167,8 @@ along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
 							</jvmSettings>
 						</program>
 						<program>
-							<mainClass>de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain</mainClass>
-							<id>ASGresyn_gui</id>
+							<mainClass>de.uni_potsdam.hpi.asg.resyntool.ResynRunMain</mainClass>
+							<id>ASGresyn_run</id>
 							<jvmSettings>
 								<extraArguments>
 									<extraArgument>-Dlog4j.configurationFile=@BASEDIR@/config/log4j2_noconfig.xml</extraArgument>

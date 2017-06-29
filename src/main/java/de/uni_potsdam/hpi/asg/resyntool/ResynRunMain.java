@@ -32,12 +32,12 @@ import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper.Mode;
 import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.common.technology.TechnologyDirectory;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters;
-import de.uni_potsdam.hpi.asg.resyntool.gui.RunResynPanel;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters;
+import de.uni_potsdam.hpi.asg.resyntool.runner.RunResynPanel;
 
-public class ResynGuiMain {
+public class ResynRunMain {
 
     public static final File RESYN_BIN = new File(CommonConstants.DEF_BIN_DIR_FILE, "ASGresyn");
 

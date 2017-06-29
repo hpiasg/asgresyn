@@ -1,4 +1,4 @@
-package de.uni_potsdam.hpi.asg.resyntool.gui;
+package de.uni_potsdam.hpi.asg.resyntool.runner;
 
 /*
  * Copyright (C) 2017 Norman Kluge

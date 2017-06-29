@@ -1,4 +1,4 @@
-package de.uni_potsdam.hpi.asg.resyntool.gui;
+package de.uni_potsdam.hpi.asg.resyntool.runner;
 
 /*
  * Copyright (C) 2017 Norman Kluge
@@ -30,10 +30,10 @@ import org.apache.logging.log4j.Logger;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractParameters.GeneralTextParam;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner;
 import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
-import de.uni_potsdam.hpi.asg.resyntool.ResynGuiMain;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
+import de.uni_potsdam.hpi.asg.resyntool.ResynRunMain;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.BooleanParam;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.EnumParam;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.TextParam;
 
 public class ResynRunner extends AbstractRunner {
     private static final Logger logger = LogManager.getLogger();
@@ -81,7 +81,7 @@ public class ResynRunner extends AbstractRunner {
 
     private List<String> buildCmd() {
         List<String> cmd = new ArrayList<>();
-        cmd.add(ResynGuiMain.RESYN_BIN.getAbsolutePath());
+        cmd.add(ResynRunMain.RESYN_BIN.getAbsolutePath());
 
         addGeneralParams(cmd);
         addAdvancedParams(cmd);

@@ -1,4 +1,4 @@
-package de.uni_potsdam.hpi.asg.resyntool.gui;
+package de.uni_potsdam.hpi.asg.resyntool.runner;
 
 /*
  * Copyright (C) 2017 Norman Kluge
@@ -45,9 +45,9 @@ import de.uni_potsdam.hpi.asg.common.gui.PropertiesPanel;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunPanel;
 import de.uni_potsdam.hpi.asg.common.gui.runner.AbstractRunner.TerminalMode;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.BooleanParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.EnumParam;
-import de.uni_potsdam.hpi.asg.resyntool.gui.ResynParameters.TextParam;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.BooleanParam;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.EnumParam;
+import de.uni_potsdam.hpi.asg.resyntool.runner.ResynParameters.TextParam;
 
 public class RunResynPanel extends AbstractRunPanel {
     private static final long   serialVersionUID = -2928503560193350216L;
