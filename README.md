@@ -52,7 +52,7 @@ To see a list of supported command line arguments execute
 
 To to implement a Breeze netlist with default configuration execute
 
-    bin/ASGresyn -lib library.xml example.breeze
+    bin/ASGresyn -lib tech/techname.xml infile.breeze
 
 The `-lib` option expects a technology library file in the ASGtech XML format. You can create and install such a file with [ASGtechMngr](https://github.com/hpiasg/asgtechmngr).
 
