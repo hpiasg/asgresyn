@@ -19,6 +19,8 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +51,7 @@ public class SynthesisMain {
     private SynthesisParameter  params;
 
     private String              file;
-    private String              balsaSTGfilename;
+    private File                balsaSTGFile;
 
     public SynthesisMain(BreezeProjectResyn proj, SynthesisParameter params) {
         this.proj = proj;
@@ -104,7 +106,7 @@ public class SynthesisMain {
                 }
                 if(control.generate()) {
                     controlSuccess = true;
-                    balsaSTGfilename = control.getBalsaSTGfilename();
+                    balsaSTGFile = control.getBalsaSTGFile();
                     stwmap.put(netlist, control.getStwInfo());
                     logger.info("");
                     break;
@@ -171,7 +173,7 @@ public class SynthesisMain {
         return file;
     }
 
-    public String getBalsaSTGfilename() {
-        return balsaSTGfilename;
+    public File getBalsaSTGFile() {
+        return balsaSTGFile;
     }
 }

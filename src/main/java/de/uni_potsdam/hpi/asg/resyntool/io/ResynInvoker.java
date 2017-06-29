@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.io;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -53,24 +53,13 @@ public class ResynInvoker extends Invoker {
         return ResynInvoker.instance;
     }
 
-//    public boolean invokeBalsaC(String outfile, String infile) {
-//        String[] cmd = convertCmd(ResynMain.config.toolconfig.balsaccmd);
-//        if(cmd == null) {
-//            logger.error("Could not read balsac cmd String");
-//            return false;
-//        }
-//        String[] params = {"-o", ".", infile};
-//        ProcessReturn ret = invoke(cmd, params);
-//        return errorHandling(ret);
-//    }
-
-    public boolean invokeBalsaNetlist(String technology, String filename, String component, List<String> params) {
+    public boolean invokeBalsaNetlist(String technology, File outfile, String component, List<String> params) {
         String[] cmd = convertCmd(ResynMain.config.toolconfig.balsanetlistcmd);
         if(cmd == null) {
             logger.error("Could not read balsanetlist cmd String");
             return false;
         }
-        String[] params1 = {"-X", technology, "-o", filename, "-t", component};
+        String[] params1 = {"-X", technology, "-o", outfile.getAbsolutePath(), "-t", component};
         List<String> params2 = new ArrayList<String>();
         params2.addAll(Arrays.asList(params1));
         for(String str : params) {
@@ -80,7 +69,7 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokeDesijBreeze(String outfile, String infile, boolean withdeco, File breezeExprFile) {
+    public boolean invokeDesijBreeze(File outfile, File infile, boolean withdeco, File breezeExprFile) {
         String[] params = null;
         if(withdeco) {
             params = new String[]{"-Y", "-g", "operation=breeze"};
@@ -97,19 +86,19 @@ public class ResynInvoker extends Invoker {
             }
         }
 
-        params2.add("outfile=" + outfile);
-        params2.add(infile);
+        params2.add("outfile=" + outfile.getAbsolutePath());
+        params2.add(infile.getAbsolutePath());
 
         return invokeDesij(params2);
     }
 
-    public boolean invokeDesijKilldummies(String outfile, String infile) {
-        String[] params = {"-Y", "-t", "operation=killdummiesrelaxed", "outfile=" + outfile, infile}; //"-t"
+    public boolean invokeDesijKilldummies(File outfile, File infile) {
+        String[] params = {"-Y", "-t", "operation=killdummiesrelaxed", "outfile=" + outfile.getAbsolutePath(), infile.getAbsolutePath()}; //"-t"
         return invokeDesij(Arrays.asList(params));
     }
 
-    public boolean invokeDesijDecomposition(String decompositionStrategy, String partitionStrategy, String infile) {
-        String[] params = {/*"-k",*/ "-Y", "-t", "operation=decompose", "version=" + decompositionStrategy, "partition=" + partitionStrategy, infile}; //"-t"
+    public boolean invokeDesijDecomposition(String decompositionStrategy, String partitionStrategy, File infile) {
+        String[] params = {/*"-k",*/ "-Y", "-t", "operation=decompose", "version=" + decompositionStrategy, "partition=" + partitionStrategy, infile.getAbsolutePath()}; //"-t"
         return invokeDesij(Arrays.asList(params));
     }
 
@@ -125,19 +114,18 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokePUNFandMPSAT(String infile, String outfile) {
-        String mcifile = infile + ".mci";
+    public boolean invokePUNFandMPSAT(File infile, File outfile) {
+        String mcifile = infile.getAbsolutePath().replace(".g", "") + ".mci";
 
         String[] cmd = convertCmd(ResynMain.config.toolconfig.punfcmd);
         if(cmd == null) {
-            logger.error("Could not read punf cmd String");
+            logger.error("Could not read PUNF cmd string");
             return false;
         }
         String[] params = {"-m=" + mcifile, "-f=" + infile};
         ProcessReturn ret = invoke(cmd, params);
 
-        File mci = new File(workingdir, mcifile);
-//		logger.debug("punf: " + ret.getCode());
+        File mci = new File(workingDir, mcifile);
         if(!mci.exists()) { // punf returns != 0 even if there are only warnings
             if(!errorHandling(ret)) {
                 logger.error("PUNF Error with " + infile);
@@ -145,18 +133,18 @@ public class ResynInvoker extends Invoker {
             }
         }
 
-        File tmpfolder = new File(workingdir + infile + ".tmp");
+        File tmpfolder = new File(workingDir, infile.getName() + "_tmp");
         if(!tmpfolder.mkdir()) {
-            logger.error("Could not create tmp folder for mpsat: " + tmpfolder.getName());
+            logger.error("Could not create tmp folder for MPSAT: " + tmpfolder.getName());
             return false;
         }
 
         String[] cmd2 = convertCmd(ResynMain.config.toolconfig.mpsatcmd);
         if(cmd2 == null) {
-            logger.error("Could not read mpsat cmd String");
+            logger.error("Could not read MPSAT cmd string");
             return false;
         }
-        String[] params2 = {"-R", "-f", "-@", "-p0", "-cl", "../" + mcifile};
+        String[] params2 = {"-R", "-f", "-@", "-p0", "-cl", mcifile};
         ProcessReturn ret2 = invoke(cmd2, params2, tmpfolder);
         if(!errorHandling(ret2)) {
             logger.error("MPSAT Error with " + mcifile);
@@ -172,24 +160,24 @@ public class ResynInvoker extends Invoker {
         return true;
     }
 
-    public boolean invokePetrifyCSC(String infile, String logfile, String outfile) {
+    public boolean invokePetrifyCSC(File infile, File logfile, File outfile) {
         String[] command = convertCmd(ResynMain.config.toolconfig.petrifycmd);
         if(command == null) {
             logger.error("Could not read petrify cmd String");
             return false;
         }
-        String[] params = {"-csc", "-dead", "-o", outfile, "-log", logfile, infile};
+        String[] params = {"-csc", "-dead", "-o", outfile.getAbsolutePath(), "-log", logfile.getAbsolutePath(), infile.getAbsolutePath()};
         ProcessReturn ret = invoke(command, params);
         return errorHandling(ret);
     }
 
-    public boolean invokePetrifySynthesis(String infile, String logfile, String libfile, String[] params) {
+    public boolean invokePetrifySynthesis(File infile, File logfile, File libfile, String[] params) {
         String[] command = convertCmd(ResynMain.config.toolconfig.petrifycmd);
         if(command == null) {
             logger.error("Could not read petrify cmd String");
             return false;
         }
-        String[] last = {"-dead", "-log", logfile, "-lib", libfile, infile};
+        String[] last = {"-dead", "-log", logfile.getAbsolutePath(), "-lib", libfile.getAbsolutePath(), infile.getAbsolutePath()};
         String[] newparams = new String[params.length + last.length];
         System.arraycopy(params, 0, newparams, 0, params.length);
         System.arraycopy(last, 0, newparams, params.length, last.length);
@@ -197,31 +185,39 @@ public class ResynInvoker extends Invoker {
         return errorHandling(ret);
     }
 
-    public boolean invokePetreset(String eqnfile, String stgfile, String libfile, String outfile) {
+    public boolean invokePetreset(File eqnfile, File stgfile, File libfile, File outfile) {
         String[] command = convertCmd(ResynMain.config.toolconfig.petresetcmd);
         if(command == null) {
             logger.error("Could not read petreset cmd String");
             return false;
         }
-        String[] params = new String[]{"-lib", libfile, "-i", eqnfile, "-stg", stgfile, "-verilog", outfile};
+        String[] params = new String[]{"-lib", libfile.getAbsolutePath(), "-i", eqnfile.getAbsolutePath(), "-stg", stgfile.getAbsolutePath(), "-verilog", outfile.getAbsolutePath()};
         ProcessReturn ret = invoke(command, params, 60000);
         return errorHandling(ret);
     }
 
-    public boolean invokeASGLogic(String gfile, String vfile, String workingdir, String libfile, String logfile, String zipfile, String resettype, String additionalParams) {
+    public boolean invokeASGLogic(File gfile, File vfile, File workingdir, File libfile, File logfile, File zipfile, String resettype, String additionalParams) {
         String[] command = convertCmd(ResynMain.config.toolconfig.asglogiccmd);
         if(command == null) {
             logger.error("Could not read asglogic cmd String");
             return false;
         }
 
-        String[] params = {"-debug", "-out", vfile, "-w", workingdir, "-lib", libfile, "-log", logfile, "-zip", zipfile, "-rst", resettype};
+        //@formatter:off
+        String[] params = {"-debug", 
+            "-w", workingdir.getAbsolutePath(),
+            "-out", vfile.getAbsolutePath(),
+            "-lib", libfile.getAbsolutePath(), 
+            "-log", logfile.getAbsolutePath(), 
+            "-zip", zipfile.getAbsolutePath(), 
+            "-rst", resettype};
+        //@formatter:on
         List<String> params2 = new ArrayList<>(Arrays.asList(params));
 
         if(additionalParams != null && !additionalParams.equals("")) {
             params2.addAll(Arrays.asList(additionalParams.split(" ")));
         }
-        params2.add(gfile);
+        params2.add(gfile.getAbsolutePath());
 
         ProcessReturn ret = invoke(command, params2); //, 600000); //10min
         return errorHandling(ret);

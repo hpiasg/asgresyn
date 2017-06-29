@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -18,6 +18,8 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
  * You should have received a copy of the GNU General Public License
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+import java.io.File;
 
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +45,8 @@ public class LogicSynthesis {
     private static final String     solvedSTG            = ".csc.g";
     private static final String     solvedSTGlog         = ".csc.log";
 
+    private File                    workingDir;
+
     private LogicSynthesisParameter strategy;
     private Technology              tech;
 
@@ -52,64 +56,65 @@ public class LogicSynthesis {
         this.strategy = params.getLogicSynthesisStrategy();
         this.tech = params.getTechnology();
         this.asglogicparams = params.getAsglogicparams();
+        this.workingDir = WorkingdirGenerator.getInstance().getWorkingDir();
     }
 
-    public boolean synthesise(String gfile, String vfile) {
-        String solvedCscFile = solveCSC(gfile);
+    public boolean synthesise(File gFile, File vFile) {
+        File solvedCscFile = solveCSC(gFile);
         if(solvedCscFile == null) {
-            logger.error("Could not solve csc of file " + gfile);
+            logger.error("Could not solve csc of file " + gFile.getName());
             return false;
         }
-        logger.debug("CSC of " + gfile + " solved");
-        String libfile = tech.getGenLib().getAbsolutePath();
+        logger.debug("CSC of " + gFile.getName() + " solved");
+        File libFile = tech.getGenLib();
         switch(strategy.getSynthesisStrategy()) {
             case PPP: {
-                String[] params = {"-no", "-rst1", "-tm", "-vl", vfile};
-                String logfile = vfile + petrifySynthesisLog;
-                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logfile, libfile, params)) {
+                String[] params = {"-no", "-rst1", "-tm", "-vl", vFile.getAbsolutePath()};
+                File logFile = new File(workingDir, vFile.getName() + petrifySynthesisLog);
+                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logFile, libFile, params)) {
                     logger.error("PPP LogicSynthesis failed");
                     return false;
                 }
                 break;
             }
             case PNP: {
-                String[] params = {"-no", "-rst1", "-vl", vfile};
-                String logfile = vfile + petrifySynthesisLog;
-                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logfile, libfile, params)) {
+                String[] params = {"-no", "-rst1", "-vl", vFile.getAbsolutePath()};
+                File logFile = new File(workingDir, vFile.getName() + petrifySynthesisLog);
+                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logFile, libFile, params)) {
                     logger.error("PNP LogicSynthesis failed");
                     return false;
                 }
                 break;
             }
             case PPI: {
-                String eqnfile = vfile + tmpEqn;
-                String stgfile = vfile + tmpSTG;
+                File eqnFile = new File(workingDir, vFile.getName() + tmpEqn);
+                File stgFile = new File(workingDir, vFile.getName() + tmpSTG);
 
-                String[] params = {"-o", stgfile, "-tm", "-eqn", eqnfile};
-                String logfile = vfile + petrifySynthesisLog;
-                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logfile, libfile, params)) {
+                String[] params = {"-o", stgFile.getAbsolutePath(), "-tm", "-eqn", eqnFile.getAbsolutePath()};
+                File logFile = new File(workingDir, vFile.getName() + petrifySynthesisLog);
+                if(!ResynInvoker.getInstance().invokePetrifySynthesis(solvedCscFile, logFile, libFile, params)) {
                     logger.error("PPI LogicSynthesis (petrify step) failed");
                     return false;
                 }
-                if(!ResynInvoker.getInstance().invokePetreset(eqnfile, stgfile, libfile, vfile)) {
+                if(!ResynInvoker.getInstance().invokePetreset(eqnFile, stgFile, libFile, vFile)) {
                     logger.error("PPI LogicSynthesis (petreset step) failed");
                     return false;
                 }
-                List<String> lines = FileHelper.getInstance().readFile(vfile);
+                List<String> lines = FileHelper.getInstance().readFile(vFile);
                 int linenumber = 0;
                 for(String line : lines) {
                     lines.set(linenumber++, line.replaceAll("RESET", "_reset"));
                 }
-                if(!FileHelper.getInstance().writeFile(vfile, lines)) {
+                if(!FileHelper.getInstance().writeFile(vFile, lines)) {
                     logger.error("PPI LogicSynthesis (fixreset step) failed");
                     return false;
                 }
                 break;
             }
             case AAA: {
-                String logfile = vfile + asglogicSynthesisLog;
-                String zipfile = vfile + asglogicSynthesisZip;
-                String workingdir = WorkingdirGenerator.getInstance().getWorkingdir() + "logic";
+                File logFile = new File(workingDir, vFile.getName() + asglogicSynthesisLog);
+                File zipfile = new File(workingDir, vFile.getName() + asglogicSynthesisZip);
+                File logicWorkingDir = new File(WorkingdirGenerator.getInstance().getWorkingDir(), "logic");
 
                 String reset = null;
 
@@ -131,14 +136,14 @@ public class LogicSynthesis {
                     return false;
                 }
 
-                if(!ResynInvoker.getInstance().invokeASGLogic(solvedCscFile, vfile, workingdir, libfile, logfile, zipfile, reset, asglogicparams)) {
+                if(!ResynInvoker.getInstance().invokeASGLogic(solvedCscFile, vFile, logicWorkingDir, libFile, logFile, zipfile, reset, asglogicparams)) {
                     logger.error("AAA LogicSynthesis failed");
                     return false;
                 }
                 break;
             }
         }
-        logger.info("Logic synthesis of " + gfile + " finished successfully");
+        logger.info("Logic synthesis of " + gFile.getName() + " finished successfully");
         return true;
     }
 
@@ -148,19 +153,19 @@ public class LogicSynthesis {
         return Arrays.asList(arr);
     }
 
-    private String solveCSC(String gfile) {
-        String outfile = gfile + solvedSTG;
+    private File solveCSC(File gFile) {
+        File outFile = new File(workingDir, gFile.getName() + solvedSTG);
 
         switch(strategy.getCsc()) {
             case petrify:
-                String logfile = gfile + solvedSTGlog;
-                if(!ResynInvoker.getInstance().invokePetrifyCSC(gfile, logfile, outfile)) {
+                File logfile = new File(workingDir, gFile.getName() + solvedSTGlog);
+                if(!ResynInvoker.getInstance().invokePetrifyCSC(gFile, logfile, outFile)) {
                     logger.error("Could not solve csc with petrify");
                     return null;
                 }
                 break;
             case mpsat:
-                if(!ResynInvoker.getInstance().invokePUNFandMPSAT(gfile, outfile)) {
+                if(!ResynInvoker.getInstance().invokePUNFandMPSAT(gFile, outFile)) {
                     logger.error("Could not solve csc with mpsat");
                     return null;
                 }
@@ -169,6 +174,6 @@ public class LogicSynthesis {
                 logger.error("CSC dontcaresolving is not yet implememted");
                 return null;
         }
-        return outfile;
+        return outFile;
     }
 }

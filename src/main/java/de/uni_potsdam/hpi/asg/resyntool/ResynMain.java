@@ -166,7 +166,7 @@ public class ResynMain {
         SynthesisMain smain = new SynthesisMain(proj, sparams);
         if(smain.generate()) {
             if(options.getStgOutfile() != null) {
-                if(FileHelper.getInstance().copyfile(smain.getBalsaSTGfilename(), options.getStgOutfile())) {
+                if(FileHelper.getInstance().copyfile(smain.getBalsaSTGFile(), options.getStgOutfile())) {
                     logger.info("Export STG into: " + options.getStgOutfile());
                 } else {
                     logger.warn("Export of STG failed");

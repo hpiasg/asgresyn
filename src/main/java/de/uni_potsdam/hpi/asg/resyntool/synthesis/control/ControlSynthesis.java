@@ -39,7 +39,7 @@ public abstract class ControlSynthesis {
     private int                   stwid;
     protected String              name;
     protected SynthesisParameter  params;
-    protected String              balsaSTGfilename;
+    protected File                balsaSTGFile;
 
     protected STWInformation      stwInfo;
 
@@ -129,7 +129,7 @@ public abstract class ControlSynthesis {
         return stwInfo;
     }
 
-    public String getBalsaSTGfilename() {
-        return balsaSTGfilename;
+    public File getBalsaSTGFile() {
+        return balsaSTGFile;
     }
 }

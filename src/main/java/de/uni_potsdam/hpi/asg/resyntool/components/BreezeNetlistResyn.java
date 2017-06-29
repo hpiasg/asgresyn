@@ -56,7 +56,7 @@ public class BreezeNetlistResyn extends AbstractBreezeNetlist {
             return false;
         }
         try {
-            FileReader filereader = new FileReader(WorkingdirGenerator.getInstance().getWorkingdir() + newfilename);
+            FileReader filereader = new FileReader(new File(WorkingdirGenerator.getInstance().getWorkingDir(), newfilename));
             BreezeParser parser = new BreezeParser(filereader);
             Object p = parser.ParseBreezeNet();
             if(p instanceof LinkedList<?>) {

@@ -52,17 +52,19 @@ public class DecompositionBasedSynthesis extends ControlSynthesis {
 
     @Override
     public boolean generate() {
+        File workingDir = WorkingdirGenerator.getInstance().getWorkingDir();
         String filename_breeze = name + CommonConstants.BREEZE_FILE_EXTENSION;
+        File breezeFile = new File(workingDir, filename_breeze);
         String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
-        balsaSTGfilename = filename_g;
+        File gFile = new File(workingDir, filename_g);
+        balsaSTGFile = gFile;
         Pattern filepattern = Pattern.compile("(" + filename_g + "__final_.*)\\.g");
 
-        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_g, filename_breeze, true, params.getDesijBreezeExprFile())) {
-            if(ResynInvoker.getInstance().invokeDesijDecomposition(params.getDecoStrategy(), params.getPartitionHeuristics(), filename_g)) {
+        if(ResynInvoker.getInstance().invokeDesijBreeze(gFile, breezeFile, true, params.getDesijBreezeExprFile())) {
+            if(ResynInvoker.getInstance().invokeDesijDecomposition(params.getDecoStrategy(), params.getPartitionHeuristics(), gFile)) {
                 List<String> decofiles = new ArrayList<String>();
-                File f = new File(WorkingdirGenerator.getInstance().getWorkingdir());
                 Matcher matcher = null;
-                for(File f2 : f.listFiles()) {
+                for(File f2 : workingDir.listFiles()) {
                     matcher = filepattern.matcher(f2.getName());
                     if(matcher.matches()) {
                         decofiles.add(matcher.group(1));

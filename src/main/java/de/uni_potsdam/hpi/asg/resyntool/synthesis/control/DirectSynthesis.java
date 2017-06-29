@@ -19,12 +19,14 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.LogicSynthesisParameter;
@@ -39,16 +41,21 @@ public class DirectSynthesis extends ControlSynthesis {
 
     @Override
     public boolean generate() {
+        File workingDir = WorkingdirGenerator.getInstance().getWorkingDir();
         String filename_breeze = name + CommonConstants.BREEZE_FILE_EXTENSION;
+        File breezeFile = new File(workingDir, filename_breeze);
         String filename_gfull = name + "_full" + CommonConstants.STG_FILE_EXTENSION;
+        File gFullFile = new File(workingDir, filename_gfull);
         String filename_g = name + CommonConstants.STG_FILE_EXTENSION;
-        balsaSTGfilename = filename_g;
+        File gFile = new File(workingDir, filename_g);
+        balsaSTGFile = gFile;
         String filename_v = name + stwending + CommonConstants.VERILOG_FILE_EXTENSION;
+        File vFile = new File(workingDir, filename_v);
 
-        if(ResynInvoker.getInstance().invokeDesijBreeze(filename_gfull, filename_breeze, false, params.getDesijBreezeExprFile())) {
-            if(ResynInvoker.getInstance().invokeDesijKilldummies(filename_g, filename_gfull)) {
+        if(ResynInvoker.getInstance().invokeDesijBreeze(gFullFile, breezeFile, false, params.getDesijBreezeExprFile())) {
+            if(ResynInvoker.getInstance().invokeDesijKilldummies(gFile, gFullFile)) {
                 LogicSynthesis synthesis = new LogicSynthesis(params);
-                if(synthesis.synthesise(filename_g, filename_v)) {
+                if(synthesis.synthesise(gFile, vFile)) {
                     String stwInterface = generateSTWInterface(filename_v);
                     if(stwInterface != null) {
                         List<String> stwInterfaces = new ArrayList<String>();
