@@ -24,6 +24,8 @@ With the `<tools>` tag (and subtags) you can specify the command lines for calli
 
 With the `<components>` tag you can specify the location of the components configuration file (see next section). By default the version included in the ASGresyn jar file is used.
 
+You can generate a configuration file with [ASGconfigGen](https://github.com/hpiasg/asgconfiggen).
+
 ##### Components configuration file #####
 
 The components configuration file contains handshake component definitions and specifies how to handle the data path implementations (if present) of these components.
@@ -52,22 +54,7 @@ To to implement a Breeze netlist with default configuration execute
 
     bin/ASGresyn -lib library.xml example.breeze
 
-The `-lib` option expects a technology library xml file in the following format:
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<technology>
-	<balsa>
-		<style>resyn</style>
-		<tech>example</tech>
-	</balsa>
-	<genlib>
-		<libfile>gen.lib</libfile>
-	</genlib>
-</technology>
-```
-
-The `<balsa>` tag defines the technology which will be used by balsa-netlist. The `<style>` tag defines the implementation style to be used. Balsa-defaults are e.g. four_b_rb or dual_b. ASGresyn comes with a new style `resyn` which implements a appropriate data path for our STG based control. If you want to implement another one, it has to placed in `ASGresyn_DIR/tools/balsa/share/style`. The `<tech>` tag defines the implementation technology to be used. By default ASGresyn comes with no technology. You have to use your own. It must be located in `ASGresyn_DIR/tools/balsa/share/tech`. The `<genlib>` tag defines the technology file used by e.g. Petrify or ASGlogic. The file path is relative to the file path of the technology library xml file. The file must be in [genlib format](https://www.ece.cmu.edu/~ee760/760docs/genlib.pdf).
+The `-lib` option expects a technology library file in the ASGtech XML format. You can create and install such a file with [ASGtechMngr](https://github.com/hpiasg/asgtechmngr).
 
 The command will create the files `resyn.v`, `resyn.log` and `resyn.zip`. `resyn.v` contains the Verilog implementation of the Breeze file. `resyn.log` is the log file of the operation. `resyn.zip` contains all temporary files created during operation. You can change these default filenames with the following parameters:
 
