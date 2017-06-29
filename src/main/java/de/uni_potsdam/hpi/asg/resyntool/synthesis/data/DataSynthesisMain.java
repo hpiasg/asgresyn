@@ -89,7 +89,7 @@ public class DataSynthesisMain {
         if(optimise) {
             RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
             if(dc != null && technology.getSynctool() != null) {
-                logger.info("Running data path optimsation");
+                logger.info("Running data path optimisation");
                 DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir, technology.getSynctool());
                 Set<String> optfilelist = opt.execute(filelist_opt);
                 if(optfilelist != null) {
