@@ -47,6 +47,7 @@ ASGlogic v0.2
 https://github.com/hpiasg/asglogic
 Copyright (C) 2012-2017 Universitaet Augsburg, Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH
 Licensed under GNU General Public License (GPL), Version 3.0
+Notice: legal/ASGlogic_NOTICE.txt
 
 Balsa Asynchronous Synthesis System
 http://apt.cs.manchester.ac.uk/projects/tools/balsa/
@@ -57,7 +58,7 @@ DesiJ: A Tool for STG Decomposition v3.1.1
 https://github.com/hpiasg/desij
 Copyright (C) 2004-2017 Universitaet Augsburg, Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH
 Licensed under GNU General Public License (GPL), Version 3.0
-Notice: bin/DesiJ_NOTICE.txt
+Notice: legal/DesiJ_NOTICE.tx
 
 MPSAT model checking/synthesis system
 http://homepages.cs.ncl.ac.uk/victor.khomenko/tools/mpsat/
