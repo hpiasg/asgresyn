@@ -49,7 +49,7 @@ Copyright (C) 2012-2017 Universitaet Augsburg, Hasso-Plattner-Institut fuer Soft
 Licensed under GNU General Public License (GPL), Version 3.0
 Notice: legal/ASGlogic_NOTICE.txt
 
-Balsa Asynchronous Synthesis System
+Balsa Asynchronous Synthesis System v4.0
 http://apt.cs.manchester.ac.uk/projects/tools/balsa/
 Copyright (C) 1995-2010 School of Computer Science, The University of Manchester
 Licensed under GNU General Public License (GPL), Version 2.0
@@ -60,12 +60,12 @@ Copyright (C) 2004-2017 Universitaet Augsburg, Hasso-Plattner-Institut fuer Soft
 Licensed under GNU General Public License (GPL), Version 3.0
 Notice: legal/DesiJ_NOTICE.tx
 
-MPSAT model checking/synthesis system
+MPSAT model checking/synthesis system v4.41beta
 http://homepages.cs.ncl.ac.uk/victor.khomenko/tools/mpsat/
 Copyright (C) 2000-2012 by Victor Khomenko
 License: tools/mpsat/LICENSE.MPSAT
 
-PCOMP utility for computing the parallel composition of STGs
+PCOMP utility for computing the parallel composition of STGs v2.51beta
 http://homepages.cs.ncl.ac.uk/victor.khomenko/tools/pcomp/
 Copyright (C) 2008-2009 by Victor Khomenko, Newcastle University, UK
 License: tools/pcomp/LICENSE.PCOMP
@@ -75,7 +75,7 @@ http://www.lsi.upc.edu/~jordicf/petrify/
 Copyright (C) 1999 The Universitat Politecnica de Catalunya
 License: tools/petrify/LICSENSE.PETRIFY.txt
 
-PUNF Petri net unfolder
+PUNF Petri net unfolder v8.51
 http://homepages.cs.ncl.ac.uk/victor.khomenko/tools/punf/
 Copyright (C) 2000-2012 by Victor Khomenko
 License: tools/punf/LICENSE.PUNF
