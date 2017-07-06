@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.params;
 
 /*
- * Copyright (C) 2012 - 2014 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -46,7 +46,7 @@ public class SynthesisParameter {
     private String                    asglogicparams;
     private File                      desijBreezeExprFile;
 
-    public static SynthesisParameter create(File technologyFile, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams, boolean optimisedatapath, File desijBreezeExprFile) {
+    public static SynthesisParameter create(Technology tech, String tackleComplexityOrder, String logicSynthesisStrategy, String decoStrategy, String partitionHeuristics, boolean skipdatapath, String asglogiparams, boolean optimisedatapath, File desijBreezeExprFile) {
 
         SynthesisParameter retVal = new SynthesisParameter();
         retVal.decoStrategy = decoStrategy;
@@ -56,11 +56,7 @@ public class SynthesisParameter {
             logger.error("LogicSynthesisStrategy null");
             return null;
         }
-        retVal.technology = Technology.readIn(technologyFile);
-        if(retVal.technology == null) {
-            logger.error("Could not read Technologyfile");
-            return null;
-        }
+        retVal.technology = tech;
         retVal.tackleComplexityOrder = evalTackleComplexityOrder(tackleComplexityOrder);
         if(retVal.tackleComplexityOrder == null) {
             logger.error("Could not parse TackleComplexityOrder");

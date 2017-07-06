@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.components;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -19,6 +19,8 @@ package de.uni_potsdam.hpi.asg.resyntool.components;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,7 +34,8 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.HSComponentType;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.components.HSSignal.Signaltype;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.ComponentResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.xml.RSignal;
@@ -91,8 +94,9 @@ public class ResynType {
     }
 
     public String generate(String technology) {
-        String filename = def + FileHelper.getFileEx(Filetype.verilog);
-        ResynInvoker.getInstance().invokeBalsaNetlist(technology, filename, balsaNetlistStr, balsaNetlistParams);
+        String filename = def + CommonConstants.VERILOG_FILE_EXTENSION;
+        File file = new File(WorkingdirGenerator.getInstance().getWorkingDir(), filename);
+        ResynInvoker.getInstance().invokeBalsaNetlist(technology, file, balsaNetlistStr, balsaNetlistParams);
         List<String> text = FileHelper.getInstance().readFile(filename);
         if(text == null) {
             logger.error("Could not read file " + filename);

@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.wiring;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -33,7 +33,7 @@ import de.uni_potsdam.hpi.asg.common.breeze.model.PortComponent;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal;
 import de.uni_potsdam.hpi.asg.common.breeze.model.Signal.Direction;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.ResynInst;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.control.STWInformation;
@@ -291,7 +291,7 @@ public class WiringMain {
 
         text.append(FileHelper.getNewline() + "endmodule");
 
-        String filename = netlist.getName() + stkending + FileHelper.getFileEx(Filetype.verilog);
+        String filename = netlist.getName() + stkending + CommonConstants.VERILOG_FILE_EXTENSION;
         if(!FileHelper.getInstance().writeFile(filename, text.toString())) {
             logger.error("Could not write wiremainfile");
             return false;

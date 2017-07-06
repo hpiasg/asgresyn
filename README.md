@@ -36,6 +36,8 @@ If your Design Compiler executable differs from `dc_shell`, please adjust this i
 
 With the `<components>` tag you can specify the location of the components configuration file (see next section). By default the version included in the ASGresyn jar file is used.
 
+You can generate a configuration file with [ASGconfigGen](https://github.com/hpiasg/asgconfiggen).
+
 ##### Components configuration file #####
 
 The components configuration file contains handshake component definitions and specifies how to handle the data path implementations (if present) of these components.
@@ -45,6 +47,12 @@ You can find the XML schema [here](src/main/resources/schema/components_config.x
 ### Usage ###
 
 For the following example commands it is assumed that your current working directory is the ASGresyn main directory. If you want run ASGresyn from another directory you have to add the path to the ASGresyn main directory in front of the following commands (or you could add the `bin/` directory to your `PATH` variable).
+
+#### Runner ####
+
+To run a graphical tool featuring input masks for all important command line arguments execute
+
+    bin/ASGresyn_run
 
 ##### List of supported arguments #####
 
@@ -56,24 +64,9 @@ To see a list of supported command line arguments execute
 
 To to implement a Breeze netlist with default configuration execute
 
-    bin/ASGresyn -lib library.xml example.breeze
+    bin/ASGresyn -lib tech/techname.xml infile.breeze
 
-The `-lib` option expects a technology library xml file in the following format:
-
-```xml
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<technology>
-	<balsa>
-		<style>resyn</style>
-		<tech>example</tech>
-	</balsa>
-	<genlib>
-		<libfile>gen.lib</libfile>
-	</genlib>
-</technology>
-```
-
-The `<balsa>` tag defines the technology which will be used by balsa-netlist. The `<style>` tag defines the implementation style to be used. Balsa-defaults are e.g. four_b_rb or dual_b. ASGresyn comes with a new style `resyn` which implements a appropriate data path for our STG based control. If you want to implement another one, it has to placed in `ASGresyn_DIR/tools/balsa/share/style`. The `<tech>` tag defines the implementation technology to be used. By default ASGresyn comes with no technology. You have to use your own. It must be located in `ASGresyn_DIR/tools/balsa/share/tech`. The `<genlib>` tag defines the technology file used by e.g. Petrify or ASGlogic. The file path is relative to the file path of the technology library xml file. The file must be in [genlib format](https://www.ece.cmu.edu/~ee760/760docs/genlib.pdf).
+The `-lib` option expects a technology library file in the ASGtech XML format. You can create and install such a file with [ASGtechMngr](https://github.com/hpiasg/asgtechmngr).
 
 The command will create the files `resyn.v`, `resyn.log` and `resyn.zip`. `resyn.v` contains the Verilog implementation of the Breeze file. `resyn.log` is the log file of the operation. `resyn.zip` contains all temporary files created during operation. You can change these default filenames with the following parameters:
 

@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
 
 /*
- * Copyright (C) 2012 - 2016 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.Balsa;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.ResynMain;
@@ -54,7 +54,7 @@ public class DataSynthesisMain {
     }
 
     public boolean generate() {
-        String opwfilename = opwending + FileHelper.getFileEx(Filetype.verilog);
+        String opwfilename = opwending + CommonConstants.VERILOG_FILE_EXTENSION;
 
         Set<String> filelist = new HashSet<>();
         Set<String> filelist_opt = new HashSet<>();
@@ -89,7 +89,7 @@ public class DataSynthesisMain {
         if(optimise) {
             RemoteInvocation dc = ResynMain.config.toolconfig.designCompilerCmd;
             if(dc != null && technology.getSynctool() != null) {
-                logger.info("Running data path optimsation");
+                logger.info("Running data path optimisation");
                 DataOptimisationMain opt = new DataOptimisationMain(dc.hostname, dc.username, dc.password, dc.workingdir, technology.getSynctool());
                 Set<String> optfilelist = opt.execute(filelist_opt);
                 if(optfilelist != null) {

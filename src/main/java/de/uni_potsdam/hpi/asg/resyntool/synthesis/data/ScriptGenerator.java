@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.data;
 
 /*
- * Copyright (C) 2016 Norman Kluge
+ * Copyright (C) 2016 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.uni_potsdam.hpi.asg.common.iohelper.BasedirHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
@@ -45,47 +46,45 @@ public class ScriptGenerator {
     public static final String  dc_log_file         = "_dpopt.log";
 
     public static final Pattern module_pattern      = Pattern.compile("module (.*) \\(.*");
-    public static final File    dc_sh_templatefile  = FileHelper.getInstance().getBasedirFile("templates/resyn_dpopt.sh");
-    public static final File    dc_tcl_templatefile = FileHelper.getInstance().getBasedirFile("templates/resyn_dpopt.tcl");
+    public static final File    dc_sh_templatefile  = BasedirHelper.getFileInBasedir("templates/resyn_dpopt.sh");
+    public static final File    dc_tcl_templatefile = BasedirHelper.getFileInBasedir("templates/resyn_dpopt.tcl");
 
     private String              name;
     private String              root;
     private File                localfile;
-    private String              localfolder;
+    private File                localDir;
     private SyncTool            synclib;
 
     public ScriptGenerator(String arg_origfile, SyncTool synclib) {
-        localfolder = WorkingdirGenerator.getInstance().getWorkingdir();
-        localfile = new File(localfolder + arg_origfile);
+        localDir = WorkingdirGenerator.getInstance().getWorkingDir();
+        localfile = new File(localDir, arg_origfile);
         name = localfile.getName().split("\\.")[0];
         root = getRoot(localfile);
         this.synclib = synclib;
     }
 
     public DataOptimisationPlan generate() {
+        String rmdcshFileName = name + dc_sh_file;
+        File dcshFile = new File(localDir, rmdcshFileName);
+        FileHelper.getInstance().copyfile(dc_sh_templatefile, dcshFile);
+        replaceAll(dcshFile);
 
-        String rmdcshfile = name + dc_sh_file;
-        String dcshfile = localfolder + rmdcshfile;
-        FileHelper.getInstance().copyfile(dc_sh_templatefile, new File(dcshfile));
-        replaceAll(localfolder + name + dc_sh_file);
-
-        String dctclfile = localfolder + name + dc_tcl_file;
-        FileHelper.getInstance().copyfile(dc_tcl_templatefile, new File(dctclfile));
-        replaceAll(localfolder + name + dc_tcl_file);
+        File dctclFile = new File(localDir, name + dc_tcl_file);
+        FileHelper.getInstance().copyfile(dc_tcl_templatefile, dctclFile);
+        replaceAll(dctclFile);
 
         DataOptimisationPlan retVal = new DataOptimisationPlan(localfile.getAbsolutePath(), localfile.getName());
-        retVal.setLocalshfilename(dcshfile);
-        retVal.setRemoteshfilename(rmdcshfile);
-        retVal.setLocaltclfilename(dctclfile);
+        retVal.setLocalshfilename(dcshFile.getAbsolutePath());
+        retVal.setRemoteshfilename(rmdcshFileName);
+        retVal.setLocaltclfilename(dctclFile.getAbsolutePath());
         retVal.setOptimisedfilename(name + dc_v_file);
         return retVal;
     }
 
-    private void replaceAll(String filename) {
+    private void replaceAll(File file) {
         try {
-            File f = new File(filename);
             List<String> out = new ArrayList<String>();
-            BufferedReader reader = new BufferedReader(new FileReader(f));
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             String line = null;
             while((line = reader.readLine()) != null) {
                 line = line.replace("#*orig*#", name + v_file);
@@ -100,7 +99,7 @@ public class ScriptGenerator {
                 out.add(line);
             }
             reader.close();
-            FileHelper.getInstance().writeFile(new File(filename), out);
+            FileHelper.getInstance().writeFile(file, out);
         } catch(IOException e) {
             e.printStackTrace();
         }

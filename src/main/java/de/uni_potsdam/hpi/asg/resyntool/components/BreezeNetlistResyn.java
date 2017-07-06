@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.components;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -39,7 +39,7 @@ import de.uni_potsdam.hpi.asg.common.breeze.parser.breezefile.BreezePartElement;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezeparser.BreezeParser;
 import de.uni_potsdam.hpi.asg.common.breeze.parser.breezeparser.ParseException;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 
 public class BreezeNetlistResyn extends AbstractBreezeNetlist {
@@ -56,7 +56,7 @@ public class BreezeNetlistResyn extends AbstractBreezeNetlist {
             return false;
         }
         try {
-            FileReader filereader = new FileReader(WorkingdirGenerator.getInstance().getWorkingdir() + newfilename);
+            FileReader filereader = new FileReader(new File(WorkingdirGenerator.getInstance().getWorkingDir(), newfilename));
             BreezeParser parser = new BreezeParser(filereader);
             Object p = parser.ParseBreezeNet();
             if(p instanceof LinkedList<?>) {
@@ -69,7 +69,7 @@ public class BreezeNetlistResyn extends AbstractBreezeNetlist {
                             if(str.startsWith("balsa.")) {
                                 continue;
                             }
-                            File newbreeze = new File(file.getParentFile(), str + FileHelper.getFileEx(Filetype.breeze));
+                            File newbreeze = new File(file.getParentFile(), str + CommonConstants.BREEZE_FILE_EXTENSION);
                             if(newbreeze.exists()) {
                                 if(!BreezeNetlistResyn.create(newbreeze, skipUndefinedComponents, skipSubComponents, project)) {
                                     logger.error("Could not create Breeze netlist for " + newbreeze);

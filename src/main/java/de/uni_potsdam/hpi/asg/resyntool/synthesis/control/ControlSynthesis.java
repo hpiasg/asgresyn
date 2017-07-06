@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis.control;
 
 /*
- * Copyright (C) 2012 - 2015 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -39,6 +39,7 @@ public abstract class ControlSynthesis {
     private int                   stwid;
     protected String              name;
     protected SynthesisParameter  params;
+    protected File                balsaSTGFile;
 
     protected STWInformation      stwInfo;
 
@@ -126,5 +127,9 @@ public abstract class ControlSynthesis {
 
     public STWInformation getStwInfo() {
         return stwInfo;
+    }
+
+    public File getBalsaSTGFile() {
+        return balsaSTGFile;
     }
 }

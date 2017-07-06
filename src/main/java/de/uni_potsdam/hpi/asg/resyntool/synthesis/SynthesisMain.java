@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.resyntool.synthesis;
 
 /*
- * Copyright (C) 2012 - 2016 Norman Kluge
+ * Copyright (C) 2012 - 2017 Norman Kluge
  * 
  * This file is part of ASGresyn.
  * 
@@ -19,6 +19,8 @@ package de.uni_potsdam.hpi.asg.resyntool.synthesis;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.breeze.model.AbstractBreezeNetlist;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
-import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper.Filetype;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeNetlistResyn;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.control.ControlSynthesis;
@@ -49,6 +51,7 @@ public class SynthesisMain {
     private SynthesisParameter  params;
 
     private String              file;
+    private File                balsaSTGFile;
 
     public SynthesisMain(BreezeProjectResyn proj, SynthesisParameter params) {
         this.proj = proj;
@@ -103,6 +106,7 @@ public class SynthesisMain {
                 }
                 if(control.generate()) {
                     controlSuccess = true;
+                    balsaSTGFile = control.getBalsaSTGFile();
                     stwmap.put(netlist, control.getStwInfo());
                     logger.info("");
                     break;
@@ -149,7 +153,7 @@ public class SynthesisMain {
     }
 
     private boolean mergeAll(List<String> files) {
-        String filename = "_all" + FileHelper.getFileEx(Filetype.verilog);
+        String filename = "_all" + CommonConstants.VERILOG_FILE_EXTENSION;
 
         String text = FileHelper.getInstance().mergeFileContents(files);
         if(text != null) {
@@ -167,5 +171,9 @@ public class SynthesisMain {
 
     public String getFile() {
         return file;
+    }
+
+    public File getBalsaSTGFile() {
+        return balsaSTGFile;
     }
 }

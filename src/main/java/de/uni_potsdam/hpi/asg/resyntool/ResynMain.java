@@ -19,18 +19,24 @@ package de.uni_potsdam.hpi.asg.resyntool;
  * along with ASGresyn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import java.io.File;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.Logger;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper;
+import de.uni_potsdam.hpi.asg.common.iohelper.LoggerHelper.Mode;
 import de.uni_potsdam.hpi.asg.common.iohelper.WorkingdirGenerator;
 import de.uni_potsdam.hpi.asg.common.iohelper.Zipper;
+import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
+import de.uni_potsdam.hpi.asg.common.technology.ReadTechnologyHelper;
+import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.resyntool.components.BreezeProjectResyn;
 import de.uni_potsdam.hpi.asg.resyntool.io.Config;
 import de.uni_potsdam.hpi.asg.resyntool.io.ConfigFile;
 import de.uni_potsdam.hpi.asg.resyntool.io.ResynInvoker;
+import de.uni_potsdam.hpi.asg.resyntool.io.ShutdownThread;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.SynthesisMain;
 import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
 
@@ -39,6 +45,10 @@ import de.uni_potsdam.hpi.asg.resyntool.synthesis.params.SynthesisParameter;
  * 
  */
 public class ResynMain {
+
+    public static final String             DEF_CONFIG_FILE_NAME    = "resynconfig.xml";
+    public static final File               DEF_CONFIG_FILE         = new File(CommonConstants.DEF_CONFIG_DIR_FILE, DEF_CONFIG_FILE_NAME);
+
     private static Logger                  logger;
     private static ResynCommandlineOptions options;
 
@@ -74,8 +84,9 @@ public class ResynMain {
             int status = -1;
             options = new ResynCommandlineOptions();
             if(options.parseCmdLine(args)) {
-                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug());
+                logger = LoggerHelper.initLogger(options.getOutputlevel(), options.getLogfile(), options.isDebug(), Mode.cmdline);
                 logger.debug("Args: " + Arrays.asList(args).toString());
+                logger.debug("Using config file " + options.getConfigfile());
                 config = ConfigFile.readIn(options.getConfigfile());
                 if(config == null) {
                     logger.error("Could not read config");
@@ -83,6 +94,7 @@ public class ResynMain {
                 }
                 WorkingdirGenerator.getInstance().create(options.getWorkingdir(), config.workdir, "resynwork", ResynInvoker.getInstance());
                 tooldebug = options.isTooldebug();
+                addShutdownHook();
                 status = execute();
                 zipWorkfile();
                 WorkingdirGenerator.getInstance().delete();
@@ -106,8 +118,9 @@ public class ResynMain {
      *         something went wrong)
      */
     private static int execute() {
-        if(options.getTechnology() == null) {
-            logger.error("No technology file defined");
+        Technology tech = ReadTechnologyHelper.read(options.getTechnology(), config.defaultTech);
+        if(tech == null) {
+            logger.error("No technology found");
             return 1;
         }
 
@@ -121,7 +134,7 @@ public class ResynMain {
             return 1;
         }
 
-        int synresult = doSynthesis(proj);
+        int synresult = doSynthesis(proj, tech);
         return synresult;
     }
 
@@ -131,11 +144,10 @@ public class ResynMain {
      * @return return code (<code>0</code>: ok, <code>1</code>: something went
      *         wrong)
      */
-    private static int doSynthesis(BreezeProjectResyn proj) {
-
+    private static int doSynthesis(BreezeProjectResyn proj, Technology tech) {
         //@formatter:off
         SynthesisParameter sparams = SynthesisParameter.create(
-            options.getTechnology(), 
+            tech, 
             options.getTackleComplexityOrder(), 
             options.getLogicSynthesisParameter(), 
             options.getDecoStrategy(), 
@@ -153,6 +165,13 @@ public class ResynMain {
 
         SynthesisMain smain = new SynthesisMain(proj, sparams);
         if(smain.generate()) {
+            if(options.getStgOutfile() != null) {
+                if(FileHelper.getInstance().copyfile(smain.getBalsaSTGFile(), options.getStgOutfile())) {
+                    logger.info("Export STG into: " + options.getStgOutfile());
+                } else {
+                    logger.warn("Export of STG failed");
+                }
+            }
             if(options.getSynthesisOutfile() != null) {
                 if(!options.isSkipdatapath()) {
                     if(FileHelper.getInstance().copyfile(smain.getFile(), options.getSynthesisOutfile())) {
@@ -164,6 +183,7 @@ public class ResynMain {
             } else {
                 logger.warn("Synthesis successful: No outfile " + smain.getFile());
             }
+
         } else {
             logger.error("Synthesis failed");
             return 1;
@@ -187,5 +207,9 @@ public class ResynMain {
             return false;
         }
         return true;
+    }
+
+    private static void addShutdownHook() {
+        Runtime.getRuntime().addShutdownHook(new ShutdownThread());
     }
 }
